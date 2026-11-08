@@ -1,0 +1,75 @@
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+
+# Generated code (optional, can be removed if you want to track generated code)
+generated/
+output/
+
+# Visual reports
+visual_reports/
+*.png
+*.jpg
+*.jpeg
+!designs/*.png
+!designs/*.jpg
+!designs/*.jpeg
+!examples/*.png
+!examples/*.jpg
+!examples/*.jpeg
+
+# Playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# TypeScript
+*.d.ts.map
+
+# Misc
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist
+.serverless/
+.fusebox/
+.dynamodb/
