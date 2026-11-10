@@ -73,6 +73,13 @@ ${responsive ? `### 5. 响应式要求
 - 使用 ${styleFramework === 'tailwind' ? 'Tailwind 响应式前缀（sm: md: lg:）' : 'CSS 媒体查询'}` : ''}
 
 请生成完整、可运行的代码，包含必要的导入语句。
+如果是 HTML，请确保：
+1. 包含完整的 <body> 内容和可见的 DOM 元素
+2. 所有自定义组件必须通过 customElements.define() 注册
+3. 在 DOMContentLoaded 或页面底部初始化组件
+4. 不要只定义类而不使用它们
+5. 确保页面加载后立即显示内容
+
 只输出代码，不要包含解释文字。`;
 }
 

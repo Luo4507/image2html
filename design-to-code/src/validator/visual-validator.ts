@@ -22,6 +22,7 @@ export class VisualValidator {
     if (!this.browser) {
       this.browser = await chromium.launch({
         headless: true,
+        executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH || undefined,
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
       });
     }
@@ -85,9 +86,11 @@ export class VisualValidator {
 
     // 获取像素数据
     const originalPixels = await sharp(originalResized)
+      .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true });
     const generatedPixels = await sharp(generatedResized)
+      .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true });
 
@@ -151,11 +154,13 @@ export class VisualValidator {
 
         const originalRegion = await sharp(originalBuffer)
           .extract({ left: x, top: y, width: regionWidth, height: regionHeight })
+          .ensureAlpha()
           .raw()
           .toBuffer({ resolveWithObject: true });
 
         const generatedRegion = await sharp(generatedBuffer)
           .extract({ left: x, top: y, width: regionWidth, height: regionHeight })
+          .ensureAlpha()
           .raw()
           .toBuffer({ resolveWithObject: true });
 

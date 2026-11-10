@@ -123,12 +123,55 @@ export class InternalLLMClient {
       },
     ];
 
-    const response = await this.chatCompletion(messages, {
-      ...options,
-      temperature: options.temperature ?? 0.3, // 代码生成用低温度
+    const response = await fetch(`${this.baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: this.model,
+        messages,
+        temperature: options.temperature ?? 0.3,
+        max_tokens: options.maxTokens ?? 4096,
+        stream: true,
+      }),
     });
 
-    return response.choices[0]?.message?.content || '';
+    if (!response.ok) {
+      const error = await response.text();
+      throw new Error(`LLM API error: ${response.status} - ${error}`);
+    }
+    if (!response.body) {
+      throw new Error('LLM API returned an empty stream');
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let result = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() || '';
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (!trimmed.startsWith('data:')) continue;
+
+        const data = trimmed.slice(5).trim();
+        if (!data || data === '[DONE]') continue;
+
+        const chunk = JSON.parse(data);
+        result += chunk.choices?.[0]?.delta?.content || '';
+      }
+    }
+
+    return result;
   }
 }
 

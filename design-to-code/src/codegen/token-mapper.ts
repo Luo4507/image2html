@@ -54,7 +54,10 @@ export class TokenMapper {
       code = this.replaceFontSize(code, pxValue, token);
     }
 
-    // 4. 添加 CSS 变量定义
+    // 4. 恢复 Token 自身的定义，避免 --color-primary: var(--color-primary)
+    code = this.restoreTokenDefinitions(code);
+
+    // 5. 添加 CSS 变量定义
     code = this.addTokenDefinitions(code);
 
     return code;
@@ -135,6 +138,26 @@ export class TokenMapper {
     } else {
       // 在代码开头添加
       code = `<style>\n${tokenDefinitions}\n</style>\n\n${code}`;
+    }
+
+    return code;
+  }
+
+  /**
+   * 恢复 Token 定义中的原始值
+   */
+  private restoreTokenDefinitions(code: string): string {
+    const mappings = [this.colorMap, this.spacingMap, this.fontSizeMap];
+
+    for (const mapping of mappings) {
+      for (const [value, token] of mapping) {
+        const variableName = token.slice(4, -1);
+        const pattern = new RegExp(
+          `(${this.escapeRegex(variableName)}\\s*):\\s*${this.escapeRegex(token)}`,
+          'g'
+        );
+        code = code.replace(pattern, `$1: ${value}`);
+      }
     }
 
     return code;

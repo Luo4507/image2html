@@ -2,6 +2,7 @@
  * 配置管理
  */
 
+import 'dotenv/config';
 import type { ModelConfig, ValidationConfig } from './types.js';
 
 /** 默认模型配置（从环境变量读取） */
