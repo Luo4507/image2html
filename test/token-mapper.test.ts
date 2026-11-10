@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { TokenMapper } from './token-mapper.js';
-import type { DesignTokens } from '../types.js';
+import { TokenMapper } from '../src/codegen/token-mapper.js';
+import type { DesignTokens } from '../src/types.js';
 
 const tokens: DesignTokens = {
   colors: {

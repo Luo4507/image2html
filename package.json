@@ -1,0 +1,71 @@
+{
+  "name": "image2html",
+  "version": "0.1.0",
+  "description": "Turn high-fidelity UI designs into validated HTML, React, and Vue code with local vision and language models.",
+  "keywords": [
+    "design-to-code",
+    "image-to-html",
+    "mcp",
+    "playwright",
+    "visual-validation"
+  ],
+  "homepage": "https://github.com/Luo4507/image2html#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luo4507/image2html.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Luo4507/image2html/issues"
+  },
+  "license": "MIT",
+  "author": "image2html contributors",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "image2html": "./dist/cli.js",
+    "image2html-mcp": "./dist/mcp/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "scripts": {
+    "clean": "node scripts/clean.mjs",
+    "build": "pnpm clean && tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "node dist/mcp/index.js",
+    "mcp": "node dist/mcp/index.js",
+    "verify": "node scripts/verify.mjs",
+    "verify:mcp": "node scripts/verify-mcp.mjs"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "commander": "^12.1.0",
+    "dotenv": "^16.4.5",
+    "playwright": "^1.40.0",
+    "pixelmatch": "^5.3.0",
+    "sharp": "^0.33.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/pixelmatch": "^5.2.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  }
+}

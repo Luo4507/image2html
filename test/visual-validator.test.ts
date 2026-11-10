@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import sharp from 'sharp';
-import { VisualValidator } from './visual-validator.js';
-import { getDefaultValidationConfig } from '../config.js';
+import { VisualValidator } from '../src/validator/visual-validator.js';
+import { getDefaultValidationConfig } from '../src/config.js';
 
 describe('VisualValidator image comparison', () => {
   it('compares RGB and RGBA images with the same dimensions', async () => {

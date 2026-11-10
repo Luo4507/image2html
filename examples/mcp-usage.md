@@ -3,7 +3,7 @@
 ## 1. 启动 MCP Server
 
 ```bash
-cd design-to-code
+cd image2html
 pnpm install
 pnpm build
 pnpm mcp
@@ -18,7 +18,7 @@ pnpm mcp
   "mcp": {
     "design-to-code": {
       "type": "local",
-      "command": ["node", "F:/code/image2html/design-to-code/dist/mcp/index.js"],
+      "command": ["node", "/absolute/path/to/image2html/dist/mcp/index.js"],
       "enabled": true,
       "env": {
         "QWEN_VL_BASE_URL": "http://your-server:8000/v1",
@@ -154,7 +154,7 @@ OpenCode 执行过程：
   "mcpServers": {
     "design-to-code": {
       "command": "node",
-      "args": ["F:/code/image2html/design-to-code/dist/mcp/index.js"],
+      "args": ["/absolute/path/to/image2html/dist/mcp/index.js"],
       "env": {
         "QWEN_VL_BASE_URL": "http://your-server:8000/v1",
         "GLM_BASE_URL": "http://your-server:8001/v1"

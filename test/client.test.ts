@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { InternalLLMClient } from './client.js';
+import { InternalLLMClient } from '../src/llm/client.js';
 
 describe('InternalLLMClient.generateCode', () => {
   afterEach(() => {

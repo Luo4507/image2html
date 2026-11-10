@@ -14,7 +14,7 @@ import { getDefaultCodegenOptions } from './config.js';
 const program = new Command();
 
 program
-  .name('design-to-code')
+  .name('image2html')
   .description('将 UI 设计稿转换为前端代码')
   .version('0.1.0');
 

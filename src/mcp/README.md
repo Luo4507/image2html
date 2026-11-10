@@ -12,7 +12,7 @@
 ## 安装
 
 ```bash
-cd design-to-code
+cd image2html
 pnpm install
 pnpm build
 ```
@@ -29,7 +29,7 @@ pnpm build
   "mcp": {
     "design-to-code": {
       "type": "local",
-      "command": ["node", "F:/code/image2html/design-to-code/dist/mcp/index.js"],
+      "command": ["node", "/absolute/path/to/image2html/dist/mcp/index.js"],
       "enabled": true,
       "env": {
         "QWEN_VL_BASE_URL": "http://your-qwen-vl-server:8000/v1",
@@ -53,7 +53,7 @@ pnpm build
   "mcpServers": {
     "design-to-code": {
       "command": "node",
-      "args": ["F:/code/image2html/design-to-code/dist/mcp/index.js"],
+      "args": ["/absolute/path/to/image2html/dist/mcp/index.js"],
       "env": {
         "QWEN_VL_BASE_URL": "http://your-qwen-vl-server:8000/v1",
         "QWEN_VL_API_KEY": "your-key",

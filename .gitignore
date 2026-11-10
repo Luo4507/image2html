@@ -1,6 +1,5 @@
 # Dependencies
 node_modules/
-pnpm-lock.yaml
 package-lock.json
 yarn.lock
 
@@ -46,7 +45,7 @@ output/
 output-*/
 
 # External fixture source projects
-design-to-code/examples/fixtures/integral-mall-source/
+examples/fixtures/integral-mall-source/
 
 # Visual reports
 visual_reports/
@@ -59,9 +58,9 @@ visual_reports/
 !examples/*.png
 !examples/*.jpg
 !examples/*.jpeg
-!design-to-code/examples/fixtures/*.png
-!design-to-code/examples/fixtures/*.jpg
-!design-to-code/examples/fixtures/*.jpeg
+!examples/fixtures/*.png
+!examples/fixtures/*.jpg
+!examples/fixtures/*.jpeg
 
 # Playwright
 test-results/

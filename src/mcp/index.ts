@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * MCP Server 入口
  */
