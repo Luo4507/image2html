@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理后台 Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f0f2f5;
+      color: #333;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: #001529;
+      color: white;
+      padding: 24px 0;
+    }
+    .logo {
+      padding: 0 24px 24px;
+      font-size: 20px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 24px;
+    }
+    .menu-item {
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.65);
+      font-size: 14px;
+    }
+    .menu-item:hover, .menu-item.active {
+      background: #1890ff;
+      color: white;
+    }
+    .menu-icon { font-size: 18px; }
+    .main {
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      background: white;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .breadcrumb { color: #666; font-size: 14px; }
+    .header-actions { display: flex; gap: 16px; align-items: center; }
+    .notification { position: relative; font-size: 20px; cursor: pointer; }
+    .badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #ff4d4f;
+      color: white;
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 8px;
+    }
+    .content {
+      padding: 24px 32px;
+      flex: 1;
+    }
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .stat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+    .stat-title { color: #666; font-size: 14px; }
+    .stat-icon { font-size: 24px; }
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .stat-change {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .stat-change.up { color: #52c41a; }
+    .stat-change.down { color: #ff4d4f; }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .chart-card {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .chart-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .chart-placeholder {
+      height: 300px;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf0 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 48px;
+    }
+    .table-card {
+      background: white;
+      padding: 24px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th {
+      text-align: left;
+      padding: 12px;
+      background: #fafafa;
+      font-weight: 600;
+      font-size: 14px;
+      color: #666;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    td {
+      padding: 16px 12px;
+      border-bottom: 1px solid #f0f0f0;
+      font-size: 14px;
+    }
+    tr:hover { background: #fafafa; }
+    .status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+    .status.success { background: #f6ffed; color: #52c41a; }
+    .status.pending { background: #fff7e6; color: #fa8c16; }
+    .status.failed { background: #fff2f0; color: #ff4d4f; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="logo">🚀 管理后台</div>
+      <div class="menu-item active">
+        <span class="menu-icon">📊</span>
+        <span>数据概览</span>
+      </div>
+      <div class="menu-item">
+        <span class="menu-icon">📦</span>
+        <span>订单管理</span>
+      </div>
+      <div class="menu-item">
+        <span class="menu-icon">👥</span>
+        <span>用户管理</span>
+      </div>
+      <div class="menu-item">
+        <span class="menu-icon">🛍️</span>
+        <span>商品管理</span>
+      </div>
+      <div class="menu-item">
+        <span class="menu-icon">📈</span>
+        <span>数据分析</span>
+      </div>
+      <div class="menu-item">
+        <span class="menu-icon">⚙️</span>
+        <span>系统设置</span>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <div class="breadcrumb">首页 / 数据概览</div>
+        <div class="header-actions">
+          <div class="notification">
+            🔔
+            <span class="badge">5</span>
+          </div>
+          <div style="width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 14px;">管</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="page-title">数据概览</div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-title">今日订单</span>
+              <span class="stat-icon">📦</span>
+            </div>
+            <div class="stat-value">1,284</div>
+            <div class="stat-change up">↑ 12.5% 较昨日</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-title">今日销售额</span>
+              <span class="stat-icon">💰</span>
+            </div>
+            <div class="stat-value">¥86,432</div>
+            <div class="stat-change up">↑ 8.3% 较昨日</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-title">新增用户</span>
+              <span class="stat-icon">👥</span>
+            </div>
+            <div class="stat-value">342</div>
+            <div class="stat-change down">↓ 3.2% 较昨日</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-header">
+              <span class="stat-title">转化率</span>
+              <span class="stat-icon">📈</span>
+            </div>
+            <div class="stat-value">3.24%</div>
+            <div class="stat-change up">↑ 0.5% 较昨日</div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-title">销售趋势</div>
+            <div class="chart-placeholder">📈</div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">商品分类占比</div>
+            <div class="chart-placeholder">🥧</div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="chart-title">最新订单</div>
+          <table>
+            <thead>
+              <tr>
+                <th>订单号</th>
+                <th>用户</th>
+                <th>商品</th>
+                <th>金额</th>
+                <th>状态</th>
+                <th>时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ORD-2024-001</td>
+                <td>张三</td>
+                <td>无线蓝牙耳机</td>
+                <td>¥299.00</td>
+                <td><span class="status success">已完成</span></td>
+                <td>2024-01-15 14:32</td>
+              </tr>
+              <tr>
+                <td>#ORD-2024-002</td>
+                <td>李四</td>
+                <td>智能手表</td>
+                <td>¥599.00</td>
+                <td><span class="status pending">待发货</span></td>
+                <td>2024-01-15 14:28</td>
+              </tr>
+              <tr>
+                <td>#ORD-2024-003</td>
+                <td>王五</td>
+                <td>时尚背包</td>
+                <td>¥159.00</td>
+                <td><span class="status success">已完成</span></td>
+                <td>2024-01-15 14:15</td>
+              </tr>
+              <tr>
+                <td>#ORD-2024-004</td>
+                <td>赵六</td>
+                <td>快充充电器</td>
+                <td>¥89.00</td>
+                <td><span class="status failed">已取消</span></td>
+                <td>2024-01-15 14:02</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

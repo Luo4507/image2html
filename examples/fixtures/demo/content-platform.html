@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>内容发布平台</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+    .header {
+      background: #fff;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e8e8e8;
+    }
+    .logo { font-size: 22px; font-weight: 700; color: #1890ff; }
+    .nav { display: flex; gap: 24px; }
+    .nav a { color: #666; text-decoration: none; font-size: 14px; }
+    .nav a.active { color: #1890ff; }
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+    .main {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+    }
+    .content-area {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .editor-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .editor-title { font-size: 20px; font-weight: 600; }
+    .publish-btn {
+      background: #1890ff;
+      color: white;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+    }
+    .form-input:focus { border-color: #1890ff; }
+    .form-textarea {
+      width: 100%;
+      min-height: 200px;
+      padding: 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      outline: none;
+    }
+    .toolbar {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: #fafafa;
+      border: 1px solid #d9d9d9;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+    }
+    .toolbar-btn {
+      padding: 6px 12px;
+      background: white;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .tag-selector {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      padding: 6px 16px;
+      background: #f0f0f0;
+      border-radius: 16px;
+      font-size: 13px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+    .tag.selected {
+      background: #e6f7ff;
+      color: #1890ff;
+      border-color: #91d5ff;
+    }
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sidebar-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .sidebar-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .stat-item:last-child { border-bottom: none; }
+    .stat-label { color: #666; font-size: 14px; }
+    .stat-value { font-weight: 600; color: #1890ff; }
+    .draft-item {
+      padding: 12px;
+      background: #fafafa;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .draft-item:hover { background: #f0f0f0; }
+    .draft-title { font-size: 14px; font-weight: 500; margin-bottom: 4px; }
+    .draft-time { font-size: 12px; color: #999; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">📝 内容平台</div>
+    <div class="nav">
+      <a href="#" class="active">发布内容</a>
+      <a href="#">我的内容</a>
+      <a href="#">数据分析</a>
+      <a href="#">设置</a>
+    </div>
+    <div class="user-info">
+      <span>创作者中心</span>
+      <div class="avatar">U</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="content-area">
+      <div class="editor-header">
+        <div class="editor-title">发布新内容</div>
+        <button class="publish-btn">发布文章</button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">文章标题</label>
+        <input type="text" class="form-input" placeholder="请输入文章标题（5-50字）">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">内容分类</label>
+        <div class="tag-selector">
+          <span class="tag selected">技术分享</span>
+          <span class="tag">产品心得</span>
+          <span class="tag">行业资讯</span>
+          <span class="tag">生活随笔</span>
+          <span class="tag">教程攻略</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">正文内容</label>
+        <div class="toolbar">
+          <button class="toolbar-btn">B</button>
+          <button class="toolbar-btn">I</button>
+          <button class="toolbar-btn">U</button>
+          <button class="toolbar-btn">🔗</button>
+          <button class="toolbar-btn">📷</button>
+          <button class="toolbar-btn">📹</button>
+          <button class="toolbar-btn">📊</button>
+        </div>
+        <textarea class="form-textarea" placeholder="开始创作你的内容...支持 Markdown 语法"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">封面图片</label>
+        <div style="border: 2px dashed #d9d9d9; border-radius: 8px; padding: 40px; text-align: center; color: #999; cursor: pointer;">
+          <div style="font-size: 48px; margin-bottom: 8px;">📷</div>
+          <div>点击或拖拽上传封面图片</div>
+          <div style="font-size: 12px; margin-top: 4px;">支持 JPG、PNG 格式，建议尺寸 1200x630</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-title">📊 创作数据</div>
+        <div class="stat-item">
+          <span class="stat-label">累计发布</span>
+          <span class="stat-value">128 篇</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">总阅读量</span>
+          <span class="stat-value">45.2K</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">获赞数</span>
+          <span class="stat-value">3,891</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">粉丝数</span>
+          <span class="stat-value">2,456</span>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-title">📝 最近草稿</div>
+        <div class="draft-item">
+          <div class="draft-title">React 性能优化实践</div>
+          <div class="draft-time">2小时前</div>
+        </div>
+        <div class="draft-item">
+          <div class="draft-title">产品设计思维分享</div>
+          <div class="draft-time">昨天</div>
+        </div>
+        <div class="draft-item">
+          <div class="draft-title">前端工程化指南</div>
+          <div class="draft-time">3天前</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

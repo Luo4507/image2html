@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>小商城 - 精选好物</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #f8f9fa;
+      color: #2c3e50;
+    }
+    .header {
+      background: #fff;
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 24px; font-weight: 700; color: #e74c3c; }
+    .nav { display: flex; gap: 32px; }
+    .nav a { color: #555; text-decoration: none; font-size: 15px; }
+    .nav a.active { color: #e74c3c; font-weight: 600; }
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #f5f5f5;
+      border-radius: 24px;
+      padding: 8px 16px;
+      width: 280px;
+    }
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      flex: 1;
+      font-size: 14px;
+    }
+    .cart-icon { position: relative; font-size: 24px; cursor: pointer; }
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #e74c3c;
+      color: white;
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+    .hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 24px;
+      text-align: center;
+    }
+    .hero h1 { font-size: 36px; margin-bottom: 16px; }
+    .hero p { font-size: 18px; opacity: 0.9; margin-bottom: 24px; }
+    .hero-btn {
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 28px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .categories {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 32px 24px;
+      background: white;
+    }
+    .category {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+    .category-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      background: #f0f0f0;
+    }
+    .category span { font-size: 14px; color: #666; }
+    .products {
+      padding: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .section-title::before {
+      content: '';
+      width: 4px;
+      height: 24px;
+      background: #e74c3c;
+      border-radius: 2px;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 24px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s;
+    }
+    .product-card:hover { transform: translateY(-4px); }
+    .product-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(45deg, #f0f0f0, #e0e0e0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 64px;
+    }
+    .product-info { padding: 16px; }
+    .product-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .product-desc {
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 12px;
+    }
+    .product-price {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .price {
+      color: #e74c3c;
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .price .original {
+      font-size: 14px;
+      color: #999;
+      text-decoration: line-through;
+      font-weight: 400;
+    }
+    .buy-btn {
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .product-tag {
+      display: inline-block;
+      background: #fff3e0;
+      color: #f57c00;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">🛍️ 小商城</div>
+    <div class="nav">
+      <a href="#" class="active">首页</a>
+      <a href="#">分类</a>
+      <a href="#">优惠</a>
+      <a href="#">我的</a>
+    </div>
+    <div class="search-box">
+      <span>🔍</span>
+      <input type="text" placeholder="搜索商品...">
+    </div>
+    <div class="cart-icon">
+      🛒
+      <span class="cart-badge">3</span>
+    </div>
+  </div>
+
+  <div class="hero">
+    <h1>精选好物，品质生活</h1>
+    <p>发现更多优质商品，享受购物乐趣</p>
+    <button class="hero-btn">立即选购 →</button>
+  </div>
+
+  <div class="categories">
+    <div class="category">
+      <div class="category-icon">📱</div>
+      <span>数码电子</span>
+    </div>
+    <div class="category">
+      <div class="category-icon">👕</div>
+      <span>服装配饰</span>
+    </div>
+    <div class="category">
+      <div class="category-icon">🏠</div>
+      <span>家居生活</span>
+    </div>
+    <div class="category">
+      <div class="category-icon">🍎</div>
+      <span>食品饮料</span>
+    </div>
+    <div class="category">
+      <div class="category-icon">💄</div>
+      <span>美妆个护</span>
+    </div>
+    <div class="category">
+      <div class="category-icon">📚</div>
+      <span>图书文具</span>
+    </div>
+  </div>
+
+  <div class="products">
+    <div class="section-title">🔥 热销商品</div>
+    <div class="product-grid">
+      <div class="product-card">
+        <div class="product-image">🎧</div>
+        <div class="product-info">
+          <div class="product-tag">限时优惠</div>
+          <div class="product-title">无线降噪蓝牙耳机</div>
+          <div class="product-desc">主动降噪 | 30小时续航</div>
+          <div class="product-price">
+            <div>
+              <span class="price">¥299</span>
+              <span class="price original">¥399</span>
+            </div>
+            <button class="buy-btn">购买</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image">⌚</div>
+        <div class="product-info">
+          <div class="product-tag">新品上市</div>
+          <div class="product-title">智能运动手表</div>
+          <div class="product-desc">心率监测 | 50米防水</div>
+          <div class="product-price">
+            <div>
+              <span class="price">¥599</span>
+              <span class="price original">¥799</span>
+            </div>
+            <button class="buy-btn">购买</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image">🎒</div>
+        <div class="product-info">
+          <div class="product-tag">热销爆款</div>
+          <div class="product-title">时尚双肩背包</div>
+          <div class="product-desc">大容量 | 防泼水材质</div>
+          <div class="product-price">
+            <div>
+              <span class="price">¥159</span>
+              <span class="price original">¥199</span>
+            </div>
+            <button class="buy-btn">购买</button>
+          </div>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="product-image">📱</div>
+        <div class="product-info">
+          <div class="product-tag">品质保证</div>
+          <div class="product-title">手机快充充电器</div>
+          <div class="product-desc">65W快充 | 多协议兼容</div>
+          <div class="product-price">
+            <div>
+              <span class="price">¥89</span>
+              <span class="price original">¥129</span>
+            </div>
+            <button class="buy-btn">购买</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
