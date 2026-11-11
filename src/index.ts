@@ -51,7 +51,7 @@ export class DesignToCode {
     const messages = buildStructureAnalysisMessage(imageBase64);
     const response = await visionClient.chatCompletion(messages as any, {
       temperature: 0.3,
-      maxTokens: 8192,
+      maxTokens: 32768,
     });
 
     const content = response.choices[0]?.message?.content || '';
@@ -77,7 +77,7 @@ export class DesignToCode {
     const prompt = buildCodeGenerationPrompt(structure, options);
     const code = await codeClient.generateCode(prompt, {
       temperature: 0.3,
-      maxTokens: 8192,
+      maxTokens: 16384,
     });
 
     // 提取代码（去除 markdown 代码块标记）
@@ -134,7 +134,7 @@ export class DesignToCode {
     const prompt = buildRepairPrompt(originalStructure, currentCode, diffRegions);
     const repairedCode = await codeClient.generateCode(prompt, {
       temperature: 0.3,
-      maxTokens: 8192,
+      maxTokens: 16384,
     });
 
     // 清理代码

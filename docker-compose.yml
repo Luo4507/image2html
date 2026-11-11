@@ -1,0 +1,25 @@
+services:
+  image2html:
+    build: .
+    image: image2html:0.1.0
+    init: true
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      PLAYWRIGHT_EXECUTABLE_PATH: ""
+    volumes:
+      - image2html-data:/app/data
+    read_only: true
+    tmpfs:
+      - /tmp
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 8G
+
+volumes:
+  image2html-data:

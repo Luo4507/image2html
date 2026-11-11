@@ -43,6 +43,8 @@ temp/
 generated/
 output/
 output-*/
+data/
+*.tgz
 
 # External fixture source projects
 examples/fixtures/integral-mall-source/
@@ -61,6 +63,9 @@ visual_reports/
 !examples/fixtures/*.png
 !examples/fixtures/*.jpg
 !examples/fixtures/*.jpeg
+!examples/fixtures/demo/*.png
+!examples/fixtures/demo/*.jpg
+!examples/fixtures/demo/*.jpeg
 
 # Playwright
 test-results/

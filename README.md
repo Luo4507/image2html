@@ -142,6 +142,31 @@ console.log(result.code.code);
 await converter.close();
 ```
 
+### 多用户 HTTP 服务
+
+在 `.env` 中为用户配置独立密钥：
+
+```env
+API_KEYS=alice:long-random-secret,bob:another-long-random-secret
+JOB_CONCURRENCY=2
+DATA_DIR=data
+```
+
+启动：
+
+```bash
+pnpm build
+pnpm serve
+```
+
+或使用 Docker：
+
+```bash
+docker compose up -d --build
+```
+
+服务提供异步任务、图片上传、用户隔离、并发限制、限流、健康检查和产物下载。详细接口及运维说明见[部署指南](docs/deployment.md)。
+
 ## 验证
 
 ```bash
@@ -150,6 +175,9 @@ pnpm verify -- examples/fixtures/login-design.png output
 
 # 通过真实 MCP 客户端调用视觉校验
 pnpm verify:mcp
+
+# 启动 HTTP 服务并验证真实任务和产物下载
+pnpm verify:server
 ```
 
 验证脚本位于 `scripts/`；测试设计稿位于 `examples/fixtures/`。
@@ -170,6 +198,8 @@ image2html/
 ├── scripts/             # 端到端和 MCP 验证脚本
 ├── examples/            # 示例及测试设计稿
 ├── docs/                # 方案与实施文档
+├── Dockerfile           # 含 Chromium 的生产镜像
+├── docker-compose.yml   # 单实例多用户部署
 ├── dist/                # 构建产物（不入库）
 ├── output/              # 生成结果（不入库）
 ├── LICENSE              # MIT 开源协议
