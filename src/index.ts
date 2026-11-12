@@ -21,6 +21,7 @@ import { passesQualityGate } from './validator/quality-gate.js';
 import { buildAssetDetectionPrompt, parseAssetRegions } from './prompts/asset-detection.js';
 import { extractImageAssets } from './assets/asset-extractor.js';
 import { getDefaultModelConfig, getDefaultValidationConfig, getDefaultCodegenOptions } from './config.js';
+import { assertValidCodegenOptions } from './runtime/codegen-options.js';
 import type {
   DesignToCodeRequest,
   DesignToCodeResult,
@@ -138,6 +139,7 @@ ${invalidContent}`,
     structure: PageStructure,
     options: CodegenOptions
   ): Promise<GeneratedCode> {
+    assertValidCodegenOptions(options);
     const codeClient = createCodeClient(this.modelConfig);
 
     const prompt = buildCodeGenerationPrompt(structure, options);
@@ -155,6 +157,7 @@ ${invalidContent}`,
     options: CodegenOptions,
     onProgress?: (event: ConversionProgressEvent) => void
   ): Promise<GeneratedCode> {
+    assertValidCodegenOptions(options);
     if (options.layoutMode === 'segmented' && options.framework === 'html') {
       try {
         return await this.generateSegmentedHtml(imageBase64, options, onProgress);
@@ -296,7 +299,7 @@ ${invalidContent}`,
     const imports = this.extractImports(cleanCode);
 
     // 确定文件名
-    const filename = this.generateFilename(title, options.framework);
+    const filename = this.generateFilename(title, options.framework, options.typescript);
 
     return {
       code: cleanCode,
@@ -390,6 +393,7 @@ ${invalidContent}`,
     this.emitProgress(request, { stage: 'reading', message: '正在读取设计稿' });
 
     try {
+      assertValidCodegenOptions(request.options);
       // 1. 准备图片数据
       let imageBase64: string;
       let imageBuffer: Buffer;
@@ -533,7 +537,7 @@ ${invalidContent}`,
   /**
    * 生成文件名
    */
-  private generateFilename(title: string, framework: string): string {
+  private generateFilename(title: string, framework: string, typescript: boolean): string {
     // 转换为 PascalCase
     const pascalCase = title
       .replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, ' ')
@@ -541,7 +545,7 @@ ${invalidContent}`,
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join('');
 
-    const extension = framework === 'react' ? 'tsx' : framework === 'vue' ? 'vue' : 'html';
+    const extension = framework === 'react' ? (typescript ? 'tsx' : 'jsx') : framework === 'vue' ? 'vue' : 'html';
 
     return `${pascalCase || 'Component'}.${extension}`;
   }
@@ -582,3 +586,5 @@ export async function designToCode(
     await d2c.close();
   }
 }
+
+
