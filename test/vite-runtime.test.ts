@@ -69,6 +69,27 @@ describe('Vite framework runtime', () => {
     );
   }, 60_000);
 
+  it('serves extracted assets from the generated project public directory', async () => {
+    const running = await startFrameworkProject({
+      ...generated('export default function Demo() { return <img src="/assets/pixel.png" alt="Extracted" />; }', 'Demo.tsx'),
+      assets: [{
+        name: 'pixel.png', mimeType: 'image/png',
+        data: 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Y9Z6XcAAAAASUVORK5CYII=',
+      }],
+    }, options());
+    const page = await browser.newPage();
+    try {
+      await page.goto(running.url, { waitUntil: 'networkidle' });
+      const dimensions = await page.locator('img').evaluate((image) => ({
+        complete: (image as HTMLImageElement).complete,
+        width: (image as HTMLImageElement).naturalWidth,
+      }));
+      expect(dimensions).toEqual({ complete: true, width: 1 });
+    } finally {
+      await page.close();
+      await running.close();
+    }
+  }, 60_000);
   it('rejects invalid React source with a stage-specific error', async () => {
     await expect(startFrameworkProject(
       generated('export default function Demo() { return <main>; }', 'Broken.tsx'),

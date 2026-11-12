@@ -1,10 +1,12 @@
-import type { CodegenOptions, PlannedRegion } from './types.js';
+import type { CodegenOptions, PlannedRegion, GeneratedAsset } from './types.js';
+import { buildAssetManifestPrompt } from './prompts/asset-manifest.js';
 
 export function buildRegionGenerationPrompt(
   region: PlannedRegion,
   options: CodegenOptions,
   pageWidth: number,
-  pageHeight: number
+  pageHeight: number,
+  assets: GeneratedAsset[] = []
 ): string {
   return `请根据提供的区域截图，生成该区域的真实 HTML/CSS 代码。
 
@@ -14,6 +16,8 @@ export function buildRegionGenerationPrompt(
 区域纵向范围：${region.startY}-${region.endY}
 样式方案：${options.styleFramework}
 响应式：${options.responsive ? '是' : '否'}
+
+${buildAssetManifestPrompt(assets)}
 
 要求：
 - 只生成当前区域的 HTML 片段及必要的 <style>，不要输出 <html>、<head>、<body>。

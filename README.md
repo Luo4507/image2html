@@ -48,6 +48,16 @@ node dist/cli.js convert examples/fixtures/login-design.png \
 
 进入导出目录后可运行 `pnpm install`、`pnpm build` 和 `pnpm dev`。Node.js API 同时导出 `createFrameworkProjectFiles()` 与 `exportFrameworkProject()`，复用同一套工程模板。分段生成仍仅限 HTML。
 
+### 提取并引用图片资源
+
+默认 `assetMode: "none"` 不增加模型调用。需要自动识别并裁剪 Logo、图标或图片时，使用 `--extract-assets`（Node API 设置 `assetMode: "extract"`）。生成提示词只能引用实际提取的 `/assets/<filename>` 清单，完整工程将资源写入 `public/assets`，资源识别计一次额外模型调用。HTML 校验使用同一字节的临时内联资源，React/Vue 通过 Vite public 目录加载。
+
+```bash
+node dist/cli.js convert examples/fixtures/login-design.png \
+  --framework react --style tailwind --component-library antd \
+  --project --extract-assets --output output/react-with-assets
+```
+
 ## 环境要求
 
 - Node.js 20+

@@ -12,6 +12,7 @@ import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 import type { CodegenOptions, GeneratedCode } from '../types.js';
 import { createFrameworkProjectFiles } from './project-scaffolder.js';
+import { writeGeneratedAssets } from './asset-files.js';
 
 const require = createRequire(import.meta.url);
 const packageRoot = dirname(fileURLToPath(new URL('../../package.json', import.meta.url)));
@@ -144,6 +145,7 @@ export async function startFrameworkProject(
       await writeFile(path, content, 'utf8');
     }));
 
+    await writeGeneratedAssets(generated.assets, join(projectDir, 'public', 'assets'));
     await buildFrameworkProject(projectDir, options);
     const server = await preview({
       root: projectDir,

@@ -2,11 +2,13 @@
  * 代码生成 Prompt（用于 GLM 5.3）
  */
 
-import type { PageStructure, CodegenOptions } from '../types.js';
+import type { PageStructure, CodegenOptions, GeneratedAsset } from '../types.js';
+import { buildAssetManifestPrompt } from './asset-manifest.js';
 
 export function buildCodeGenerationPrompt(
   structure: PageStructure,
-  options: CodegenOptions
+  options: CodegenOptions,
+  assets: GeneratedAsset[] = []
 ): string {
   const { page, regions, components, designTokens } = structure;
   const { framework, styleFramework, componentLibrary, typescript, responsive, accessibility } =
@@ -16,6 +18,8 @@ export function buildCodeGenerationPrompt(
 
 ## 页面结构
 ${JSON.stringify({ page, regions, components }, null, 2)}
+
+${buildAssetManifestPrompt(assets)}\n\n${buildAssetManifestPrompt(assets)}
 
 ## 设计要求
 

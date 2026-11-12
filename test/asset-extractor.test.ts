@@ -31,6 +31,25 @@ describe('asset extraction', () => {
       await rm(outputDir, { recursive: true, force: true });
     }
   });
+  it('clamps overlapping regions and skips regions fully outside the image', async () => {
+    const outputDir = await mkdtemp(join(tmpdir(), 'image2html-assets-bounds-'));
+    const image = await sharp({
+      create: { width: 100, height: 100, channels: 4, background: '#ffffff' },
+    }).png().toBuffer();
+
+    try {
+      const paths = await extractImageAssets(image, [
+        { name: 'clamped', x: 90, y: 90, width: 20, height: 20 },
+        { name: 'outside', x: 100, y: 0, width: 10, height: 10 },
+      ], outputDir);
+      expect(paths).toHaveLength(1);
+      const metadata = await sharp(await readFile(paths[0])).metadata();
+      expect(metadata.width).toBe(10);
+      expect(metadata.height).toBe(10);
+    } finally {
+      await rm(outputDir, { recursive: true, force: true });
+    }
+  });
   it('handles MCP asset extraction requests', async () => {
     const outputDir = await mkdtemp(join(tmpdir(), 'image2html-mcp-assets-'));
     const imagePath = join(outputDir, 'design.png');

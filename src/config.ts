@@ -49,5 +49,6 @@ export function getDefaultCodegenOptions() {
     accessibility: process.env.DEFAULT_ACCESSIBILITY !== 'false',
     pipeline: (process.env.DEFAULT_PIPELINE || 'direct') as 'direct' | 'structured',
     qualityMode: (process.env.QUALITY_MODE || 'balanced') as 'fast' | 'balanced' | 'precision',
+    assetMode: 'none' as const,
   };
 }

@@ -63,6 +63,17 @@ describe('framework project scaffolder', () => {
     expect(files['tsconfig.json']).toBeUndefined();
   });
 
+  it('exports extracted assets with safe names and identical bytes', async () => {
+    const outputDir = await mkdtemp(join(tmpdir(), 'image2html-assets-test-'));
+    cleanup.push(outputDir);
+    const data = Buffer.from([0, 1, 2, 3, 255]).toString('base64');
+    await exportFrameworkProject(generated({
+      assets: [{ name: '../logo.png', mimeType: 'image/png', data }],
+    }), options(), outputDir);
+
+    const asset = await readFile(join(outputDir, 'public', 'assets', 'logo.png'));
+    expect(asset).toEqual(Buffer.from([0, 1, 2, 3, 255]));
+  });
   it('exports only project source and configuration files', async () => {
     const outputDir = await mkdtemp(join(tmpdir(), 'image2html-project-test-'));
     cleanup.push(outputDir);

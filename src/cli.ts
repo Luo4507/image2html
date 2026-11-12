@@ -29,6 +29,7 @@ program
   .option('--no-validate', '跳过视觉校验')
   .option('--no-typescript', '不使用 TypeScript')
   .option('--project', '导出完整 Vite 工程而非单个源码文件')
+  .option('--extract-assets', '生成前提取并引用可复用图片资源')
   .action(async (image: string, options: any) => {
     try {
       console.log(`Converting: ${image}`);
@@ -64,6 +65,7 @@ program
           typescript: options.typescript,
           responsive: true,
           accessibility: true,
+          assetMode: options.extractAssets ? 'extract' : 'none',
         },
         modelConfig: (await import('./config.js')).getDefaultModelConfig(),
         validationConfig: options.validate
@@ -82,6 +84,7 @@ program
             typescript: options.typescript,
             responsive: true,
             accessibility: true,
+          assetMode: options.extractAssets ? 'extract' : 'none',
           }, options.output);
           console.log(`\n✅ Project generated: ${options.output}`);
         } else {
@@ -176,6 +179,7 @@ program
               typescript: true,
               responsive: true,
               accessibility: true,
+          assetMode: options.extractAssets ? 'extract' : 'none',
             },
             modelConfig: (await import('./config.js')).getDefaultModelConfig(),
             validationConfig: options.validate
@@ -246,4 +250,3 @@ program
   });
 
 program.parse();
-

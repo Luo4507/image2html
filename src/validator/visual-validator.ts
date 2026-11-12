@@ -24,6 +24,14 @@ interface RenderTarget {
   isUrl: boolean;
   framework?: CodegenOptions['framework'];
 }
+function inlineGeneratedAssets(code: string, assets: GeneratedCode['assets'] = []): string {
+  let rendered = code;
+  for (const asset of assets) {
+    const dataUrl = `data:${asset.mimeType};base64,${asset.data}`;
+    rendered = rendered.replaceAll(`/assets/${asset.name}`, dataUrl);
+  }
+  return rendered;
+}
 export class VisualValidator {
   private config: ValidationConfig;
   private browser: Browser | null = null;
@@ -246,7 +254,7 @@ export class VisualValidator {
     let running: RunningFrameworkProject | undefined;
 
     try {
-      let target: RenderTarget = { content: generated.code, isUrl: false, framework: 'html' };
+      let target: RenderTarget = { content: inlineGeneratedAssets(generated.code, generated.assets), isUrl: false, framework: 'html' };
       if (targetOptions && targetOptions.framework !== 'html') {
         const filename = generated.filename || (targetOptions.framework === 'react'
           ? `GeneratedPage.${targetOptions.typescript ? 'tsx' : 'jsx'}`
@@ -297,4 +305,3 @@ export class VisualValidator {
     }
   }
 }
-

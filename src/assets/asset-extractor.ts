@@ -15,18 +15,25 @@ export async function extractImageAssets(
   const paths: string[] = [];
 
   for (const region of regions) {
-    if (region.x + region.width > imageWidth || region.y + region.height > imageHeight) {
-      throw new Error(`Asset region is outside the image: ${region.name}`);
+    const left = Math.max(0, region.x);
+    const top = Math.max(0, region.y);
+    const right = Math.min(imageWidth, region.x + region.width);
+    const bottom = Math.min(imageHeight, region.y + region.height);
+    const width = right - left;
+    const height = bottom - top;
+    if (width <= 0 || height <= 0) {
+      console.warn(`[design-to-code] Skipping asset outside the image: ${region.name}`);
+      continue;
     }
 
     const safeName = basename(region.name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5_-]/g, '-'));
     const outputPath = join(outputDir, `${safeName || 'asset'}.png`);
     await sharp(imageBuffer)
       .extract({
-        left: region.x,
-        top: region.y,
-        width: region.width,
-        height: region.height,
+        left,
+        top,
+        width,
+        height,
       })
       .png()
       .toFile(outputPath);

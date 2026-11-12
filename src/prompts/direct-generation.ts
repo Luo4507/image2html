@@ -1,6 +1,7 @@
-import type { CodegenOptions } from '../types.js';
+import type { CodegenOptions, GeneratedAsset } from '../types.js';
+import { buildAssetManifestPrompt } from './asset-manifest.js';
 
-export function buildDirectGenerationPrompt(options: CodegenOptions): string {
+export function buildDirectGenerationPrompt(options: CodegenOptions, assets: GeneratedAsset[] = []): string {
   const frameworkContract = buildFrameworkContract(options);
   return `请直接根据提供的 UI 设计稿生成完整、可运行的 ${options.framework} 代码。
 
@@ -19,10 +20,12 @@ export function buildDirectGenerationPrompt(options: CodegenOptions): string {
 
 ${frameworkContract}
 
+${buildAssetManifestPrompt(assets)}
+
 ## 实现要求
 - 优先使用 Flexbox/Grid 和合理的组件拆分，避免不必要的绝对定位。
 - 对重复区域提取轻量组件，但不要为了抽象而增加无关代码。
-- 如果原图包含 Logo 或图片，使用简洁占位元素或 CSS 还原其尺寸和位置，不要调用外部服务。
+- \${assets.length > 0 ? '需要图片时从可用图片资源清单选择，不要调用外部服务。' : '如果原图包含 Logo 或图片，使用简洁占位元素或 CSS 还原其尺寸和位置，不要调用外部服务。'}
 - 页面加载后应立即显示内容，不依赖异步数据请求。
 - 只输出代码，不要输出结构 JSON、分析过程、Markdown 标记或解释文字。`;
 }

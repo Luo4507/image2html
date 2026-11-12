@@ -2,6 +2,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { basename, dirname, join } from 'node:path';
 import type { CodegenOptions, GeneratedCode } from '../types.js';
 import { assertValidCodegenOptions } from './codegen-options.js';
+import { writeGeneratedAssets } from './asset-files.js';
 
 const versions = {
   react: '^18.3.1',
@@ -181,6 +182,7 @@ export async function exportFrameworkProject(
   outputDir: string,
 ): Promise<void> {
   const files = createFrameworkProjectFiles(generated, options);
+  await writeGeneratedAssets(generated.assets, join(outputDir, 'public', 'assets'));
   await Promise.all(Object.entries(files).map(async ([name, content]) => {
     const path = join(outputDir, name);
     await mkdir(dirname(path), { recursive: true });

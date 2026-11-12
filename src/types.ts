@@ -119,6 +119,8 @@ export interface CodegenOptions {
   pipeline?: 'direct' | 'structured';
   qualityMode?: 'fast' | 'balanced' | 'precision';
   layoutMode?: 'single' | 'segmented';
+  /** Extract reusable image assets before generation. */
+  assetMode?: 'none' | 'extract';
 }
 
 export interface PlannedRegion {
@@ -137,6 +139,13 @@ export interface AssetRegion {
   height: number;
 }
 
+export interface GeneratedAsset {
+  name: string;
+  mimeType: string;
+  /** Base64-encoded asset bytes. */
+  data: string;
+}
+
 /** 生成的代码结果 */
 export interface GeneratedCode {
   code: string;
@@ -144,6 +153,7 @@ export interface GeneratedCode {
   imports: string[];
   components: string[];
   modelCalls?: number;
+  assets?: GeneratedAsset[];
 }
 
 /** 视觉校验结果 */

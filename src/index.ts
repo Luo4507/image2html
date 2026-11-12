@@ -21,6 +21,10 @@ import { buildAssetDetectionPrompt, parseAssetRegions } from './prompts/asset-de
 import { extractImageAssets } from './assets/asset-extractor.js';
 import { getDefaultModelConfig, getDefaultValidationConfig, getDefaultCodegenOptions } from './config.js';
 import { assertValidCodegenOptions } from './runtime/codegen-options.js';
+import { normalizeGeneratedAssets } from './runtime/asset-files.js';
+import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { basename, join } from 'node:path';
 import type {
   DesignToCodeRequest,
   DesignToCodeResult,
@@ -28,6 +32,7 @@ import type {
   GeneratedCode,
   ValidationResult,
   CodegenOptions,
+  GeneratedAsset,
   ConversionProgressEvent,
 } from './types.js';
 
@@ -119,6 +124,20 @@ ${invalidContent}`,
     return extractImageAssets(imageBuffer, regions, outputDir);
   }
 
+  private async prepareGeneratedAssets(imageBase64: string): Promise<GeneratedAsset[]> {
+    const outputDir = await mkdtemp(join(tmpdir(), 'image2html-conversion-assets-'));
+    try {
+      const paths = await this.extractAssets(imageBase64, outputDir);
+      const assets = await Promise.all(paths.map(async (path) => ({
+        name: basename(path),
+        mimeType: 'image/png',
+        data: await readFile(path).then((buffer) => buffer.toString('base64')),
+      })));
+      return normalizeGeneratedAssets(assets);
+    } finally {
+      await rm(outputDir, { recursive: true, force: true });
+    }
+  }
   private applyTextCoverage(
     validation: ValidationResult,
     originalTexts: string[],
@@ -138,30 +157,34 @@ ${invalidContent}`,
    */
   async generateCode(
     structure: PageStructure,
-    options: CodegenOptions
+    options: CodegenOptions,
+    assets: GeneratedAsset[] = []
   ): Promise<GeneratedCode> {
     assertValidCodegenOptions(options);
     const codeClient = createCodeClient(this.modelConfig);
 
-    const prompt = buildCodeGenerationPrompt(structure, options);
+    const prompt = buildCodeGenerationPrompt(structure, options, assets);
     const code = await codeClient.generateCode(prompt, {
       temperature: 0.3,
       maxTokens: 16384,
     });
 
-    return this.finalizeGeneratedCode(code, structure.page.title, options, structure.designTokens);
+    const result = this.finalizeGeneratedCode(code, structure.page.title, options, structure.designTokens);
+    result.assets = assets;
+    return result;
   }
 
   /** 单次多模态直接生成，避免庞大的结构 JSON 中转。 */
   async generateDirectCode(
     imageBase64: string,
     options: CodegenOptions,
-    onProgress?: (event: ConversionProgressEvent) => void
+    onProgress?: (event: ConversionProgressEvent) => void,
+    assets: GeneratedAsset[] = []
   ): Promise<GeneratedCode> {
     assertValidCodegenOptions(options);
     if (options.layoutMode === 'segmented' && options.framework === 'html') {
       try {
-        return await this.generateSegmentedHtml(imageBase64, options, onProgress);
+        return await this.generateSegmentedHtml(imageBase64, options, onProgress, assets);
       } catch (error) {
         console.error('[design-to-code] Segmented generation failed; using single-page generation', error);
       }
@@ -171,7 +194,7 @@ ${invalidContent}`,
     let lastSnapshotLength = 0;
     let lastSnapshotAt = 0;
     const code = await visionClient.generateWithImages(
-      buildDirectGenerationPrompt(options),
+      buildDirectGenerationPrompt(options, assets),
       [imageBase64],
       {
         temperature: 0.2,
@@ -200,13 +223,16 @@ ${invalidContent}`,
       codeSnapshot: code,
     });
 
-    return this.finalizeGeneratedCode(code, 'GeneratedPage', options);
+    const result = this.finalizeGeneratedCode(code, 'GeneratedPage', options);
+    result.assets = assets;
+    return result;
   }
 
   private async generateSegmentedHtml(
     imageBase64: string,
     options: CodegenOptions,
-    onProgress?: (event: ConversionProgressEvent) => void
+    onProgress?: (event: ConversionProgressEvent) => void,
+    assets: GeneratedAsset[] = []
   ): Promise<GeneratedCode> {
     const imageBuffer = Buffer.from(
       imageBase64.replace(/^data:image\/\w+;base64,/, ''),
@@ -250,7 +276,7 @@ ${invalidContent}`,
         .png()
         .toBuffer();
       const code = await visionClient.generateWithImages(
-        buildRegionGenerationPrompt(region, options, width, height),
+        buildRegionGenerationPrompt(region, options, width, height, assets),
         [`data:image/png;base64,${crop.toString('base64')}`],
         { temperature: 0.2, maxTokens: 8192 }
       );
@@ -273,6 +299,7 @@ ${invalidContent}`,
 
     const result = this.finalizeGeneratedCode(assembled, 'GeneratedPage', options);
     result.modelCalls = regions.length + 1;
+    result.assets = assets;
     return result;
   }
 
@@ -412,24 +439,34 @@ ${invalidContent}`,
       }
 
       let structure: PageStructure | undefined;
+      let assets: GeneratedAsset[] = [];
+      if (request.options.assetMode === 'extract') {
+        this.emitProgress(request, { stage: 'analyzing', message: '正在提取可复用图片资源' });
+        const assetStartedAt = Date.now();
+        assets = await this.prepareGeneratedAssets(imageBase64);
+        analysisMs += Date.now() - assetStartedAt;
+        modelCalls += 1;
+      }
+
       const generationStartedAt = Date.now();
 
       if (request.options.pipeline === 'structured') {
         this.emitProgress(request, { stage: 'analyzing', message: '正在分析设计结构' });
         const analysisStartedAt = Date.now();
         structure = await this.analyzeStructure(imageBase64);
-        analysisMs = Date.now() - analysisStartedAt;
+        analysisMs += Date.now() - analysisStartedAt;
         modelCalls += 1;
 
         console.log('Generating code from structure...');
-        code = await this.generateCode(structure, request.options);
+        code = await this.generateCode(structure, request.options, assets);
         modelCalls += 1;
       } else {
         this.emitProgress(request, { stage: 'generating', message: '正在直接生成代码' });
-        code = await this.generateDirectCode(imageBase64, request.options, request.onProgress);
+        code = await this.generateDirectCode(imageBase64, request.options, request.onProgress, assets);
         modelCalls += code.modelCalls ?? 1;
       }
-      generationMs = Date.now() - generationStartedAt - analysisMs;
+      code.assets = assets;
+      generationMs = Date.now() - generationStartedAt;
 
       // 4. 校验（可选）
       let validation: ValidationResult | undefined;

@@ -60,6 +60,21 @@ describe('VisualValidator framework rendering', () => {
     expect(Number.isFinite(result.similarity)).toBe(true);
   }, 60_000);
 
+  it('uses extracted asset bytes for HTML rendering and comparison', async () => {
+    const redPixel = await sharp({
+      create: { width: 1, height: 1, channels: 3, background: '#ff0000' },
+    }).png().toBuffer();
+    const result = await validator().validate(
+      redPixel,
+      {
+        ...generated('<html><body style="margin:0"><img src="/assets/pixel.png" width="1" height="1" style="display:block"></body></html>', 'Demo.html'),
+        assets: [{ name: 'pixel.png', mimeType: 'image/png', data: redPixel.toString('base64') }],
+      },
+      { codegenOptions: options({ framework: 'html', typescript: false }) },
+    );
+
+    expect(result.similarity).toBe(100);
+  }, 60_000);
   it('rejects an empty React mount instead of returning a similarity score', async () => {
     await expect(validator().validate(
       await originalImage(),
