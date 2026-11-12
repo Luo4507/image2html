@@ -262,6 +262,12 @@ export interface DesignToCodeResult {
   validation?: ValidationResult;
   /** 各阶段性能指标 */
   metrics?: ConversionMetrics;
+  /** 编译/运行失败修复历史 */
+  compileHistory?: Array<{
+    iteration: number;
+    error: string;
+    recovered: boolean;
+  }>;
   /** 每次自动修复的评分和采用结果 */
   qualityHistory?: Array<{
     iteration: number;

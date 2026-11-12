@@ -58,6 +58,15 @@ node dist/cli.js convert examples/fixtures/login-design.png \
   --project --extract-assets --output output/react-with-assets
 ```
 
+### 编译失败修复
+
+React/Vue 在类型检查、Vite 构建或浏览器挂载失败时，balanced/precision 模式会先把完整源码和真实诊断交给代码模型，默认最多修复一次，再重新构建和渲染。fast 模式或 `MAX_RETRY_COUNT=0` 不执行该修复。只有成功渲染后才进行原图像素比较；失败结果仍保留最后源码、模型计数和 `compileHistory`。
+
+可直接修复已有失败产物并回测：
+
+```bash
+pnpm repair:failed -- F:\testdata\img2html\juejing.png output/regression-juejing/react react output/regression-juejing/react-repaired
+```
 ## 环境要求
 
 - Node.js 20+

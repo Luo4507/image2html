@@ -15,7 +15,7 @@ describe('conversion failure artifacts', () => {
       image: { source: 'data:image/png;base64,aGVsbG8=', type: 'base64' },
       options: {
         ...getDefaultCodegenOptions(),
-        framework: 'react', styleFramework: 'inline', componentLibrary: 'none', typescript: true,
+        framework: 'react', styleFramework: 'inline', componentLibrary: 'none', typescript: true, qualityMode: 'fast',
       },
       modelConfig: getDefaultModelConfig(),
       validationConfig: getDefaultValidationConfig(),

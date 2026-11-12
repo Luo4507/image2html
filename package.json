@@ -55,7 +55,8 @@
     "verify": "node scripts/verify.mjs",
     "verify:mcp": "node scripts/verify-mcp.mjs",
     "verify:server": "node scripts/verify-server.mjs",
-    "verify:frameworks": "node scripts/verify-frameworks.mjs"
+    "verify:frameworks": "node scripts/verify-frameworks.mjs",
+    "repair:failed": "node scripts/repair-failed-framework.mjs"
   },
   "dependencies": {
     "@ant-design/icons": "5.6.1",

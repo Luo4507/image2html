@@ -28,6 +28,7 @@ export interface ConversionJobResult {
   passed?: boolean;
   metrics?: DesignToCodeResult['metrics'];
   qualityHistory?: DesignToCodeResult['qualityHistory'];
+  compileHistory?: DesignToCodeResult['compileHistory'];
   artifacts: ConversionArtifacts;
 }
 
@@ -385,6 +386,7 @@ export class JobService {
         passed: result.validation?.passed,
         metrics: result.metrics,
         qualityHistory: result.qualityHistory,
+        compileHistory: result.compileHistory,
         artifacts,
       };
     } finally {

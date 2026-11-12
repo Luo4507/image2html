@@ -21,6 +21,7 @@ import { buildAssetDetectionPrompt, parseAssetRegions } from './prompts/asset-de
 import { extractImageAssets } from './assets/asset-extractor.js';
 import { getDefaultModelConfig, getDefaultValidationConfig, getDefaultCodegenOptions } from './config.js';
 import { assertValidCodegenOptions } from './runtime/codegen-options.js';
+import { buildCompileRepairPrompt } from './prompts/compile-repair.js';
 import { normalizeGeneratedAssets } from './runtime/asset-files.js';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -53,6 +54,24 @@ export { assertValidCodegenOptions } from './runtime/codegen-options.js';
 /**
  * 设计稿转代码主类
  */
+interface CompileRecoveryData {
+  modelCalls: number;
+  repairIterations: number;
+  repairMs: number;
+  validationMs: number;
+  history: NonNullable<DesignToCodeResult['compileHistory']>;
+}
+
+class CompileRecoveryError extends Error {
+  constructor(
+    message: string,
+    readonly generatedCode: GeneratedCode,
+    readonly recovery: CompileRecoveryData,
+  ) {
+    super(message);
+    this.name = 'CompileRecoveryError';
+  }
+}
 export class DesignToCode {
   private modelConfig: ReturnType<typeof getDefaultModelConfig>;
   private validationConfig: ReturnType<typeof getDefaultValidationConfig>;
@@ -412,6 +431,82 @@ ${invalidContent}`,
     }
   }
 
+  /** Repair framework source from real compiler/browser diagnostics. */
+  async repairCodeWithDiagnostics(
+    currentCode: GeneratedCode,
+    diagnostics: string,
+    options: CodegenOptions
+  ): Promise<GeneratedCode> {
+    const repaired = await createCodeClient(this.modelConfig).generateCode(
+      buildCompileRepairPrompt({ current: currentCode, options, diagnostics }),
+      { temperature: 0, maxTokens: 16384 }
+    );
+    const cleanCode = repaired.trim().replace(/^```\w*\n/, '').replace(/\n```$/, '');
+    return {
+      ...currentCode,
+      code: cleanCode,
+      imports: this.extractImports(cleanCode),
+      components: this.extractComponents(cleanCode),
+    };
+  }
+
+  private async validateWithCompileRecovery(
+    imageBuffer: Buffer,
+    initialCode: GeneratedCode,
+    request: DesignToCodeRequest
+  ): Promise<{
+    code: GeneratedCode;
+    validation: ValidationResult;
+    modelCalls: number;
+    repairIterations: number;
+    repairMs: number;
+    validationMs: number;
+    history: NonNullable<DesignToCodeResult['compileHistory']>;
+  }> {
+    let currentCode = initialCode;
+    const history: NonNullable<DesignToCodeResult['compileHistory']> = [];
+    const counters = { modelCalls: 0, repairIterations: 0, repairMs: 0, validationMs: 0 };
+    const validate = async (code: GeneratedCode) => {
+      const started = Date.now();
+      const validation = await this.validate(imageBuffer, code, request.options);
+      counters.validationMs += Date.now() - started;
+      return validation;
+    };
+
+    try {
+      return { code: currentCode, validation: await validate(currentCode), ...counters, history };
+    } catch (error) {
+      const maxIterations = Math.min(1, Math.max(0, this.validationConfig.maxRetryCount));
+      if (request.options.framework === 'html' || request.options.qualityMode === 'fast' || maxIterations === 0) {
+        throw error;
+      }
+      let lastError = error;
+
+      for (let iteration = 1; iteration <= maxIterations; iteration += 1) {
+        const diagnostic = lastError instanceof Error ? lastError.message : String(lastError);
+        this.emitProgress(request, { stage: 'repairing', message: `正在修复编译或运行错误（${iteration}/${maxIterations}）` });
+        const repairStarted = Date.now();
+        counters.modelCalls += 1;
+        counters.repairIterations += 1;
+        try {
+          currentCode = await this.repairCodeWithDiagnostics(currentCode, diagnostic, request.options);
+          const validation = await validate(currentCode);
+          history.push({ iteration, error: diagnostic, recovered: true });
+          counters.repairMs += Date.now() - repairStarted;
+          return { code: currentCode, validation, ...counters, history };
+        } catch (repairError) {
+          history.push({ iteration, error: diagnostic, recovered: false });
+          counters.repairMs += Date.now() - repairStarted;
+          lastError = repairError;
+        }
+      }
+      throw new CompileRecoveryError(
+        lastError instanceof Error ? lastError.message : String(lastError),
+        currentCode,
+        { ...counters, history },
+      );
+    }
+  }
   /**
    * 完整转换流程
    */
@@ -424,6 +519,7 @@ ${invalidContent}`,
     let modelCalls = 0;
     let repairIterations = 0;
     let qualityHistory: DesignToCodeResult['qualityHistory'];
+    let compileHistory: DesignToCodeResult['compileHistory'];
     let originalTexts: string[] | undefined;
     let code: GeneratedCode | undefined;
     this.emitProgress(request, { stage: 'reading', message: '正在读取设计稿' });
@@ -481,9 +577,27 @@ ${invalidContent}`,
       let validation: ValidationResult | undefined;
       if (request.validationConfig) {
         this.emitProgress(request, { stage: 'validating', message: '正在执行视觉校验' });
-        const validationStartedAt = Date.now();
-        validation = await this.validate(imageBuffer, code, request.options);
-        validationMs += Date.now() - validationStartedAt;
+        let recovered: Awaited<ReturnType<typeof this.validateWithCompileRecovery>>;
+        try {
+          recovered = await this.validateWithCompileRecovery(imageBuffer, code, request);
+        } catch (error) {
+          if (error instanceof CompileRecoveryError) {
+            code = error.generatedCode;
+            modelCalls += error.recovery.modelCalls;
+            repairIterations += error.recovery.repairIterations;
+            repairMs += error.recovery.repairMs;
+            validationMs += error.recovery.validationMs;
+            compileHistory = error.recovery.history;
+          }
+          throw error;
+        }
+        code = recovered.code;
+        validation = recovered.validation;
+        modelCalls += recovered.modelCalls;
+        repairIterations += recovered.repairIterations;
+        repairMs += recovered.repairMs;
+        validationMs += recovered.validationMs;
+        compileHistory = recovered.history;
 
         if (this.validationConfig.checkTextCoverage) {
           this.emitProgress(request, { stage: 'validating', message: '正在检查文字完整性' });
@@ -524,7 +638,7 @@ ${invalidContent}`,
           validation = corrected.validation;
           repairIterations = corrected.iterations;
           qualityHistory = corrected.history;
-          repairMs = Date.now() - repairStartedAt;
+          repairMs += Date.now() - repairStartedAt;
         }
 
         if (originalTexts) this.applyTextCoverage(validation, originalTexts, code.code);
@@ -537,6 +651,7 @@ ${invalidContent}`,
         structure,
         validation,
         qualityHistory,
+        compileHistory,
         metrics: {
           analysisMs,
           generationMs,
@@ -564,6 +679,7 @@ ${invalidContent}`,
           modelCalls,
           repairIterations,
         },
+        compileHistory,
         success: false,
         error: error instanceof Error ? error.message : String(error),
       };

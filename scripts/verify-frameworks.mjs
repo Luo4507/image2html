@@ -58,6 +58,9 @@ for (const target of selectedTargets) {
     }
     await writeFile(join(outputDir, 'metrics.json'), JSON.stringify(result.metrics, null, 2));
     if (!result.success) throw new Error(result.error || 'Conversion failed');
+    if (result.compileHistory) {
+      await writeFile(join(outputDir, 'compile-history.json'), JSON.stringify(result.compileHistory, null, 2));
+    }
     if (result.qualityHistory) {
       await writeFile(join(outputDir, 'quality-history.json'), JSON.stringify(result.qualityHistory, null, 2));
     }
