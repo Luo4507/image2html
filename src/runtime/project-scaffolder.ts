@@ -11,14 +11,14 @@ const versions = {
   'element-plus': '^2.9.0',
   vite: '^6.0.0',
   typescript: '^5.3.0',
-  '@vitejs/plugin-react': '^4.3.0',
-  '@vitejs/plugin-vue': '^5.2.0',
+  '@vitejs/plugin-react': '^4.7.0',
+  '@vitejs/plugin-vue': '^5.2.4',
   '@types/react': '^18.3.0',
   '@types/react-dom': '^18.3.0',
   'vue-tsc': '^2.2.0',
-  tailwindcss: '^3.4.0',
-  postcss: '^8.4.0',
-  autoprefixer: '^10.4.0',
+  tailwindcss: '^3.4.17',
+  postcss: '^8.5.32',
+  autoprefixer: '^10.4.21',
 };
 
 function sourceFilename(generated: GeneratedCode, options: CodegenOptions): string {
@@ -179,5 +179,6 @@ export async function exportFrameworkProject(
     await writeFile(path, content, 'utf8');
   }));
 }
+
 
 
