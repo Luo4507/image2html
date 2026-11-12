@@ -29,7 +29,8 @@
 **Files:** Create `src/runtime/codegen-options.ts`, `test/runtime-options.test.ts`; modify `src/index.ts`.
 
 - [x] **Write failing tests** for React+antd, Vue+element, HTML+none acceptance; React+element, Vue+antd, HTML+antd, React/Vue+scss/css-modules, and non-HTML segmented rejection. Add React `.jsx` and `.tsx` filename cases through the public conversion finalizer behavior.
-- [x] **Run** `node node_modules/vitest/vitest.mjs run test/runtime-options.test.ts` and confirm failure because the module does not exist.
+- [x] **Run** 
+ode node_modules/vitest/vitest.mjs run test/runtime-options.test.ts` and confirm failure because the module does not exist.
 - [x] **Implement** `assertValidCodegenOptions(options: CodegenOptions): void` with messages naming the invalid combination. Keep HTML style behavior unchanged.
 - [x] **Call the guard at the start of** `convert()`, `generateCode()`, and `generateDirectCode()` so public entry points cannot bypass it.
 - [x] **Change** `generateFilename(title, framework, typescript)` to return `.jsx` for React JavaScript and `.tsx` for React TypeScript; update its caller.
@@ -51,9 +52,11 @@
 
 - [x] **Write failing tests** for React TS+tailwind+antd and Vue TS+inline+element file maps. Assert `package.json`, `index.html`, Vite config, `src/main`, generated source and required style config are present.
 - [x] **Implement** `createFrameworkProjectFiles(code, options)` returning `Record<string, string>`. Use fixed entry files and basename the generated filename to prevent path traversal.
-- [x] **Implement** `exportFrameworkProject(code, options, outputDir)` using `mkdir({recursive:true})` and UTF-8 writes; do not create `node_modules` or `dist`.
+- [x] **Implement** `exportFrameworkProject(code, options, outputDir)` using `mkdir({recursive:true})` and UTF-8 writes; do not create 
+ode_modules` or `dist`.
 - [x] **Add tests** for React JavaScript entry/imports, Vue JavaScript SFC, filename traversal normalization, and unsupported option rejection.
-- [x] **Run** `node node_modules/vitest/vitest.mjs run test/project-scaffolder.test.ts` and then typecheck.
+- [x] **Run** 
+ode node_modules/vitest/vitest.mjs run test/project-scaffolder.test.ts` and then typecheck.
 
 ### Task 4: Install and lock runtime dependencies
 
@@ -61,7 +64,9 @@
 
 - [x] **Add runtime dependencies** `react@^18.3.1`, `react-dom@^18.3.1`, `vue@^3.5.0`, `antd@^5.0.0`, `element-plus@^2.9.0`, `vite@^6.0.0`, `@vitejs/plugin-react@^4.3.0`, `@vitejs/plugin-vue@^5.2.0`, `tailwindcss@^3.4.0`, `postcss@^8.4.0`, `autoprefixer@^10.4.0`, and `vue-tsc@^2.2.0`.
 - [x] **Add development types** `@types/react@^18.3.0` and `@types/react-dom@^18.3.0`.
-- [x] **Install with pnpm 10.33.0** and verify `node_modules/.pnpm/lock.yaml` is consistent. Do not commit `.pnpm-store` or `node_modules`.
+- [x] **Install with pnpm 10.33.0** and verify 
+ode_modules/.pnpm/lock.yaml` is consistent. Do not commit `.pnpm-store` or 
+ode_modules`.
 - [x] **Run the full existing suite and typecheck** before adding runtime code.
 
 ### Task 5: Implement the Vite runtime with real diagnostics
@@ -112,10 +117,11 @@
 
 ### Task 9: Continue with the independent fifth-stage tasks
 
+**Status (2026-11-13):** Asset integration, API parity, and persistent job recovery are implemented and independently verified.
+
 **Files:** New task-specific plans under `docs/superpowers/plans/`.
 
-- [ ] **Plan and implement asset integration** with tests proving extracted assets are referenced by generated projects.
-- [ ] **Plan and implement API parity** with tests for MCP `threshold`, HTTP pipeline/quality/layout options, and validation before model calls.
-- [ ] **Plan and implement persistent job recovery** with restart tests for queued/running/completed jobs and cache state.
-- [ ] **Run the complete regression suite after each independent task** rather than treating this shared runtime plan as proof of those features.
-
+- [x] **Plan and implement asset integration** with tests proving extracted assets are referenced by generated projects.
+- [x] **Plan and implement API parity** with tests for MCP `threshold`, HTTP pipeline/quality/layout options, and validation before model calls.
+- [x] **Plan and implement persistent job recovery** with restart tests for queued/running/completed jobs and cache state.
+- [x] **Run the complete regression suite after each independent task** rather than treating this shared runtime plan as proof of those features.

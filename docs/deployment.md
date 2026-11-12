@@ -138,6 +138,17 @@ GET /v1/jobs/:id/preview   当前最新 HTML 预览
 
 两个接口都需要相同的用户密钥。SSE 会推送 `reading`、`generating`、`preview`、`validating`、`repairing`、`completed` 或 `failed` 事件；`preview` 事件携带代码快照。客户端断开后，服务器自动清理订阅。
 
+## 重启恢复
+
+服务启动时会读取 `DATA_DIR/jobs`：
+
+- 已完成和失败任务恢复查询状态与产物下载；
+- 原队列中或运行中的任务恢复为队列任务，并使用保存的 `input.json` 与 `source.png` 重新执行；
+- 成功任务的 `conversion.json` 用于恢复转换缓存，相同图片、选项、模型和校验配置可直接命中，不再调用模型；
+- 旧版本缺少 `input.json` 或 `conversion.json` 时仍恢复已有状态，但不恢复对应执行或缓存能力。
+
+恢复仍是单进程语义，不支持多实例共享队列或分布式锁。
+
 ## 生产检查
 
 ```bash

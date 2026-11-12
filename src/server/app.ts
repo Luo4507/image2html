@@ -61,6 +61,7 @@ export async function createServerApp(options: {
     config,
     converterFactory: options.converterFactory,
   });
+  await service.restore();
   const app = express();
   app.disable('x-powered-by');
   app.use(helmet());

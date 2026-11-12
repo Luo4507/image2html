@@ -55,6 +55,26 @@ export class JobQueue<TResult = unknown> {
     return job?.userId === userId ? job : undefined;
   }
 
+  /** Restore a persisted job; unfinished work is queued again. */
+  restore(record: JobRecord<TResult>): void {
+    if (this.jobs.has(record.id)) return;
+    if (record.status === 'queued' || record.status === 'running') {
+      const job: JobRecord<TResult> = {
+        ...record,
+        status: 'queued',
+        startedAt: undefined,
+        completedAt: undefined,
+      };
+      this.jobs.set(job.id, job);
+      this.waiting.push(job);
+      queueMicrotask(() => void this.pump());
+      return;
+    }
+
+    this.jobs.set(record.id, record);
+    if (record.status === 'succeeded') this.succeeded += 1;
+    if (record.status === 'failed') this.failed += 1;
+  }
   get stats() {
     return {
       active: this.active,

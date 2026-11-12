@@ -1,4 +1,5 @@
-import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { basename, join } from 'node:path';
 import { DesignToCode } from '../index.js';
@@ -60,6 +61,7 @@ export class JobService {
   private readonly previews = new Map<string, string>();
   private readonly conversionCache = new Map<string, Promise<DesignToCodeResult>>();
   private readonly converterFactory: () => Converter;
+  private restorePromise?: Promise<void>;
 
   constructor(private readonly options: JobServiceOptions) {
     this.converterFactory = options.converterFactory || (() => new DesignToCode());
@@ -75,6 +77,7 @@ export class JobService {
     const job = this.queue.submit({ userId: input.userId });
     input.onProgress = (event) => this.publish(job.id, event);
     this.inputs.set(job.id, input);
+    void this.persist(job).catch((error) => console.error('[server] failed to persist submitted job', error));
     return job;
   }
 
@@ -126,6 +129,72 @@ export class JobService {
     this.conversionCache.clear();
   }
 
+  /** Restore persisted jobs and reusable conversion results once per service. */
+  async restore(): Promise<void> {
+    if (!this.restorePromise) this.restorePromise = this.performRestore();
+    await this.restorePromise;
+  }
+
+  private async performRestore(): Promise<void> {
+    const jobsRoot = join(this.options.config.dataDir, 'jobs');
+    if (!existsSync(jobsRoot)) return;
+    const entries = await readdir(jobsRoot, { withFileTypes: true });
+
+    for (const entry of entries.sort((a, b) => a.name.localeCompare(b.name))) {
+      if (!entry.isDirectory()) continue;
+      const jobDir = join(jobsRoot, entry.name);
+      try {
+        let job = JSON.parse(
+          await readFile(join(jobDir, 'job.json'), 'utf8')
+        ) as JobRecord<ConversionJobResult>;
+        const inputPath = join(jobDir, 'input.json');
+        let input: JobInput | undefined;
+        if (existsSync(inputPath)) {
+          const persisted = JSON.parse(await readFile(inputPath, 'utf8')) as Omit<JobInput, 'onProgress'>;
+          const persistedSource = join(jobDir, 'source.png');
+          input = {
+            ...persisted,
+            imagePath: existsSync(persistedSource) ? persistedSource : persisted.imagePath,
+            onProgress: (event) => this.publish(job.id, event),
+          };
+        }
+
+        if (job.status === 'queued' || job.status === 'running') {
+          if (input) {
+            this.inputs.set(job.id, input);
+          } else {
+            job = {
+              ...job,
+              status: 'failed',
+              error: 'Job input is missing during recovery',
+              completedAt: new Date().toISOString(),
+            };
+          }
+        }
+        this.queue.restore(job);
+
+        const conversionPath = join(jobDir, 'conversion.json');
+        const sourcePath = join(jobDir, 'source.png');
+        if (job.status === 'succeeded' && input && existsSync(conversionPath) && existsSync(sourcePath)) {
+          try {
+            const result = JSON.parse(await readFile(conversionPath, 'utf8')) as DesignToCodeResult;
+            const cacheKey = await this.conversionCacheKey(input, sourcePath);
+            if (!this.conversionCache.has(cacheKey)) {
+              this.conversionCache.set(cacheKey, Promise.resolve(result));
+              if (this.conversionCache.size > MAX_CACHE_ENTRIES) {
+                const oldestKey = this.conversionCache.keys().next().value;
+                if (oldestKey) this.conversionCache.delete(oldestKey);
+              }
+            }
+          } catch (error) {
+            console.warn(`[server] Skipping invalid conversion cache for ${job.id}`, error);
+          }
+        }
+      } catch (error) {
+        console.warn(`[server] Skipping invalid persisted job at ${jobDir}`, error);
+      }
+    }
+  }
   artifactPath(job: JobRecord<ConversionJobResult>, artifact: string): string | undefined {
     const files: Record<string, string> = {
       source: 'source.png',
@@ -140,6 +209,23 @@ export class JobService {
     return filename ? join(this.options.config.dataDir, 'jobs', job.id, filename) : undefined;
   }
 
+  private async conversionCacheKey(input: JobInput, sourcePath: string): Promise<string> {
+    const modelConfig = getDefaultModelConfig();
+    const validationConfig = input.validate ? getDefaultValidationConfig() : undefined;
+    const cacheOptions = Object.fromEntries(
+      Object.entries(input.options).sort(([a], [b]) => a.localeCompare(b))
+    );
+    return createHash('sha256')
+      .update(await readFile(sourcePath))
+      .update('\0')
+      .update(JSON.stringify({
+        options: cacheOptions,
+        validate: input.validate,
+        modelConfig,
+        validationConfig,
+      }))
+      .digest('hex');
+  }
   private async convertWithCache(
     input: JobInput,
     sourcePath: string
@@ -242,6 +328,7 @@ export class JobService {
         input.onProgress?.({ stage: 'completed', message: '转换完成', timestamp });
       }
 
+      await writeFile(join(jobDir, 'conversion.json'), JSON.stringify(result), 'utf8');
       const codeFilename = basename(result.code.filename || 'component.html');
       await writeFile(join(jobDir, codeFilename), result.code.code, 'utf8');
       const artifacts: ConversionArtifacts = {
@@ -313,5 +400,15 @@ export class JobService {
     const jobDir = join(this.options.config.dataDir, 'jobs', job.id);
     await mkdir(jobDir, { recursive: true });
     await writeFile(join(jobDir, 'job.json'), JSON.stringify(job, null, 2), 'utf8');
+    const input = this.inputs.get(job.id);
+    if (input) {
+      const persistedInput = {
+        userId: input.userId,
+        imagePath: input.imagePath,
+        options: input.options,
+        validate: input.validate,
+      };
+      await writeFile(join(jobDir, 'input.json'), JSON.stringify(persistedInput, null, 2), 'utf8');
+    }
   }
 }
