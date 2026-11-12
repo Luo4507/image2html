@@ -30,25 +30,29 @@ ${frameworkContract}
 function buildFrameworkContract(options: CodegenOptions): string {
   if (options.framework === 'react') {
     const library = options.componentLibrary === 'antd'
-      ? '、antd（Ant Design 5）'
+      ? '、antd（Ant Design 5）、@ant-design/icons'
       : '';
     return `## React 输出协议
 - 输出一个完整组件文件，并使用 export default 导出页面组件。
 - 仅允许使用以下依赖：react、react-dom${library}；不要导入其他外部包或本地样式文件。
 - 使用函数式组件和 Hooks；TypeScript 开启时输出合法 TSX，否则输出合法 JSX。
+- TypeScript 接口的必填字段必须与初始化数据完全一致；优先使用类型推断，禁止缺失字段或导入未声明依赖。
 - 所有可见内容必须由该默认导出组件渲染，不要自行调用 createRoot。
+- Ant Design 图标仅使用 SearchOutlined、ArrowUpOutlined、ArrowDownOutlined、ArrowRightOutlined、PlusOutlined、UserOutlined、FileTextOutlined、MenuOutlined、SettingOutlined、StarOutlined、ClockCircleOutlined、ReloadOutlined、UploadOutlined、DownloadOutlined、EditOutlined、DeleteOutlined、MoreOutlined、RiseOutlined；不确定时使用文字或 CSS，不创造图标名称。
 - ${options.styleFramework === 'tailwind' ? '使用 Tailwind className，不导入 Tailwind CSS，入口工程已配置。' : '使用组件内 <style> 或 style 对象，不引用外部 CSS 文件。'}`;
   }
 
   if (options.framework === 'vue') {
     const library = options.componentLibrary === 'element'
-      ? '、element-plus（Element Plus）'
+      ? '、element-plus（Element Plus）、@element-plus/icons-vue'
       : '';
     return `## Vue 输出协议
 - 输出一个合法 Vue 3 Single-File Component，必须包含 <template>、<script setup${options.typescript ? ' lang="ts"' : ''}> 和必要的 <style>。
 - 仅允许使用以下依赖：vue${library}；不要导入其他外部包或本地样式文件。
 - 使用 Composition API 和 <script setup>；不要自行调用 createApp。
+- Element Plus 图标仅使用 Search、ArrowUp、ArrowDown、ArrowRight、Plus、User、Document、Menu、Setting、Star、Clock、Refresh、Upload、Download、Edit、Delete、More、TrendCharts；不确定时使用文字或 CSS，不创造图标名称。
 - TypeScript 开启时提供合法类型，关闭时不要附带 TypeScript 语法。
+- 深度选择器使用 :deep(<inner-selector>)，不要使用已弃用的 ::v-deep 组合写法。
 - ${options.styleFramework === 'tailwind' ? '模板中使用 Tailwind class，不导入 Tailwind CSS，入口工程已配置。' : '使用 SFC 内联 <style>，不引用外部 CSS 文件。'}`;
   }
 
@@ -118,4 +122,3 @@ ${input.currentCode}
 - 不修改无关区域，不改变已确认的业务逻辑。
 - 不把页面替换为图片，不添加外部依赖。`;
 }
-

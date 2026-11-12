@@ -8,6 +8,8 @@ const versions = {
   'react-dom': '^18.3.1',
   vue: '^3.5.0',
   antd: '^5.0.0',
+  '@ant-design/icons': '^5.6.1',
+  '@element-plus/icons-vue': '^2.3.2',
   'element-plus': '^2.9.0',
   vite: '^6.0.0',
   typescript: '^5.3.0',
@@ -36,7 +38,10 @@ function manifest(options: CodegenOptions): string {
     dependencies.react = versions.react;
     dependencies['react-dom'] = versions['react-dom'];
     devDependencies['@vitejs/plugin-react'] = versions['@vitejs/plugin-react'];
-    if (options.componentLibrary === 'antd') dependencies.antd = versions.antd;
+    if (options.componentLibrary === 'antd') {
+      dependencies.antd = versions.antd;
+      dependencies['@ant-design/icons'] = versions['@ant-design/icons'];
+    }
     if (options.typescript) {
       devDependencies.typescript = versions.typescript;
       devDependencies['@types/react'] = versions['@types/react'];
@@ -45,7 +50,10 @@ function manifest(options: CodegenOptions): string {
   } else if (options.framework === 'vue') {
     dependencies.vue = versions.vue;
     devDependencies['@vitejs/plugin-vue'] = versions['@vitejs/plugin-vue'];
-    if (options.componentLibrary === 'element') dependencies['element-plus'] = versions['element-plus'];
+    if (options.componentLibrary === 'element') {
+      dependencies['element-plus'] = versions['element-plus'];
+      dependencies['@element-plus/icons-vue'] = versions['@element-plus/icons-vue'];
+    }
     if (options.typescript) {
       devDependencies.typescript = versions.typescript;
       devDependencies['vue-tsc'] = versions['vue-tsc'];
@@ -179,6 +187,3 @@ export async function exportFrameworkProject(
     await writeFile(path, content, 'utf8');
   }));
 }
-
-
-

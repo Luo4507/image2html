@@ -208,6 +208,23 @@ docker compose up -d --build
 
 ## 验证
 
+三框架真实图片回测：
+
+```bash
+pnpm verify:frameworks -- examples/fixtures/demo/login.png output/framework-verification
+# 也可只回测指定框架：在末尾追加 react 或 vue，多个目标用逗号分隔
+```
+
+2026-11-13 使用“电鸭”设计稿回测，三种框架均完成真实构建、渲染和产物导出，React/Vue 导出工程也分别通过独立 `pnpm build`：
+
+| 框架 | 整图相似度 | 质量门禁 |
+| --- | ---: | --- |
+| HTML | 92.36% | 未通过 |
+| React | 93.50% | 未通过 |
+| Vue | 93.44% | 未通过 |
+
+构建可运行与视觉质量通过是两个独立结论；当前内容/边缘门禁仍需继续优化，不能把成功生成工程报告为高保真通过。
+
 ```bash
 # 完整模型生成与视觉校验
 pnpm verify -- examples/fixtures/login-design.png output
@@ -258,5 +275,3 @@ image2html/
 ## License
 
 [MIT](LICENSE) © 2026 image2html contributors
-
-

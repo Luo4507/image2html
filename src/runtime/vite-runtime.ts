@@ -32,7 +32,9 @@ function dependencyAliases(): Array<{ find: RegExp; replacement: string }> {
     { find: /^react-dom\/client$/, replacement: require.resolve('react-dom/client') },
     { find: /^vue$/, replacement: require.resolve('vue') },
     { find: /^antd$/, replacement: require.resolve('antd') },
+    { find: /^@ant-design\/icons$/, replacement: require.resolve('@ant-design/icons') },
     { find: /^element-plus$/, replacement: require.resolve('element-plus') },
+    { find: /^@element-plus\/icons-vue$/, replacement: require.resolve('@element-plus/icons-vue') },
     { find: /^element-plus\/dist\/index.css$/, replacement: require.resolve('element-plus/dist/index.css') },
   ];
 }
@@ -169,5 +171,3 @@ export async function startFrameworkProject(
     throw error;
   }
 }
-
-

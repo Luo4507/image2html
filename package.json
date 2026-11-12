@@ -54,9 +54,12 @@
     "mcp": "node dist/mcp/index.js",
     "verify": "node scripts/verify.mjs",
     "verify:mcp": "node scripts/verify-mcp.mjs",
-    "verify:server": "node scripts/verify-server.mjs"
+    "verify:server": "node scripts/verify-server.mjs",
+    "verify:frameworks": "node scripts/verify-frameworks.mjs"
   },
   "dependencies": {
+    "@ant-design/icons": "5.6.1",
+    "@element-plus/icons-vue": "2.3.2",
     "@modelcontextprotocol/sdk": "^0.5.0",
     "@vitejs/plugin-react": "4.7.0",
     "@vitejs/plugin-vue": "5.2.4",

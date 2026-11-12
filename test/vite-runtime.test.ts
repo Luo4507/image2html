@@ -47,7 +47,7 @@ async function expectRenderedText(
 describe('Vite framework runtime', () => {
   it('typechecks, builds and serves a React TypeScript component', async () => {
     await expectRenderedText(
-      generated("import { Button } from 'antd'; export default function Demo() { return <Button type=\"primary\" className=\"p-4\">React runtime ready</Button>; }", 'Demo.tsx'),
+      generated("import { Button } from 'antd'; import { SearchOutlined } from '@ant-design/icons'; export default function Demo() { return <Button type=\"primary\" icon={<SearchOutlined />} className=\"p-4\">React runtime ready</Button>; }", 'Demo.tsx'),
       options({ styleFramework: 'tailwind', componentLibrary: 'antd' }),
       'React runtime ready',
     );
@@ -55,7 +55,7 @@ describe('Vite framework runtime', () => {
 
   it('typechecks, builds and serves a Vue TypeScript SFC', async () => {
     await expectRenderedText(
-      generated("<template><ElButton type=\"primary\">Vue runtime ready</ElButton></template><script setup lang=\"ts\">import { ElButton } from 'element-plus';</script>", 'Demo.vue'),
+      generated("<template><ElButton type=\"primary\" :icon=\"Search\">Vue runtime ready</ElButton></template><script setup lang=\"ts\">import { ElButton } from 'element-plus'; import { Search } from '@element-plus/icons-vue';</script>", 'Demo.vue'),
       options({ framework: 'vue', componentLibrary: 'element' }),
       'Vue runtime ready',
     );
@@ -83,5 +83,3 @@ describe('Vite framework runtime', () => {
     )).rejects.toThrow(/Vue.*(typecheck|build)/i);
   }, 60_000);
 });
-
-

@@ -43,6 +43,7 @@ describe('framework-specific direct generation prompts', () => {
     expect(prompt).toContain('<template>');
     expect(prompt).toContain('<script setup');
     expect(prompt).toContain('Element Plus');
+    expect(prompt).toContain(':deep(');
     expect(prompt).toMatch(/only|仅.*依赖/i);
   });
 });

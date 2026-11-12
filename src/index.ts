@@ -389,6 +389,7 @@ ${invalidContent}`,
     let repairIterations = 0;
     let qualityHistory: DesignToCodeResult['qualityHistory'];
     let originalTexts: string[] | undefined;
+    let code: GeneratedCode | undefined;
     this.emitProgress(request, { stage: 'reading', message: '正在读取设计稿' });
 
     try {
@@ -411,7 +412,6 @@ ${invalidContent}`,
       }
 
       let structure: PageStructure | undefined;
-      let code: GeneratedCode;
       const generationStartedAt = Date.now();
 
       if (request.options.pipeline === 'structured') {
@@ -469,7 +469,7 @@ ${invalidContent}`,
             },
             validate: async (candidateCode) => {
               const candidateStartedAt = Date.now();
-              const result = await this.validate(imageBuffer, { ...code, code: candidateCode }, request.options);
+              const result = await this.validate(imageBuffer, { ...(code as GeneratedCode), code: candidateCode }, request.options);
               validationMs += Date.now() - candidateStartedAt;
               return result;
             },
@@ -508,7 +508,16 @@ ${invalidContent}`,
         message: error instanceof Error ? error.message : String(error),
       });
       return {
-        code: { code: '', filename: '', imports: [], components: [] },
+        code: code || { code: '', filename: '', imports: [], components: [] },
+        metrics: {
+          analysisMs,
+          generationMs,
+          validationMs,
+          repairMs,
+          totalMs: Date.now() - startedAt,
+          modelCalls,
+          repairIterations,
+        },
         success: false,
         error: error instanceof Error ? error.message : String(error),
       };
@@ -585,8 +594,3 @@ export async function designToCode(
     await d2c.close();
   }
 }
-
-
-
-
-
