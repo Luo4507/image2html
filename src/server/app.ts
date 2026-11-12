@@ -156,6 +156,51 @@ export async function createServerApp(options: {
     res.json({ job: publicJob(job) });
   });
 
+  app.get('/v1/jobs/:id/events', (req: AuthenticatedRequest, res) => {
+    const job = service.get(String(req.params.id), req.userId!);
+    if (!job) {
+      res.status(404).json({ error: 'NotFound', message: 'Job not found' });
+      return;
+    }
+
+    res.status(200);
+    res.set({
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-store',
+      Connection: 'keep-alive',
+      'X-Accel-Buffering': 'no',
+    });
+    res.flushHeaders();
+
+    const heartbeat = setInterval(() => res.write(': ping\n\n'), 15_000);
+    let unsubscribe: (() => void) | undefined;
+    const cleanup = () => {
+      clearInterval(heartbeat);
+      unsubscribe?.();
+    };
+
+    unsubscribe = service.subscribe(String(req.params.id), req.userId!, (event) => {
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+      if (event.stage === 'completed' || event.stage === 'failed') {
+        cleanup();
+        res.end();
+      }
+    });
+
+    req.on('close', cleanup);
+  });
+
+  app.get('/v1/jobs/:id/preview', (req: AuthenticatedRequest, res) => {
+    const jobId = String(req.params.id);
+    const preview = service.getPreview(jobId, req.userId!);
+    if (preview === undefined) {
+      res.status(404).json({ error: 'NotFound', message: 'Preview not found' });
+      return;
+    }
+    res.set('Cache-Control', 'no-store');
+    res.type('html').send(preview);
+  });
+
   app.get(
     '/v1/jobs/:id/artifacts/:artifact',
     (req: AuthenticatedRequest, res: Response, next) => {

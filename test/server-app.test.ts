@@ -53,7 +53,18 @@ describe('multi-user HTTP server', () => {
     const { app, service } = await createServerApp({
       config: config(),
       converterFactory: () => ({
-        async convert() {
+        async convert(request) {
+          request.onProgress?.({
+            stage: 'preview',
+            message: 'preview ready',
+            timestamp: new Date().toISOString(),
+            codeSnapshot: '<html><body>demo</body></html>',
+          });
+          request.onProgress?.({
+            stage: 'completed',
+            message: 'done',
+            timestamp: new Date().toISOString(),
+          });
           return {
             success: true,
             structure: { page: { title: 'Demo' } },
@@ -106,5 +117,17 @@ describe('multi-user HTTP server', () => {
       .expect(200);
 
     expect(artifact.text).toContain('demo');
+
+    const preview = await request(app)
+      .get(`/v1/jobs/${jobId}/preview`)
+      .set('Authorization', 'Bearer alice-key')
+      .expect(200);
+    expect(preview.text).toContain('demo');
+
+    const events = await request(app)
+      .get(`/v1/jobs/${jobId}/events`)
+      .set('Authorization', 'Bearer alice-key')
+      .expect(200);
+    expect(events.text).toContain('preview ready');
   });
 });

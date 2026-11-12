@@ -25,6 +25,10 @@ export function getDefaultModelConfig(): ModelConfig {
 export function getDefaultValidationConfig(): ValidationConfig {
   return {
     threshold: parseFloat(process.env.VISUAL_SIMILARITY_THRESHOLD || '85.0'),
+    minContentSimilarity: parseFloat(process.env.MIN_CONTENT_SIMILARITY || '60.0'),
+    minEdgeSimilarity: parseFloat(process.env.MIN_EDGE_SIMILARITY || '40.0'),
+    checkTextCoverage: process.env.CHECK_TEXT_COVERAGE === 'true',
+    minTextCoverage: parseFloat(process.env.MIN_TEXT_COVERAGE || '80.0'),
     viewports: {
       desktop: { width: 1440, height: 900 },
       tablet: { width: 768, height: 1024 },
@@ -43,5 +47,7 @@ export function getDefaultCodegenOptions() {
     typescript: process.env.DEFAULT_TYPESCRIPT !== 'false',
     responsive: process.env.DEFAULT_RESPONSIVE !== 'false',
     accessibility: process.env.DEFAULT_ACCESSIBILITY !== 'false',
+    pipeline: (process.env.DEFAULT_PIPELINE || 'direct') as 'direct' | 'structured',
+    qualityMode: (process.env.QUALITY_MODE || 'balanced') as 'fast' | 'balanced' | 'precision',
   };
 }

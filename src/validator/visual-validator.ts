@@ -5,7 +5,16 @@
 import { chromium, type Browser, type Page } from 'playwright';
 import pixelmatch from 'pixelmatch';
 import sharp from 'sharp';
-import type { ValidationResult, DiffRegion, Viewport, ValidationConfig } from '../types.js';
+import type {
+  ValidationResult,
+  DiffRegion,
+  Viewport,
+  ValidationConfig,
+  VisualQualityMetrics,
+} from '../types.js';
+import { calculateQualityMetrics } from './quality-metrics.js';
+import { aggregateDiffRegions } from './region-diff.js';
+import { passesQualityGate } from './quality-gate.js';
 
 export class VisualValidator {
   private config: ValidationConfig;
@@ -72,6 +81,7 @@ export class VisualValidator {
     similarity: number;
     diffImage: string;
     regions: DiffRegion[];
+    quality: VisualQualityMetrics;
   }> {
     // 统一尺寸
     const original = sharp(originalBuffer);
@@ -103,14 +113,23 @@ export class VisualValidator {
       diffPixels,
       width,
       height,
-      { threshold: 0.1, includeAA: false }
+      { threshold: 0.1, includeAA: false, diffMask: true }
     );
 
     const totalPixels = width * height;
     const similarity = (1 - diffCount / totalPixels) * 100;
 
+    const displayDiff = Buffer.alloc(width * height * 4);
+    for (let index = 0; index < displayDiff.length; index += 4) {
+      const changed = diffPixels[index + 3] > 0;
+      displayDiff[index] = 255;
+      displayDiff[index + 1] = changed ? 0 : 255;
+      displayDiff[index + 2] = changed ? 0 : 255;
+      displayDiff[index + 3] = 255;
+    }
+
     // 生成差异图片 base64
-    const diffImage = await sharp(diffPixels, {
+    const diffImage = await sharp(displayDiff, {
       raw: {
         width,
         height,
@@ -120,92 +139,20 @@ export class VisualValidator {
       .png()
       .toBuffer();
 
-    // 分析差异区域
-    const regions = await this.analyzeDiffRegions(
-      originalResized,
-      generatedResized,
+    const quality = calculateQualityMetrics({
+      original: originalPixels.data,
+      generated: generatedPixels.data,
       width,
-      height
-    );
+      height,
+    });
+    const regions = aggregateDiffRegions(diffPixels, width, height);
 
     return {
       similarity: Math.round(similarity * 100) / 100,
       diffImage: diffImage.toString('base64'),
       regions,
+      quality,
     };
-  }
-
-  /**
-   * 分析差异区域
-   */
-  private async analyzeDiffRegions(
-    originalBuffer: Buffer,
-    generatedBuffer: Buffer,
-    width: number,
-    height: number
-  ): Promise<DiffRegion[]> {
-    const regions: DiffRegion[] = [];
-    const gridSize = 100;
-
-    for (let y = 0; y < height; y += gridSize) {
-      for (let x = 0; x < width; x += gridSize) {
-        const regionWidth = Math.min(gridSize, width - x);
-        const regionHeight = Math.min(gridSize, height - y);
-
-        const originalRegion = await sharp(originalBuffer)
-          .extract({ left: x, top: y, width: regionWidth, height: regionHeight })
-          .ensureAlpha()
-          .raw()
-          .toBuffer({ resolveWithObject: true });
-
-        const generatedRegion = await sharp(generatedBuffer)
-          .extract({ left: x, top: y, width: regionWidth, height: regionHeight })
-          .ensureAlpha()
-          .raw()
-          .toBuffer({ resolveWithObject: true });
-
-        const diffPixels = Buffer.alloc(regionWidth * regionHeight * 4);
-        const diffCount = pixelmatch(
-          originalRegion.data,
-          generatedRegion.data,
-          diffPixels,
-          regionWidth,
-          regionHeight,
-          { threshold: 0.1 }
-        );
-
-        const regionPixels = regionWidth * regionHeight;
-        const diffPercentage = (diffCount / regionPixels) * 100;
-
-        if (diffPercentage > 10) {
-          regions.push({
-            x,
-            y,
-            width: regionWidth,
-            height: regionHeight,
-            diffPercentage: Math.round(diffPercentage * 100) / 100,
-            type: this.classifyRegionType(x, y, width, height),
-          });
-        }
-      }
-    }
-
-    return regions;
-  }
-
-  /**
-   * 分类区域类型
-   */
-  private classifyRegionType(
-    x: number,
-    y: number,
-    width: number,
-    height: number
-  ): DiffRegion['type'] {
-    if (y < height * 0.1) return 'header';
-    if (y > height * 0.9) return 'footer';
-    if (x < width * 0.2) return 'sidebar';
-    return 'main';
   }
 
   /**
@@ -270,20 +217,25 @@ export class VisualValidator {
       captureAllViewports?: boolean;
     } = {}
   ): Promise<ValidationResult> {
-    // 1. 渲染生成的 HTML
+    // 1. 按原图尺寸渲染，避免固定桌面视口影响移动稿校验
+    const sourceMetadata = await sharp(originalImageBuffer).metadata();
+    const sourceViewport = {
+      width: sourceMetadata.width || this.config.viewports.desktop.width,
+      height: sourceMetadata.height || this.config.viewports.desktop.height,
+    };
     const generatedScreenshot = await this.renderHtml(
       generatedHtml,
-      this.config.viewports.desktop
+      sourceViewport
     );
 
     // 2. 对比图片
-    const { similarity, diffImage, regions } = await this.compareImages(
+    const { similarity, diffImage, regions, quality } = await this.compareImages(
       originalImageBuffer,
       generatedScreenshot
     );
 
     // 3. 生成修复建议
-    const suggestions = this.generateSuggestions(similarity, regions);
+    const suggestions = this.generateSuggestions(quality.qualityScore, regions);
 
     // 4. 捕获多端截图（可选）
     let screenshots = {
@@ -298,7 +250,8 @@ export class VisualValidator {
 
     return {
       similarity,
-      passed: similarity >= this.config.threshold,
+      quality,
+      passed: passesQualityGate(quality, this.config),
       diffImage,
       regions,
       suggestions,

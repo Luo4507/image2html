@@ -62,6 +62,33 @@ try {
   const { job } = await createdResponse.json();
   console.log(`Job created: ${job.id}`);
 
+  let previewSeen = false;
+  const eventStages = [];
+  const eventsPromise = (async () => {
+    const response = await fetch(`${baseUrl}/v1/jobs/${job.id}/events`, {
+      headers: { Authorization: 'Bearer verify-secret' },
+    });
+    if (!response.ok || !response.body) throw new Error('SSE connection failed');
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const blocks = buffer.split('\n\n');
+      buffer = blocks.pop() || '';
+      for (const block of blocks) {
+        const line = block.split('\n').find((item) => item.startsWith('data: '));
+        if (!line) continue;
+        const event = JSON.parse(line.slice(6));
+        eventStages.push(event.stage);
+        if (event.codeSnapshot) previewSeen = true;
+      }
+    }
+  })();
+
   let completed;
   for (let attempt = 0; attempt < 900; attempt += 1) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -79,6 +106,13 @@ try {
   }
   if (!completed) throw new Error('Job polling timed out');
 
+  await eventsPromise;
+  const previewResponse = await fetch(`${baseUrl}/v1/jobs/${job.id}/preview`, {
+    headers: { Authorization: 'Bearer verify-secret' },
+  });
+  const preview = await previewResponse.text();
+  if (!previewResponse.ok || !preview.includes('<')) throw new Error('Preview check failed');
+
   const codeResponse = await fetch(`${baseUrl}${completed.result.artifacts.code}`, {
     headers: { Authorization: 'Bearer verify-secret' },
   });
@@ -87,6 +121,8 @@ try {
 
   console.log(`Job completed: ${completed.status}`);
   console.log(`Similarity: ${completed.result.similarity ?? 'not validated'}%`);
+  console.log(`SSE stages: ${[...new Set(eventStages)].join(', ')}`);
+  console.log(`Live preview received: ${previewSeen}`);
   console.log('Artifact download: OK');
 } finally {
   child.kill('SIGTERM');

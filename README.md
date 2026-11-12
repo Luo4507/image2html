@@ -10,6 +10,20 @@
 - 使用 Playwright 和 Pixelmatch 输出相似度、差异区域及对比图
 - 通过 MCP 提供生成、校验、修复和结构分析工具
 
+## 生成与质量模式
+
+默认使用 `direct` 快速路径：Qwen VL 直接从图片流式生成代码，不再先生成庞大的结构 JSON。需要审计页面结构时，可设置 `pipeline: "structured"` 使用专家路径。
+
+质量模式：
+
+- `fast`：生成和校验，不自动修复；
+- `balanced`：校验失败时进行有界自动修复，并保留最高相似度版本；
+- `precision`：允许更多修复轮次，仍受 `MAX_RETRY_COUNT` 限制。
+
+转换结果包含 `analysisMs`、`generationMs`、`validationMs`、`repairMs`、`totalMs`、`modelCalls` 和 `repairIterations`，便于持续评估速度与质量。
+
+视觉校验同时返回整图、内容区域和边缘指标，并分别应用 `VISUAL_SIMILARITY_THRESHOLD`、`MIN_CONTENT_SIMILARITY`、`MIN_EDGE_SIMILARITY` 门禁，避免大面积空白导致虚假高分。主校验按原图尺寸渲染，区域差异通过一次差异掩码聚合生成。
+
 ## 环境要求
 
 - Node.js 20+
@@ -107,6 +121,7 @@ OpenCode 配置示例：
 | `validate_design` | 渲染代码并与原图进行视觉对比 |
 | `repair_component` | 根据差异区域修复代码 |
 | `analyze_structure` | 输出设计稿的结构化 JSON |
+| `extract_assets` | 识别并裁剪可复用的 Logo、图标和图片 |
 
 ### Node.js API
 
@@ -165,7 +180,7 @@ pnpm serve
 docker compose up -d --build
 ```
 
-服务提供异步任务、图片上传、用户隔离、并发限制、限流、健康检查和产物下载。详细接口及运维说明见[部署指南](docs/deployment.md)。
+服务提供异步任务、图片上传、用户隔离、并发限制、限流、健康检查和产物下载。通过 `/v1/jobs/:id/events` 提供 SSE 进度，通过 `/v1/jobs/:id/preview` 提供生成中的代码预览。相同图片内容、生成选项、模型与校验配置会复用成功的转换结果；缓存命中的任务仍拥有独立产物，指标标记 `cacheHit: true`。详细接口及运维说明见[部署指南](docs/deployment.md)。
 
 ## 验证
 
@@ -211,6 +226,8 @@ image2html/
 
 - [完整技术方案](docs/design-to-code-solution.md)
 - [MCP 使用示例](examples/mcp-usage.md)
+- [screenshot-to-code 提速研究](docs/research/screenshot-to-code-optimization.md)
+- [高保真与自动校正方案](docs/research/quality-auto-correction.md)
 - [标准项目结构实施计划](docs/superpowers/plans/2026-11-10-standard-project-structure.md)
 
 ## License

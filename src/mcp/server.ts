@@ -11,6 +11,7 @@ import {
 } from '@modelcontextprotocol/sdk/types.js';
 import { readFile } from 'fs/promises';
 import { existsSync } from 'fs';
+import { basename, dirname, extname, join } from 'node:path';
 import { DesignToCode } from '../index.js';
 import { getDefaultModelConfig, getDefaultValidationConfig } from '../config.js';
 import type { DesignToCodeResult, ValidationResult } from '../types.js';
@@ -138,6 +139,18 @@ export async function createMCPServer() {
           required: ['image_path'],
         },
       },
+      {
+        name: 'extract_assets',
+        description: '识别设计稿中可复用的 Logo、图标和图片，并裁剪为独立 PNG 资源。',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            image_path: { type: 'string', description: '设计稿图片路径' },
+            output_dir: { type: 'string', description: '资源输出目录（可选）' },
+          },
+          required: ['image_path'],
+        },
+      },
     ],
   }));
 
@@ -169,6 +182,10 @@ export async function createMCPServer() {
 
         case 'analyze_structure': {
           return await handleAnalyzeStructure(d2c, args);
+        }
+
+        case 'extract_assets': {
+          return await handleExtractAssets(d2c, args);
         }
 
         default:
@@ -285,6 +302,31 @@ async function handleGenerateComponent(
       );
     }
   }
+
+/** 处理资源提取请求 */
+async function handleExtractAssets(d2c: DesignToCode, args: any) {
+  const { image_path, output_dir } = args;
+  if (!existsSync(image_path)) {
+    return {
+      content: [{ type: 'text', text: `❌ 文件不存在: ${image_path}` }],
+      isError: true,
+    };
+  }
+
+  const imageBuffer = await readFile(image_path);
+  const imageBase64 = `data:image/png;base64,${imageBuffer.toString('base64')}`;
+  const paths = await d2c.extractAssets(
+    imageBase64,
+    output_dir || `output/assets-${Date.now()}`
+  );
+
+  return {
+    content: [{
+      type: 'text',
+      text: `✅ 资源提取完成，共 ${paths.length} 个文件：\n${paths.join('\n')}`,
+    }],
+  };
+}
 
   return {
     content: [
@@ -461,6 +503,50 @@ async function handleAnalyzeStructure(
 }
 
 /**
+ * 处理资源提取请求
+ */
+export async function handleExtractAssets(
+  d2c: DesignToCode,
+  args: any
+): Promise<{ content: Array<{ type: string; text: string }> }> {
+  const { image_path, output_dir } = args;
+
+  if (!existsSync(image_path)) {
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `❌ 文件不存在: ${image_path}`,
+        },
+      ],
+    };
+  }
+
+  const outputDir = output_dir || join(
+    dirname(image_path),
+    `${basename(image_path, extname(image_path))}-assets`
+  );
+  console.error(`[MCP] Extracting assets: ${image_path}`);
+
+  const imageBuffer = await readFile(image_path);
+  const imageBase64 = `data:image/png;base64,${imageBuffer.toString('base64')}`;
+  const paths = await d2c.extractAssets(imageBase64, outputDir);
+
+  return {
+    content: [
+      {
+        type: 'text',
+        text: [
+          `✅ 资源提取完成，共 ${paths.length} 个文件`,
+          `📁 输出目录: ${outputDir}`,
+          '',
+          ...paths.map((path) => `- ${path}`),
+        ].join('\n'),
+      },
+    ],
+  };
+}
+/**
  * 启动 MCP Server
  */
 export async function startMCPServer() {
@@ -470,7 +556,7 @@ export async function startMCPServer() {
   await server.connect(transport);
 
   console.error('[MCP] Design-to-Code MCP Server started');
-  console.error('[MCP] Available tools: generate_component, validate_design, repair_component, analyze_structure');
+  console.error('[MCP] Available tools: generate_component, validate_design, repair_component, analyze_structure, extract_assets');
 }
 
 // 如果直接运行此文件，启动服务

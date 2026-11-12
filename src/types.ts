@@ -115,6 +115,26 @@ export interface CodegenOptions {
   typescript: boolean;
   responsive: boolean;
   accessibility: boolean;
+  /** direct: single multimodal generation; structured: JSON expert pipeline */
+  pipeline?: 'direct' | 'structured';
+  qualityMode?: 'fast' | 'balanced' | 'precision';
+  layoutMode?: 'single' | 'segmented';
+}
+
+export interface PlannedRegion {
+  id: string;
+  type: 'header' | 'hero' | 'main' | 'sidebar' | 'footer' | 'section';
+  startY: number;
+  endY: number;
+  description: string;
+}
+
+export interface AssetRegion {
+  name: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
 }
 
 /** 生成的代码结果 */
@@ -123,6 +143,7 @@ export interface GeneratedCode {
   filename: string;
   imports: string[];
   components: string[];
+  modelCalls?: number;
 }
 
 /** 视觉校验结果 */
@@ -143,6 +164,19 @@ export interface ValidationResult {
     tablet?: string;
     mobile?: string;
   };
+  /** 内容区域和边缘感知质量指标 */
+  quality?: VisualQualityMetrics;
+  textCoverage?: number;
+  missingTexts?: string[];
+}
+
+export interface VisualQualityMetrics {
+  overallSimilarity: number;
+  contentSimilarity: number;
+  edgeSimilarity: number;
+  contentRatio: number;
+  qualityScore: number;
+  textCoverage?: number;
 }
 
 /** 差异区域 */
@@ -152,6 +186,7 @@ export interface DiffRegion {
   width: number;
   height: number;
   diffPercentage: number;
+  diffPixels: number;
   type: 'header' | 'sidebar' | 'main' | 'footer' | 'unknown';
 }
 
@@ -164,6 +199,10 @@ export interface Viewport {
 /** 校验配置 */
 export interface ValidationConfig {
   threshold: number;
+  minContentSimilarity: number;
+  minEdgeSimilarity: number;
+  checkTextCoverage: boolean;
+  minTextCoverage: number;
   viewports: {
     desktop: Viewport;
     tablet: Viewport;
@@ -192,6 +231,15 @@ export interface DesignToCodeRequest {
   options: CodegenOptions;
   modelConfig: ModelConfig;
   validationConfig?: ValidationConfig;
+  onProgress?: (event: ConversionProgressEvent) => void;
+}
+
+export interface ConversionProgressEvent {
+  stage: 'reading' | 'analyzing' | 'generating' | 'preview' | 'validating' | 'repairing' | 'completed' | 'failed';
+  message: string;
+  timestamp: string;
+  chars?: number;
+  codeSnapshot?: string;
 }
 
 /** 设计到代码转换结果 */
@@ -199,11 +247,32 @@ export interface DesignToCodeResult {
   /** 生成的代码 */
   code: GeneratedCode;
   /** 页面结构（中间协议） */
-  structure: PageStructure;
+  structure?: PageStructure;
   /** 视觉校验结果 */
   validation?: ValidationResult;
+  /** 各阶段性能指标 */
+  metrics?: ConversionMetrics;
+  /** 每次自动修复的评分和采用结果 */
+  qualityHistory?: Array<{
+    iteration: number;
+    score: number;
+    adopted: boolean;
+    improved: boolean;
+    validation: ValidationResult;
+  }>;
   /** 是否成功 */
   success: boolean;
   /** 错误信息 */
   error?: string;
+}
+
+export interface ConversionMetrics {
+  analysisMs: number;
+  generationMs: number;
+  validationMs: number;
+  repairMs: number;
+  totalMs: number;
+  modelCalls: number;
+  repairIterations: number;
+  cacheHit?: boolean;
 }

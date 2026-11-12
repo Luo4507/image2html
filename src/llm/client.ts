@@ -13,6 +13,7 @@ export interface ChatCompletionOptions {
   temperature?: number;
   maxTokens?: number;
   stream?: boolean;
+  onChunk?: (fullText: string) => void;
 }
 
 export interface ChatCompletionResponse {
@@ -116,12 +117,32 @@ export class InternalLLMClient {
     prompt: string,
     options: ChatCompletionOptions = {}
   ): Promise<string> {
-    const messages: ChatMessage[] = [
-      {
-        role: 'user',
-        content: prompt,
-      },
+    return this.streamCompletion([{ role: 'user', content: prompt }], options);
+  }
+
+  /** Stream code generation from one or more images. */
+  async generateWithImages(
+    prompt: string,
+    imagesBase64: string[],
+    options: ChatCompletionOptions = {}
+  ): Promise<string> {
+    const content: Array<{ type: 'text' | 'image_url'; text?: string; image_url?: { url: string } }> = [
+      { type: 'text', text: prompt },
+      ...imagesBase64.map((image) => ({
+        type: 'image_url' as const,
+        image_url: {
+          url: image.startsWith('data:') ? image : `data:image/png;base64,${image}`,
+        },
+      })),
     ];
+
+    return this.streamCompletion([{ role: 'user', content }], options);
+  }
+
+  private async streamCompletion(
+    messages: ChatMessage[],
+    options: ChatCompletionOptions
+  ): Promise<string> {
 
     const response = await fetch(`${this.baseUrl}/chat/completions`, {
       method: 'POST',
@@ -167,7 +188,11 @@ export class InternalLLMClient {
         if (!data || data === '[DONE]') continue;
 
         const chunk = JSON.parse(data);
-        result += chunk.choices?.[0]?.delta?.content || '';
+        const content = chunk.choices?.[0]?.delta?.content || '';
+        if (content) {
+          result += content;
+          options.onChunk?.(result);
+        }
       }
     }
 

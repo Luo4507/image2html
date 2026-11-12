@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "status": "initial_ai_review",
+  "description": "Initial demo baseline. Engineering reviewers should confirm or adjust labels before using them as a release gate.",
+  "gates": {
+    "threshold": 85,
+    "minContentSimilarity": 60,
+    "minEdgeSimilarity": 40
+  },
+  "samples": [
+    {
+      "image": "login.png",
+      "label": "accepted",
+      "notes": "Simple page; initial visual review considers it an acceptable demo result."
+    },
+    {
+      "image": "content-platform.png",
+      "label": "draft",
+      "notes": "Main structure exists, but local typography and spacing need review."
+    },
+    {
+      "image": "dashboard.png",
+      "label": "draft",
+      "notes": "Dashboard structure exists; chart placeholders and fine styling need review."
+    },
+    {
+      "image": "ecommerce-shop.png",
+      "label": "draft",
+      "notes": "Product layout needs closer card, typography, and image matching."
+    },
+    {
+      "image": "points-mall.png",
+      "label": "draft",
+      "notes": "Mobile product layout and content completeness need improvement."
+    },
+    {
+      "image": "project-community.png",
+      "label": "draft",
+      "notes": "Complex long page; use for segmented-generation evaluation."
+    }
+  ]
+}
