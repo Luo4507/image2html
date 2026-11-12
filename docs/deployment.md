@@ -109,7 +109,7 @@ curl -X POST http://localhost:3000/v1/jobs \
 }
 ```
 
-支持的图片类型：PNG、JPEG、WebP。其他选项：`framework=react|vue|html`、`styleFramework=tailwind|scss|css-modules|inline`、`componentLibrary=antd|element|none`。
+支持的图片类型：PNG、JPEG、WebP。生成选项：`framework=react|vue|html`、`styleFramework=tailwind|scss|css-modules|inline`、`componentLibrary=antd|element|none`、`typescript`、`responsive`、`accessibility`、`pipeline=direct|structured`、`qualityMode=fast|balanced|precision`、`layoutMode=single|segmented`、`assetMode=none|extract`。非法框架/组件库组合返回 HTTP 400；未显式指定组件库时，HTML 默认 none、Vue 默认 element、React 默认 antd。
 
 ### 查询任务
 

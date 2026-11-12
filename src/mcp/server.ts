@@ -69,6 +69,11 @@ export async function createMCPServer() {
               default: true,
               description: '是否生成响应式代码',
             },
+            style_framework: { type: 'string', enum: ['tailwind', 'scss', 'css-modules', 'inline'], default: 'tailwind' },
+            pipeline: { type: 'string', enum: ['direct', 'structured'], default: 'direct' },
+            quality_mode: { type: 'string', enum: ['fast', 'balanced', 'precision'], default: 'balanced' },
+            layout_mode: { type: 'string', enum: ['single', 'segmented'], default: 'single' },
+            asset_mode: { type: 'string', enum: ['none', 'extract'], default: 'none' },
           },
           required: ['image_path'],
         },
@@ -92,6 +97,10 @@ export async function createMCPServer() {
               default: 85.0,
               description: '相似度阈值（0-100），≥85% 为通过',
             },
+            framework: { type: 'string', enum: ['react', 'vue', 'html'], default: 'html' },
+            style_framework: { type: 'string', enum: ['tailwind', 'scss', 'css-modules', 'inline'], default: 'inline' },
+            component_library: { type: 'string', enum: ['antd', 'element', 'none'], default: 'none' },
+            typescript: { type: 'boolean', default: false },
           },
           required: ['original_image', 'code'],
         },
@@ -212,17 +221,24 @@ export async function createMCPServer() {
 /**
  * 处理生成组件请求
  */
-async function handleGenerateComponent(
+export async function handleGenerateComponent(
   d2c: DesignToCode,
   args: any
 ): Promise<{ content: Array<{ type: string; text: string }> }> {
   const {
     image_path,
     framework = 'react',
-    component_library = 'antd',
+    component_library,
     typescript = true,
     responsive = true,
+    style_framework = 'tailwind',
+    pipeline = 'direct',
+    quality_mode = 'balanced',
+    layout_mode = 'single',
+    asset_mode = 'none',
   } = args;
+
+  const componentLibrary = component_library || (framework === 'vue' ? 'element' : framework === 'html' ? 'none' : 'antd');
 
   // 检查文件是否存在
   if (!existsSync(image_path)) {
@@ -237,7 +253,7 @@ async function handleGenerateComponent(
   }
 
   console.error(`[MCP] Generating component from: ${image_path}`);
-  console.error(`[MCP] Framework: ${framework}, Library: ${component_library}`);
+  console.error(`[MCP] Framework: ${framework}, Library: ${componentLibrary}`);
 
   const result: DesignToCodeResult = await d2c.convert({
     image: {
@@ -247,11 +263,15 @@ async function handleGenerateComponent(
     },
     options: {
       framework: framework as any,
-      styleFramework: 'tailwind',
-      componentLibrary: component_library as any,
+      styleFramework: style_framework as any,
+      componentLibrary: componentLibrary as any,
       typescript,
       responsive,
       accessibility: true,
+      pipeline: pipeline as any,
+      qualityMode: quality_mode as any,
+      layoutMode: layout_mode as any,
+      assetMode: asset_mode as any,
     },
     modelConfig: getDefaultModelConfig(),
     validationConfig: getDefaultValidationConfig(),
@@ -341,11 +361,14 @@ async function handleExtractAssets(d2c: DesignToCode, args: any) {
 /**
  * 处理校验设计请求
  */
-async function handleValidateDesign(
+export async function handleValidateDesign(
   d2c: DesignToCode,
   args: any
 ): Promise<{ content: Array<{ type: string; text: string }> }> {
-  const { original_image, code, threshold = 85.0 } = args;
+  const {
+    original_image, code, threshold = 85.0,
+    framework = 'html', style_framework = 'inline', component_library = 'none', typescript = false,
+  } = args;
 
   if (!existsSync(original_image)) {
     return {
@@ -366,7 +389,14 @@ async function handleValidateDesign(
     filename: '',
     imports: [],
     components: [],
-  });
+  }, {
+    framework,
+    styleFramework: style_framework,
+    componentLibrary: component_library,
+    typescript,
+    responsive: true,
+    accessibility: true,
+  }, { threshold });
 
   const statusIcon = validation.passed ? '✅' : '❌';
   const statusText = validation.passed ? '通过' : '未通过';

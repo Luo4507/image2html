@@ -111,6 +111,11 @@ Cursor：调用 MCP Server → 生成代码并插入编辑器
 - `component_library` (string): 组件库 (antd/element/none)
 - `typescript` (boolean): 是否使用 TypeScript
 - `responsive` (boolean): 是否响应式
+- `style_framework` (string): tailwind/scss/css-modules/inline
+- `pipeline` (string): direct/structured
+- `quality_mode` (string): fast/balanced/precision
+- `layout_mode` (string): single/segmented
+- `asset_mode` (string): none/extract
 
 **返回**: 生成的代码 + 校验结果（可选）
 
@@ -121,7 +126,8 @@ Cursor：调用 MCP Server → 生成代码并插入编辑器
 **参数**:
 - `original_image` (string): 原始设计稿路径
 - `code` (string): 生成的代码
-- `threshold` (number): 相似度阈值（默认 85%）
+- `threshold` (number): 相似度阈值（默认 85%，实际影响质量门禁）
+- `framework`、`style_framework`、`component_library`、`typescript`: 目标代码选项；React/Vue 使用 Vite 构建后校验
 
 **返回**: 相似度报告 + 差异区域 + 修复建议
 

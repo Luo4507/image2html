@@ -24,18 +24,22 @@ program
   .argument('<image>', '设计稿图片路径')
   .option('-f, --framework <framework>', '目标框架 (react/vue/html)', 'react')
   .option('-s, --style <style>', '样式方案 (tailwind/scss/css-modules/inline)', 'tailwind')
-  .option('-c, --component-library <library>', '组件库 (antd/element/none)', 'antd')
+  .option('-c, --component-library <library>', '组件库 (antd/element/none，默认随框架)')
   .option('-o, --output <dir>', '输出目录', './generated')
   .option('--no-validate', '跳过视觉校验')
   .option('--no-typescript', '不使用 TypeScript')
   .option('--project', '导出完整 Vite 工程而非单个源码文件')
   .option('--extract-assets', '生成前提取并引用可复用图片资源')
+  .option('--pipeline <pipeline>', '生成流程 (direct/structured)', 'direct')
+  .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'balanced')
+  .option('--layout <layout>', '布局生成方式 (single/segmented)', 'single')
   .action(async (image: string, options: any) => {
     try {
+      const componentLibrary = options.componentLibrary || (options.framework === 'vue' ? 'element' : options.framework === 'html' ? 'none' : 'antd');
       console.log(`Converting: ${image}`);
       console.log(`Framework: ${options.framework}`);
       console.log(`Style: ${options.style}`);
-      console.log(`Component Library: ${options.componentLibrary}`);
+      console.log(`Component Library: ${componentLibrary}`);
 
       // 检查文件是否存在
       if (!existsSync(image)) {
@@ -61,11 +65,14 @@ program
         options: {
           framework: options.framework,
           styleFramework: options.style,
-          componentLibrary: options.componentLibrary,
+          componentLibrary,
           typescript: options.typescript,
           responsive: true,
           accessibility: true,
           assetMode: options.extractAssets ? 'extract' : 'none',
+          pipeline: options.pipeline,
+          qualityMode: options.quality,
+          layoutMode: options.layout,
         },
         modelConfig: (await import('./config.js')).getDefaultModelConfig(),
         validationConfig: options.validate
@@ -80,11 +87,14 @@ program
           await exportFrameworkProject(result.code, {
             framework: options.framework,
             styleFramework: options.style,
-            componentLibrary: options.componentLibrary,
+            componentLibrary,
             typescript: options.typescript,
             responsive: true,
             accessibility: true,
           assetMode: options.extractAssets ? 'extract' : 'none',
+          pipeline: options.pipeline,
+          qualityMode: options.quality,
+          layoutMode: options.layout,
           }, options.output);
           console.log(`\n✅ Project generated: ${options.output}`);
         } else {
@@ -137,9 +147,12 @@ program
   .argument('<dir>', '设计稿目录')
   .option('-f, --framework <framework>', '目标框架 (react/vue/html)', 'react')
   .option('-s, --style <style>', '样式方案 (tailwind/scss/css-modules/inline)', 'tailwind')
-  .option('-c, --component-library <library>', '组件库 (antd/element/none)', 'antd')
+  .option('-c, --component-library <library>', '组件库 (antd/element/none，默认随框架)')
   .option('-o, --output <dir>', '输出目录', './generated')
   .option('--no-validate', '跳过视觉校验')
+  .option('--pipeline <pipeline>', '生成流程 (direct/structured)', 'direct')
+  .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'balanced')
+  .option('--layout <layout>', '布局生成方式 (single/segmented)', 'single')
   .action(async (dir: string, options: any) => {
     try {
       const { readdir } = await import('fs/promises');
@@ -151,6 +164,7 @@ program
         process.exit(1);
       }
 
+      const componentLibrary = options.componentLibrary || (options.framework === 'vue' ? 'element' : options.framework === 'html' ? 'none' : 'antd');
       console.log(`Found ${imageFiles.length} design files`);
 
       const results: Array<{
@@ -175,11 +189,14 @@ program
             options: {
               framework: options.framework,
               styleFramework: options.style,
-              componentLibrary: options.componentLibrary,
+              componentLibrary,
               typescript: true,
               responsive: true,
               accessibility: true,
           assetMode: options.extractAssets ? 'extract' : 'none',
+          pipeline: options.pipeline,
+          qualityMode: options.quality,
+          layoutMode: options.layout,
             },
             modelConfig: (await import('./config.js')).getDefaultModelConfig(),
             validationConfig: options.validate

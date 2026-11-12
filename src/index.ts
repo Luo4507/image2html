@@ -31,6 +31,7 @@ import type {
   PageStructure,
   GeneratedCode,
   ValidationResult,
+  ValidationConfig,
   CodegenOptions,
   GeneratedAsset,
   ConversionProgressEvent,
@@ -339,12 +340,20 @@ ${invalidContent}`,
   async validate(
     originalImageBuffer: Buffer,
     generatedCode: GeneratedCode,
-    targetOptions?: CodegenOptions
+    targetOptions?: CodegenOptions,
+    validationOverrides?: Partial<ValidationConfig>
   ): Promise<ValidationResult> {
-    return this.validator.validate(originalImageBuffer, generatedCode, {
-      captureAllViewports: true,
-      codegenOptions: targetOptions,
-    });
+    const validator = validationOverrides
+      ? new VisualValidator({ ...this.validationConfig, ...validationOverrides })
+      : this.validator;
+    try {
+      return await validator.validate(originalImageBuffer, generatedCode, {
+        captureAllViewports: true,
+        codegenOptions: targetOptions,
+      });
+    } finally {
+      if (validationOverrides) await validator.close();
+    }
   }
 
   /**

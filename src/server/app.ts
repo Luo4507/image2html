@@ -10,6 +10,7 @@ import helmet from 'helmet';
 import multer from 'multer';
 import { z } from 'zod';
 import { getDefaultCodegenOptions } from '../config.js';
+import { assertValidCodegenOptions, CodegenOptionError } from '../runtime/codegen-options.js';
 import { JobService, type JobServiceOptions } from './job-service.js';
 import type { JobRecord } from './job-queue.js';
 import type { ConversionJobResult } from './job-service.js';
@@ -25,6 +26,10 @@ const optionSchema = z.object({
   typescript: z.boolean().optional(),
   responsive: z.boolean().optional(),
   accessibility: z.boolean().optional(),
+  pipeline: z.enum(['direct', 'structured']).optional(),
+  qualityMode: z.enum(['fast', 'balanced', 'precision']).optional(),
+  layoutMode: z.enum(['single', 'segmented']).optional(),
+  assetMode: z.enum(['none', 'extract']).optional(),
 });
 
 function publicJob(job: JobRecord<ConversionJobResult>) {
@@ -125,16 +130,30 @@ export async function createServerApp(options: {
         typescript: booleanField(req.body.typescript),
         responsive: booleanField(req.body.responsive),
         accessibility: booleanField(req.body.accessibility),
+        pipeline: req.body.pipeline,
+        qualityMode: req.body.qualityMode,
+        layoutMode: req.body.layoutMode,
+        assetMode: req.body.assetMode,
       });
+      const codegenOptions = { ...getDefaultCodegenOptions(), ...parsed };
+      if (parsed.componentLibrary === undefined) {
+        if (codegenOptions.framework === 'html') codegenOptions.componentLibrary = 'none';
+        if (codegenOptions.framework === 'vue') codegenOptions.componentLibrary = 'element';
+      }
+      assertValidCodegenOptions(codegenOptions);
       const job = service.submit({
         userId: req.userId!,
         imagePath: req.file.path,
-        options: { ...getDefaultCodegenOptions(), ...parsed },
+        options: codegenOptions,
         validate: booleanField(req.body.validate) !== false,
       });
       res.status(202).json({ job: publicJob(job) });
     } catch (error) {
       await rm(req.file.path, { force: true });
+      if (error instanceof CodegenOptionError) {
+        res.status(400).json({ error: 'BadRequest', message: error.message });
+        return;
+      }
       if (error instanceof z.ZodError) {
         res.status(400).json({ error: 'BadRequest', message: error.issues[0]?.message });
         return;

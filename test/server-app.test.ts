@@ -50,10 +50,12 @@ describe('multi-user HTTP server', () => {
   });
 
   it('creates jobs, isolates users, and serves artifacts', async () => {
+    let receivedOptions: unknown;
     const { app, service } = await createServerApp({
       config: config(),
       converterFactory: () => ({
         async convert(request) {
+          receivedOptions = request.options;
           request.onProgress?.({
             stage: 'preview',
             message: 'preview ready',
@@ -92,6 +94,10 @@ describe('multi-user HTTP server', () => {
       .post('/v1/jobs')
       .set('Authorization', 'Bearer alice-key')
       .field('framework', 'html')
+      .field('pipeline', 'structured')
+      .field('qualityMode', 'precision')
+      .field('layoutMode', 'single')
+      .field('assetMode', 'extract')
       .attach('image', 'examples/fixtures/demo/login.png')
       .expect(202);
 
@@ -104,6 +110,7 @@ describe('multi-user HTTP server', () => {
       .expect(200);
 
     expect(completed.body.job.status).toBe('succeeded');
+    expect(receivedOptions).toMatchObject({ pipeline: 'structured', qualityMode: 'precision', layoutMode: 'single', assetMode: 'extract' });
     expect(completed.body.job.result.similarity).toBe(92);
 
     await request(app)
@@ -129,5 +136,21 @@ describe('multi-user HTTP server', () => {
       .set('Authorization', 'Bearer alice-key')
       .expect(200);
     expect(events.text).toContain('preview ready');
+  });
+
+  it('passes new options and rejects incompatible frameworks before creating a job', async () => {
+    const { app, service } = await createServerApp({
+      config: config(),
+      converterFactory: () => { throw new Error('must not be called'); },
+    });
+    cleanup = () => service.close();
+
+    await request(app)
+      .post('/v1/jobs')
+      .set('Authorization', 'Bearer alice-key')
+      .field('framework', 'react')
+      .field('componentLibrary', 'element')
+      .attach('image', 'examples/fixtures/demo/login.png')
+      .expect(400);
   });
 });
