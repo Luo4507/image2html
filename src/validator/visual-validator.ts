@@ -11,11 +11,19 @@ import type {
   Viewport,
   ValidationConfig,
   VisualQualityMetrics,
+  CodegenOptions,
+  GeneratedCode,
 } from '../types.js';
 import { calculateQualityMetrics } from './quality-metrics.js';
 import { aggregateDiffRegions } from './region-diff.js';
 import { passesQualityGate } from './quality-gate.js';
+import { startFrameworkProject, type RunningFrameworkProject } from '../runtime/vite-runtime.js';
 
+interface RenderTarget {
+  content: string;
+  isUrl: boolean;
+  framework?: CodegenOptions['framework'];
+}
 export class VisualValidator {
   private config: ValidationConfig;
   private browser: Browser | null = null;
@@ -51,26 +59,40 @@ export class VisualValidator {
   /**
    * 渲染 HTML 并截图
    */
-  private async renderHtml(html: string, viewport: Viewport): Promise<Buffer> {
+  private async renderHtml(target: RenderTarget, viewport: Viewport): Promise<Buffer> {
     const browser = await this.initBrowser();
     const page: Page = await browser.newPage({ viewport });
+    const runtimeErrors: string[] = [];
+    page.on('pageerror', (error) => runtimeErrors.push(error.message));
 
     try {
-      await page.setContent(html, { waitUntil: 'networkidle' });
+      if (target.isUrl) {
+        await page.goto(target.content, { waitUntil: 'networkidle' });
+      } else {
+        await page.setContent(target.content, { waitUntil: 'networkidle' });
+      }
       await page.evaluate(() => document.fonts.ready);
       await page.waitForTimeout(500);
 
-      const screenshot = await page.screenshot({
+      if (target.framework && target.framework !== 'html') {
+        const label = target.framework === 'react' ? 'React' : 'Vue';
+        if (runtimeErrors.length > 0) {
+          throw new Error(`${label} browser runtime failed: ${runtimeErrors.join('; ')}`);
+        }
+        const mounted = await page.locator('#root').evaluate((root) => root.childElementCount > 0);
+        if (!mounted) {
+          throw new Error(`${label} render failed: #root is empty after mount`);
+        }
+      }
+
+      return await page.screenshot({
         fullPage: true,
         type: 'png',
       });
-
-      return screenshot;
     } finally {
       await page.close();
     }
   }
-
   /**
    * 对比两张图片，返回相似度和差异区域
    */
@@ -189,15 +211,15 @@ export class VisualValidator {
   /**
    * 捕获所有视口截图
    */
-  private async captureAllViewports(html: string): Promise<{
+  private async captureAllViewports(target: RenderTarget): Promise<{
     desktop: string;
     tablet: string;
     mobile: string;
   }> {
     const [desktop, tablet, mobile] = await Promise.all([
-      this.renderHtml(html, this.config.viewports.desktop),
-      this.renderHtml(html, this.config.viewports.tablet),
-      this.renderHtml(html, this.config.viewports.mobile),
+      this.renderHtml(target, this.config.viewports.desktop),
+      this.renderHtml(target, this.config.viewports.tablet),
+      this.renderHtml(target, this.config.viewports.mobile),
     ]);
 
     return {
@@ -206,56 +228,73 @@ export class VisualValidator {
       mobile: mobile.toString('base64'),
     };
   }
-
   /**
    * 执行视觉校验
    */
   async validate(
     originalImageBuffer: Buffer,
-    generatedHtml: string,
+    generatedInput: string | GeneratedCode,
     options: {
       captureAllViewports?: boolean;
+      codegenOptions?: CodegenOptions;
     } = {}
   ): Promise<ValidationResult> {
-    // 1. 按原图尺寸渲染，避免固定桌面视口影响移动稿校验
-    const sourceMetadata = await sharp(originalImageBuffer).metadata();
-    const sourceViewport = {
-      width: sourceMetadata.width || this.config.viewports.desktop.width,
-      height: sourceMetadata.height || this.config.viewports.desktop.height,
-    };
-    const generatedScreenshot = await this.renderHtml(
-      generatedHtml,
-      sourceViewport
-    );
+    const generated: GeneratedCode = typeof generatedInput === 'string'
+      ? { code: generatedInput, filename: '', imports: [], components: [] }
+      : generatedInput;
+    const targetOptions = options.codegenOptions;
+    let running: RunningFrameworkProject | undefined;
 
-    // 2. 对比图片
-    const { similarity, diffImage, regions, quality } = await this.compareImages(
-      originalImageBuffer,
-      generatedScreenshot
-    );
+    try {
+      let target: RenderTarget = { content: generated.code, isUrl: false, framework: 'html' };
+      if (targetOptions && targetOptions.framework !== 'html') {
+        const filename = generated.filename || (targetOptions.framework === 'react'
+          ? `GeneratedPage.${targetOptions.typescript ? 'tsx' : 'jsx'}`
+          : 'GeneratedPage.vue');
+        running = await startFrameworkProject({ ...generated, filename }, targetOptions);
+        target = { content: running.url, isUrl: true, framework: targetOptions.framework };
+      }
 
-    // 3. 生成修复建议
-    const suggestions = this.generateSuggestions(quality.qualityScore, regions);
+      // 1. 按原图尺寸渲染，避免固定桌面视口影响移动稿校验
+      const sourceMetadata = await sharp(originalImageBuffer).metadata();
+      const sourceViewport = {
+        width: sourceMetadata.width || this.config.viewports.desktop.width,
+        height: sourceMetadata.height || this.config.viewports.desktop.height,
+      };
+      const generatedScreenshot = await this.renderHtml(target, sourceViewport);
 
-    // 4. 捕获多端截图（可选）
-    let screenshots = {
-      desktop: generatedScreenshot.toString('base64'),
-      tablet: '',
-      mobile: '',
-    };
+      // 2. 对比图片
+      const { similarity, diffImage, regions, quality } = await this.compareImages(
+        originalImageBuffer,
+        generatedScreenshot
+      );
 
-    if (options.captureAllViewports) {
-      screenshots = await this.captureAllViewports(generatedHtml);
+      // 3. 生成修复建议
+      const suggestions = this.generateSuggestions(quality.qualityScore, regions);
+
+      // 4. 捕获多端截图（可选）
+      let screenshots = {
+        desktop: generatedScreenshot.toString('base64'),
+        tablet: '',
+        mobile: '',
+      };
+
+      if (options.captureAllViewports) {
+        screenshots = await this.captureAllViewports(target);
+      }
+
+      return {
+        similarity,
+        quality,
+        passed: passesQualityGate(quality, this.config),
+        diffImage,
+        regions,
+        suggestions,
+        screenshots,
+      };
+    } finally {
+      await running?.close();
     }
-
-    return {
-      similarity,
-      quality,
-      passed: passesQualityGate(quality, this.config),
-      diffImage,
-      regions,
-      suggestions,
-      screenshots,
-    };
   }
 }
+

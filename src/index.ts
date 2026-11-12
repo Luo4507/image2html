@@ -311,10 +311,12 @@ ${invalidContent}`,
    */
   async validate(
     originalImageBuffer: Buffer,
-    generatedCode: GeneratedCode
+    generatedCode: GeneratedCode,
+    targetOptions?: CodegenOptions
   ): Promise<ValidationResult> {
-    return this.validator.validate(originalImageBuffer, generatedCode.code, {
+    return this.validator.validate(originalImageBuffer, generatedCode, {
       captureAllViewports: true,
+      codegenOptions: targetOptions,
     });
   }
 
@@ -434,7 +436,7 @@ ${invalidContent}`,
       if (request.validationConfig) {
         this.emitProgress(request, { stage: 'validating', message: '正在执行视觉校验' });
         const validationStartedAt = Date.now();
-        validation = await this.validate(imageBuffer, code);
+        validation = await this.validate(imageBuffer, code, request.options);
         validationMs += Date.now() - validationStartedAt;
 
         if (this.validationConfig.checkTextCoverage) {
@@ -467,7 +469,7 @@ ${invalidContent}`,
             },
             validate: async (candidateCode) => {
               const candidateStartedAt = Date.now();
-              const result = await this.validate(imageBuffer, { ...code, code: candidateCode });
+              const result = await this.validate(imageBuffer, { ...code, code: candidateCode }, request.options);
               validationMs += Date.now() - candidateStartedAt;
               return result;
             },
@@ -583,6 +585,7 @@ export async function designToCode(
     await d2c.close();
   }
 }
+
 
 
 
