@@ -41,6 +41,8 @@ export { ComponentMapper } from './codegen/component-mapper.js';
 export { parsePageStructure } from './structure-parser.js';
 export { runAutoCorrection } from './validator/auto-corrector.js';
 export { extractImageAssets } from './assets/asset-extractor.js';
+export { createFrameworkProjectFiles, exportFrameworkProject } from './runtime/project-scaffolder.js';
+export { assertValidCodegenOptions } from './runtime/codegen-options.js';
 
 /**
  * 设计稿转代码主类
@@ -581,6 +583,7 @@ export async function designToCode(
     await d2c.close();
   }
 }
+
 
 
 
