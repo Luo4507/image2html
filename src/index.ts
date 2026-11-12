@@ -7,7 +7,6 @@ import { STRUCTURE_ANALYSIS_PROMPT, buildStructureAnalysisMessage } from './prom
 import { buildCodeGenerationPrompt, buildRepairPrompt } from './prompts/code-generation.js';
 import { VisualValidator } from './validator/visual-validator.js';
 import { TokenMapper } from './codegen/token-mapper.js';
-import { ComponentMapper } from './codegen/component-mapper.js';
 import { parsePageStructure } from './structure-parser.js';
 import { buildDirectGenerationPrompt, buildVisualPatchPrompt } from './prompts/direct-generation.js';
 import { applyCodeEdits, parseCodeEdits } from './codegen/patch-applier.js';
@@ -286,13 +285,9 @@ ${invalidContent}`,
       cleanCode = cleanCode.replace(/^```\w*\n/, '').replace(/\n```$/, '');
     }
 
-    if (tokens) {
+    if (tokens && options.framework === 'html') {
       cleanCode = new TokenMapper(tokens).mapCode(cleanCode);
     }
-
-    // 后处理：组件映射
-    const componentMapper = new ComponentMapper(options.componentLibrary);
-    cleanCode = componentMapper.mapComponents(cleanCode);
 
     // 提取组件名和导入
     const components = this.extractComponents(cleanCode);
@@ -586,5 +581,6 @@ export async function designToCode(
     await d2c.close();
   }
 }
+
 
 
