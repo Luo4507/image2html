@@ -24,6 +24,30 @@
 
 视觉校验同时返回整图、内容区域和边缘指标，并分别应用 `VISUAL_SIMILARITY_THRESHOLD`、`MIN_CONTENT_SIMILARITY`、`MIN_EDGE_SIMILARITY` 门禁，避免大面积空白导致虚假高分。主校验按原图尺寸渲染，区域差异通过一次差异掩码聚合生成。
 
+## 框架与工程支持
+
+| 目标框架 | 组件库 | 样式方案 | 构建与视觉校验 |
+| --- | --- | --- | --- |
+| HTML | `none` | `tailwind`、`scss`、`css-modules`、`inline` | 浏览器直接渲染 |
+| React 18 | `antd`、`none` | `tailwind`、`inline` | TypeScript 检查、Vite 构建、Playwright 截图 |
+| Vue 3 | `element`、`none` | `tailwind`、`inline` | `vue-tsc` 检查、Vite 构建、Playwright 截图 |
+
+非法组合会在模型调用前报错，例如 React + Element Plus、Vue + Ant Design，或 React/Vue + SCSS/CSS Modules。React TypeScript 输出 `.tsx`，JavaScript 输出 `.jsx`；Vue 输出合法 SFC。React/Vue 不再直接交给 `page.setContent()`，而是在临时 Vite 工程中完成真实构建和页面挂载后再进行视觉比较。
+
+使用 `--project` 可导出完整 Vite 工程，包含 `package.json`、入口文件、Vite/TypeScript 配置和对应样式配置：
+
+```bash
+node dist/cli.js convert examples/fixtures/login-design.png \
+  --framework react --style tailwind --component-library antd \
+  --project --output output/react-project
+
+node dist/cli.js convert examples/fixtures/login-design.png \
+  --framework vue --style inline --component-library element \
+  --project --output output/vue-project
+```
+
+进入导出目录后可运行 `pnpm install`、`pnpm build` 和 `pnpm dev`。Node.js API 同时导出 `createFrameworkProjectFiles()` 与 `exportFrameworkProject()`，复用同一套工程模板。分段生成仍仅限 HTML。
+
 ## 环境要求
 
 - Node.js 20+
@@ -204,6 +228,7 @@ image2html/
 ├── src/                 # 生产代码
 │   ├── codegen/         # Token 与组件映射
 │   ├── llm/             # OpenAI 兼容模型客户端
+│   ├── runtime/           # 技术栈校验、Vite 工程模板与运行时
 │   ├── mcp/             # MCP Server
 │   ├── prompts/         # 结构分析与代码生成提示词
 │   ├── validator/       # 浏览器渲染与视觉校验
@@ -233,3 +258,5 @@ image2html/
 ## License
 
 [MIT](LICENSE) © 2026 image2html contributors
+
+

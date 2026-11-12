@@ -8,7 +8,7 @@ import { Command } from 'commander';
 import { readFile, writeFile, mkdir } from 'fs/promises';
 import { existsSync } from 'fs';
 import { join, basename, extname } from 'path';
-import { DesignToCode } from './index.js';
+import { DesignToCode, exportFrameworkProject } from './index.js';
 import { getDefaultCodegenOptions } from './config.js';
 
 const program = new Command();
@@ -28,6 +28,7 @@ program
   .option('-o, --output <dir>', '输出目录', './generated')
   .option('--no-validate', '跳过视觉校验')
   .option('--no-typescript', '不使用 TypeScript')
+  .option('--project', '导出完整 Vite 工程而非单个源码文件')
   .action(async (image: string, options: any) => {
     try {
       console.log(`Converting: ${image}`);
@@ -73,9 +74,20 @@ program
       // 保存结果
       if (result.success) {
         const outputPath = join(options.output, result.code.filename);
-        await writeFile(outputPath, result.code.code, 'utf-8');
-
-        console.log(`\n✅ Code generated: ${outputPath}`);
+        if (options.project) {
+          await exportFrameworkProject(result.code, {
+            framework: options.framework,
+            styleFramework: options.style,
+            componentLibrary: options.componentLibrary,
+            typescript: options.typescript,
+            responsive: true,
+            accessibility: true,
+          }, options.output);
+          console.log(`\n✅ Project generated: ${options.output}`);
+        } else {
+          await writeFile(outputPath, result.code.code, 'utf-8');
+          console.log(`\n✅ Code generated: ${outputPath}`);
+        }
         console.log(`Components: ${result.code.components.join(', ')}`);
 
         if (result.validation) {
@@ -234,3 +246,4 @@ program
   });
 
 program.parse();
+
