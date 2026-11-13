@@ -20,6 +20,8 @@ describe('codegen option compatibility', () => {
     options(),
     options({ framework: 'react', styleFramework: 'tailwind', componentLibrary: 'antd', typescript: true }),
     options({ framework: 'vue', styleFramework: 'inline', componentLibrary: 'element', typescript: true }),
+    options({ framework: 'react', styleFramework: 'inline', componentLibrary: 'antd', layoutMode: 'segmented' }),
+    options({ framework: 'vue', styleFramework: 'inline', componentLibrary: 'element', layoutMode: 'segmented' }),
   ])('accepts supported combinations', (value) => {
     expect(() => assertValidCodegenOptions(value)).not.toThrow();
   });
@@ -30,7 +32,7 @@ describe('codegen option compatibility', () => {
     [options({ framework: 'html', componentLibrary: 'antd' }), 'HTML.*none'],
     [options({ framework: 'react', styleFramework: 'scss', componentLibrary: 'antd' }), 'React.*tailwind.*inline'],
     [options({ framework: 'vue', styleFramework: 'css-modules', componentLibrary: 'element' }), 'Vue.*tailwind.*inline'],
-    [options({ framework: 'react', componentLibrary: 'antd', layoutMode: 'segmented' }), 'segmented.*HTML'],
+
   ])('rejects unsupported combinations before generation', (value, message) => {
     expect(() => assertValidCodegenOptions(value)).toThrow(new RegExp(message, 'i'));
   });
@@ -62,3 +64,4 @@ describe('generated filenames', () => {
     expect(converter.generateFilename('Demo Page', 'vue', false)).toBe('DemoPage.vue');
   });
 });
+

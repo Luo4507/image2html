@@ -46,7 +46,7 @@ node dist/cli.js convert examples/fixtures/login-design.png \
   --project --output output/vue-project
 ```
 
-进入导出目录后可运行 `pnpm install`、`pnpm build` 和 `pnpm dev`。Node.js API 同时导出 `createFrameworkProjectFiles()` 与 `exportFrameworkProject()`，复用同一套工程模板。分段生成仍仅限 HTML。
+进入导出目录后可运行 `pnpm install`、`pnpm build` 和 `pnpm dev`。Node.js API 同时导出 `createFrameworkProjectFiles()` 与 `exportFrameworkProject()`，复用同一套工程模板。分段生成支持 HTML、React 和 Vue，并复用相同的构建与视觉校验流程。
 
 ### 提取并引用图片资源
 
@@ -294,3 +294,4 @@ image2html/
 ## License
 
 [MIT](LICENSE) © 2026 image2html contributors
+

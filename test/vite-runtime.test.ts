@@ -4,6 +4,7 @@ import { chromium, type Browser } from 'playwright';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { CodegenOptions, GeneratedCode } from '../src/types.js';
 import { startFrameworkProject } from '../src/runtime/vite-runtime.js';
+import { assembleFrameworkRegionCode } from '../src/segmented-generator.js';
 
 function options(overrides: Partial<CodegenOptions> = {}): CodegenOptions {
   return {
@@ -90,6 +91,23 @@ describe('Vite framework runtime', () => {
       await running.close();
     }
   }, 60_000);
+  it('builds segmented React and Vue assemblies', async () => {
+    const reactCode = assembleFrameworkRegionCode(options(), [
+      'export function HeaderRegion() { return <header>Segmented React</header>; }',
+      'export function ContentRegion() { return <main>Content</main>; }',
+    ]);
+    await expectRenderedText(generated(reactCode, 'Demo.tsx'), options(), 'Segmented React');
+
+    const vueCode = assembleFrameworkRegionCode(options({ framework: 'vue', componentLibrary: 'element' }), [
+      '<template><header>Segmented Vue</header></template><script setup lang="ts"></script>',
+      '<template><main>Content</main></template>',
+    ]);
+    await expectRenderedText(
+      generated(vueCode, 'Demo.vue'),
+      options({ framework: 'vue', componentLibrary: 'element' }),
+      'Segmented Vue',
+    );
+  }, 60_000);
   it('rejects invalid React source with a stage-specific error', async () => {
     await expect(startFrameworkProject(
       generated('export default function Demo() { return <main>; }', 'Broken.tsx'),
@@ -104,3 +122,4 @@ describe('Vite framework runtime', () => {
     )).rejects.toThrow(/Vue.*(typecheck|build)/i);
   }, 60_000);
 });
+

@@ -8,10 +8,6 @@ import type { CodegenOptions } from '../types.js';
 export function assertValidCodegenOptions(options: CodegenOptions): void {
   const { framework, componentLibrary, styleFramework, layoutMode } = options;
 
-  if (layoutMode === 'segmented' && framework !== 'html') {
-    throw new CodegenOptionError('The segmented layout mode is only supported for HTML output');
-  }
-
   if (framework === 'react' && componentLibrary === 'element') {
     throw new CodegenOptionError('React supports Ant Design (antd) or none; Element Plus (element) requires Vue');
   }
@@ -26,3 +22,4 @@ export function assertValidCodegenOptions(options: CodegenOptions): void {
     throw new CodegenOptionError(`${label} currently supports tailwind or inline styles; ${styleFramework} requires a multi-file generation protocol`);
   }
 }
+

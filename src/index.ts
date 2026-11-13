@@ -13,7 +13,7 @@ import { applyCodeEdits, parseCodeEdits } from './codegen/patch-applier.js';
 import { runAutoCorrection } from './validator/auto-corrector.js';
 import sharp from 'sharp';
 import { buildRegionPlanningPrompt, parseRegionPlan } from './prompts/region-planning.js';
-import { assembleHtmlDocument, buildRegionGenerationPrompt } from './segmented-generator.js';
+import { assembleHtmlDocument, assembleFrameworkRegionCode, buildRegionGenerationPrompt } from './segmented-generator.js';
 import { buildTextExtractionPrompt, parseVisibleTexts } from './prompts/text-extraction.js';
 import { calculateTextCoverage } from './validator/text-coverage.js';
 import { passesQualityGate } from './validator/quality-gate.js';
@@ -203,7 +203,7 @@ ${invalidContent}`,
     assets: GeneratedAsset[] = []
   ): Promise<GeneratedCode> {
     assertValidCodegenOptions(options);
-    if (options.layoutMode === 'segmented' && options.framework === 'html') {
+    if (options.layoutMode === 'segmented') {
       try {
         return await this.generateSegmentedHtml(imageBase64, options, onProgress, assets);
       } catch (error) {
@@ -309,7 +309,9 @@ ${invalidContent}`,
       return code.trim().replace(/^```\w*\n/, '').replace(/\n```$/, '');
     }));
 
-    const assembled = assembleHtmlDocument('GeneratedPage', fragments);
+    const assembled = options.framework === 'html'
+      ? assembleHtmlDocument('GeneratedPage', fragments)
+      : assembleFrameworkRegionCode(options, fragments);
     onProgress?.({
       stage: 'preview',
       message: '分段页面已组合',
@@ -770,6 +772,7 @@ export async function designToCode(
     await d2c.close();
   }
 }
+
 
 
 
