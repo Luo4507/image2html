@@ -50,7 +50,7 @@ describe('job persistence and recovery', () => {
   it('restores completed jobs and their conversion cache without another model call', async () => {
     const dataDir = await mkdtemp(join(tmpdir(), 'image2html-job-recovery-'));
     cleanup.push(dataDir);
-    const imagePath = 'examples/fixtures/demo/login.png';
+    const imagePath = 'examples/demo/login.png';
     const firstConvert = vi.fn();
     const first = new JobService({
       config: config(dataDir),
@@ -86,7 +86,7 @@ describe('job persistence and recovery', () => {
     for (const [id, status] of [['running-job', 'running'], ['queued-job', 'queued']] as const) {
       const dir = join(dataDir, 'jobs', id);
       await mkdir(dir, { recursive: true });
-      await copyFile('examples/fixtures/demo/login.png', join(dir, 'source.png'));
+      await copyFile('examples/demo/login.png', join(dir, 'source.png'));
       await writeFile(join(dir, 'job.json'), JSON.stringify({
         id, userId: 'alice', status, createdAt: new Date().toISOString(),
       }));

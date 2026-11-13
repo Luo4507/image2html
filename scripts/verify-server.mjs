@@ -39,7 +39,7 @@ try {
   console.log('Authentication check: OK');
 
   const form = new FormData();
-  const file = await open('examples/fixtures/demo/login.png');
+  const file = await open('examples/demo/login.png');
   try {
     const buffer = await file.readFile();
     form.append('image', new Blob([buffer], { type: 'image/png' }), 'login.png');

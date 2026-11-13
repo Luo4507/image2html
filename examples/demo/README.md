@@ -18,16 +18,16 @@
 
 ```bash
 # 测试小商城
-node dist/cli.js convert examples/fixtures/demo/ecommerce-shop.png -f html -o output
+node dist/cli.js convert examples/demo/ecommerce-shop.png -f html -o output
 
 # 测试内容发布平台
-node dist/cli.js convert examples/fixtures/demo/content-platform.png -f react -o output
+node dist/cli.js convert examples/demo/content-platform.png -f react -o output
 
 # 测试管理后台
-node dist/cli.js convert examples/fixtures/demo/dashboard.png -f react -o output
+node dist/cli.js convert examples/demo/dashboard.png -f react -o output
 
 # 批量测试所有 demo
-node dist/cli.js batch examples/fixtures/demo -f html -o output
+node dist/cli.js batch examples/demo -f html -o output
 ```
 
 ### 编程方式测试
@@ -40,7 +40,7 @@ const d2c = new DesignToCode();
 // 测试小商城
 const result = await d2c.convert({
   image: {
-    source: 'examples/fixtures/demo/ecommerce-shop.png',
+    source: 'examples/demo/ecommerce-shop.png',
     type: 'path',
   },
   options: {
@@ -63,7 +63,7 @@ console.log('相似度:', result.validation?.similarity);
 在 OpenCode 中：
 
 ```
-用户：@design-to-code 请根据 examples/fixtures/demo/ecommerce-shop.png 生成 HTML 代码
+用户：@design-to-code 请根据 examples/demo/ecommerce-shop.png 生成 HTML 代码
 ```
 
 ## 预期结果
@@ -93,8 +93,8 @@ const browser = await chromium.launch({
   executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe'
 });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
-await page.goto('file:///F:/code/image2html/examples/fixtures/demo/ecommerce-shop.html');
-await page.screenshot({ path: 'examples/fixtures/demo/ecommerce-shop.png', fullPage: true });
+await page.goto('file:///F:/code/image2html/examples/demo/ecommerce-shop.html');
+await page.screenshot({ path: 'examples/demo/ecommerce-shop.png', fullPage: true });
 await browser.close();
 "
 ```

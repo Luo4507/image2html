@@ -10,7 +10,7 @@ describe('JobService conversion cache', () => {
   it('reuses identical conversions while keeping job artifacts isolated', async () => {
     const dataDir = await mkdtemp(join(tmpdir(), 'image2html-cache-'));
     const copiedImage = join(dataDir, 'copied-design.png');
-    await copyFile('examples/fixtures/login-design.png', copiedImage);
+    await copyFile('examples/demo/login-design.png', copiedImage);
     const config: ServerConfig = {
       host: '127.0.0.1',
       port: 0,
@@ -61,7 +61,7 @@ describe('JobService conversion cache', () => {
     try {
       const first = service.submit({
         userId: 'alice',
-        imagePath: 'examples/fixtures/login-design.png',
+        imagePath: 'examples/demo/login-design.png',
         options,
         validate: false,
       });

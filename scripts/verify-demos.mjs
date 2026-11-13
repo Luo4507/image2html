@@ -7,7 +7,7 @@ import {
   getDefaultValidationConfig,
 } from '../dist/config.js';
 
-const fixturesDir = process.argv[2] || 'examples/fixtures/demo';
+const fixturesDir = process.argv[2] || 'examples/demo';
 const outputDir = process.argv[3] || 'output/demo-validation';
 const imageFiles = (await readdir(fixturesDir))
   .filter((name) => /\.(png|jpe?g|webp)$/i.test(name))

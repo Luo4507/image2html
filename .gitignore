@@ -1,4 +1,5 @@
 # Dependencies
+.pnpm-store*/
 node_modules/
 package-lock.json
 yarn.lock
@@ -64,6 +65,9 @@ visual_reports/
 !examples/fixtures/*.jpg
 !examples/fixtures/*.jpeg
 !examples/fixtures/demo/*.png
+!examples/demo/*.png
+!examples/demo/*.jpg
+!examples/demo/*.jpeg
 !examples/fixtures/demo/*.jpg
 !examples/fixtures/demo/*.jpeg
 

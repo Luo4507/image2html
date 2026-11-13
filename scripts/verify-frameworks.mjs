@@ -7,7 +7,7 @@ import {
   getDefaultValidationConfig,
 } from '../dist/config.js';
 
-const imagePath = process.argv[2] || 'examples/fixtures/demo/login.png';
+const imagePath = process.argv[2] || 'examples/demo/login.png';
 const outputRoot = process.argv[3] || 'output/framework-verification';
 const targets = [
   { name: 'html', framework: 'html', styleFramework: 'inline', componentLibrary: 'none', typescript: false },

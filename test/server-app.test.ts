@@ -98,7 +98,7 @@ describe('multi-user HTTP server', () => {
       .field('qualityMode', 'precision')
       .field('layoutMode', 'single')
       .field('assetMode', 'extract')
-      .attach('image', 'examples/fixtures/demo/login.png')
+      .attach('image', 'examples/demo/login.png')
       .expect(202);
 
     const jobId = created.body.job.id;
@@ -150,7 +150,7 @@ describe('multi-user HTTP server', () => {
       .set('Authorization', 'Bearer alice-key')
       .field('framework', 'react')
       .field('componentLibrary', 'element')
-      .attach('image', 'examples/fixtures/demo/login.png')
+      .attach('image', 'examples/demo/login.png')
       .expect(400);
   });
 });

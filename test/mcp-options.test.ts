@@ -11,7 +11,7 @@ describe('MCP option parity', () => {
     const d2c = { convert } as unknown as DesignToCode;
 
     await handleGenerateComponent(d2c, {
-      image_path: 'examples/fixtures/demo/login.png',
+      image_path: 'examples/demo/login.png',
       framework: 'react', component_library: 'antd', typescript: true, responsive: true,
       style_framework: 'inline', pipeline: 'structured', quality_mode: 'precision',
       layout_mode: 'single', asset_mode: 'extract',
@@ -31,7 +31,7 @@ describe('MCP option parity', () => {
     const d2c = { validate } as unknown as DesignToCode;
 
     await handleValidateDesign(d2c, {
-      original_image: 'examples/fixtures/demo/login.png', code: '<main>demo</main>', threshold: 97,
+      original_image: 'examples/demo/login.png', code: '<main>demo</main>', threshold: 97,
       framework: 'react', style_framework: 'tailwind', component_library: 'antd', typescript: true,
     });
 

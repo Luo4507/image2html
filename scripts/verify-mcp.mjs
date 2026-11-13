@@ -20,11 +20,11 @@ try {
   const tools = await client.listTools();
   console.log(`MCP tools: ${tools.tools.map((tool) => tool.name).join(', ')}`);
 
-  const code = await readFile('output/登录.html', 'utf8');
+  const code = await readFile(process.argv[2] || 'examples/demo/login-design.html', 'utf8');
   const result = await client.callTool({
     name: 'validate_design',
     arguments: {
-      original_image: resolve('examples/fixtures/login-design.png'),
+      original_image: resolve('examples/demo/login-design.png'),
       code,
       threshold: 85,
     },

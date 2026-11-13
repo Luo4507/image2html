@@ -6,7 +6,7 @@ import {
   getDefaultValidationConfig,
 } from '../dist/config.js';
 
-const imagePath = process.argv[2] || 'examples/fixtures/demo/login.png';
+const imagePath = process.argv[2] || 'examples/demo/login.png';
 const outputDir = process.argv[3] || 'output/direct-verification';
 const d2c = new DesignToCode();
 

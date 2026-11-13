@@ -89,7 +89,7 @@ Authorization: Bearer <用户密钥>
 ```bash
 curl -X POST http://localhost:3000/v1/jobs \
   -H "Authorization: Bearer long-random-secret" \
-  -F "image=@examples/fixtures/demo/login.png" \
+  -F "image=@examples/demo/login.png" \
   -F "framework=html" \
   -F "styleFramework=inline" \
   -F "componentLibrary=none" \
