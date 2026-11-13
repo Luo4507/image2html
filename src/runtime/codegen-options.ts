@@ -22,4 +22,3 @@ export function assertValidCodegenOptions(options: CodegenOptions): void {
     throw new CodegenOptionError(`${label} currently supports tailwind or inline styles; ${styleFramework} requires a multi-file generation protocol`);
   }
 }
-

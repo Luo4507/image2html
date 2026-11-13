@@ -87,4 +87,3 @@ describe('VisualValidator framework rendering', () => {
     )).rejects.toThrow(/React.*(empty|mount|render)/i);
   }, 60_000);
 });
-

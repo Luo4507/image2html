@@ -365,6 +365,3 @@ export class VisualValidator {
     }
   }
 }
-
-
-

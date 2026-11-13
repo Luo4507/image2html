@@ -122,4 +122,3 @@ describe('Vite framework runtime', () => {
     )).rejects.toThrow(/Vue.*(typecheck|build)/i);
   }, 60_000);
 });
-

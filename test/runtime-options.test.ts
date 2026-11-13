@@ -64,4 +64,3 @@ describe('generated filenames', () => {
     expect(converter.generateFilename('Demo Page', 'vue', false)).toBe('DemoPage.vue');
   });
 });
-
