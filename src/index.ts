@@ -413,6 +413,7 @@ ${invalidContent}`,
       buildVisualPatchPrompt({
         currentCode,
         suggestions: validation.suggestions,
+        layout: validation.layout,
         regions: validation.regions.map((region) => ({
           type: region.type,
           diffPercentage: region.diffPercentage,
@@ -756,3 +757,4 @@ export async function designToCode(
     await d2c.close();
   }
 }
+

@@ -13,11 +13,17 @@ import type {
   VisualQualityMetrics,
   CodegenOptions,
   GeneratedCode,
+  LayoutSnapshot,
 } from '../types.js';
 import { calculateQualityMetrics } from './quality-metrics.js';
 import { aggregateDiffRegions } from './region-diff.js';
 import { passesQualityGate } from './quality-gate.js';
 import { startFrameworkProject, type RunningFrameworkProject } from '../runtime/vite-runtime.js';
+
+interface RenderedPage {
+  screenshot: Buffer;
+  layout: LayoutSnapshot;
+}
 
 interface RenderTarget {
   content: string;
@@ -67,7 +73,7 @@ export class VisualValidator {
   /**
    * 渲染 HTML 并截图
    */
-  private async renderHtml(target: RenderTarget, viewport: Viewport): Promise<Buffer> {
+  private async renderHtml(target: RenderTarget, viewport: Viewport): Promise<RenderedPage> {
     const browser = await this.initBrowser();
     const page: Page = await browser.newPage({ viewport });
     const runtimeErrors: string[] = [];
@@ -88,20 +94,50 @@ export class VisualValidator {
           throw new Error(`${label} browser runtime failed: ${runtimeErrors.join('; ')}`);
         }
         const mounted = await page.locator('#root').evaluate((root) => root.childElementCount > 0);
-        if (!mounted) {
-          throw new Error(`${label} render failed: #root is empty after mount`);
-        }
+        if (!mounted) throw new Error(`${label} render failed: #root is empty after mount`);
       }
 
-      return await page.screenshot({
-        fullPage: true,
-        type: 'png',
+      const layout = await page.evaluate(() => {
+        const root = document.documentElement;
+        const elements = Array.from(document.querySelectorAll(
+          'header,nav,main,aside,footer,section,article,img,button,input,h1,h2,h3,p,[data-testid]'
+        )).slice(0, 200).map((element, index) => {
+          const rect = element.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          const id = element.id ? `#${element.id}` : '';
+          const testId = element.getAttribute('data-testid');
+          const classes = Array.from(element.classList).slice(0, 3).join('.');
+          const selector = testId
+            ? `${element.tagName.toLowerCase()}[data-testid="${testId}"]`
+            : `${element.tagName.toLowerCase()}${id}${classes ? `.${classes}` : ''}#${index}`;
+          return {
+            selector,
+            tagName: element.tagName.toLowerCase(),
+            bounds: { x: rect.x, y: rect.y, width: rect.width, height: rect.height },
+            styles: {
+              color: style.color,
+              backgroundColor: style.backgroundColor,
+              fontSize: style.fontSize,
+              fontWeight: style.fontWeight,
+              padding: style.padding,
+              margin: style.margin,
+              gap: style.gap,
+              borderRadius: style.borderRadius,
+            },
+          };
+        }).filter((element) => element.bounds.width > 0 && element.bounds.height > 0);
+        return {
+          viewport: { width: window.innerWidth, height: window.innerHeight },
+          document: { width: root.scrollWidth, height: root.scrollHeight },
+          elements,
+        };
       });
+      const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
+      return { screenshot, layout };
     } finally {
       await page.close();
     }
-  }
-  /**
+  }  /**
    * 对比两张图片，返回相似度和差异区域
    */
   private async compareImages(
@@ -253,12 +289,11 @@ export class VisualValidator {
     ]);
 
     return {
-      desktop: desktop.toString('base64'),
-      tablet: tablet.toString('base64'),
-      mobile: mobile.toString('base64'),
+      desktop: desktop.screenshot.toString('base64'),
+      tablet: tablet.screenshot.toString('base64'),
+      mobile: mobile.screenshot.toString('base64'),
     };
-  }
-  /**
+  }  /**
    * 执行视觉校验
    */
   async validate(
@@ -291,10 +326,11 @@ export class VisualValidator {
         width: sourceMetadata.width || this.config.viewports.desktop.width,
         height: sourceMetadata.height || this.config.viewports.desktop.height,
       };
-      const generatedScreenshot = await this.renderHtml(target, sourceViewport);
+      const renderedPage = await this.renderHtml(target, sourceViewport);
+      const generatedScreenshot = renderedPage.screenshot;
 
       // 2. 对比图片
-      const { similarity, diffImage, regions, quality } = await this.compareImages(
+      const { similarity, diffImage, regions, quality, dimensions } = await this.compareImages(
         originalImageBuffer,
         generatedScreenshot
       );
@@ -316,6 +352,8 @@ export class VisualValidator {
       return {
         similarity,
         quality,
+        dimensions,
+        layout: renderedPage.layout,
         passed: passesQualityGate(quality, this.config),
         diffImage,
         regions,
@@ -327,4 +365,6 @@ export class VisualValidator {
     }
   }
 }
+
+
 

@@ -45,6 +45,8 @@ describe('VisualValidator framework rendering', () => {
     expect(result.screenshots.tablet?.length).toBeGreaterThan(100);
     expect(result.screenshots.mobile?.length).toBeGreaterThan(100);
     expect(Number.isFinite(result.similarity)).toBe(true);
+    expect(result.layout?.document.height).toBeGreaterThan(0);
+    expect(result.layout?.elements.some((element) => element.tagName === 'main' && element.bounds.width > 0 && element.styles.fontSize)).toBe(true);
   }, 60_000);
 
   it('captures all viewports from a built Vue SFC', async () => {
@@ -58,6 +60,8 @@ describe('VisualValidator framework rendering', () => {
     expect(result.screenshots.tablet?.length).toBeGreaterThan(100);
     expect(result.screenshots.mobile?.length).toBeGreaterThan(100);
     expect(Number.isFinite(result.similarity)).toBe(true);
+    expect(result.layout?.document.height).toBeGreaterThan(0);
+    expect(result.layout?.elements.some((element) => element.tagName === 'main' && element.bounds.width > 0 && element.styles.fontSize)).toBe(true);
   }, 60_000);
 
   it('uses extracted asset bytes for HTML rendering and comparison', async () => {
@@ -83,3 +87,4 @@ describe('VisualValidator framework rendering', () => {
     )).rejects.toThrow(/React.*(empty|mount|render)/i);
   }, 60_000);
 });
+

@@ -156,6 +156,27 @@ export interface GeneratedCode {
   assets?: GeneratedAsset[];
 }
 
+export interface LayoutElementSnapshot {
+  selector: string;
+  tagName: string;
+  bounds: { x: number; y: number; width: number; height: number };
+  styles: {
+    color: string;
+    backgroundColor: string;
+    fontSize: string;
+    fontWeight: string;
+    padding: string;
+    margin: string;
+    gap: string;
+    borderRadius: string;
+  };
+}
+
+export interface LayoutSnapshot {
+  viewport: { width: number; height: number };
+  document: { width: number; height: number };
+  elements: LayoutElementSnapshot[];
+}
 /** 视觉校验结果 */
 export interface ValidationResult {
   /** 相似度 0-100 */
@@ -174,6 +195,8 @@ export interface ValidationResult {
     tablet?: string;
     mobile?: string;
   };
+  /** 浏览器实际布局与计算样式 */
+  layout?: LayoutSnapshot;
   /** 原图与渲染图的实际尺寸及画布差值 */
   dimensions?: {
     original: { width: number; height: number };
@@ -299,4 +322,6 @@ export interface ConversionMetrics {
   repairIterations: number;
   cacheHit?: boolean;
 }
+
+
 

@@ -1,4 +1,4 @@
-import type { CodegenOptions, GeneratedAsset } from '../types.js';
+import type { CodegenOptions, GeneratedAsset, ValidationResult } from '../types.js';
 import { buildAssetManifestPrompt } from './asset-manifest.js';
 
 export function buildDirectGenerationPrompt(options: CodegenOptions, assets: GeneratedAsset[] = []): string {
@@ -64,10 +64,20 @@ function buildFrameworkContract(options: CodegenOptions): string {
 - 不使用 React、Vue、Ant Design 或 Element Plus 组件语法。
 - 页面加载后立即显示内容，不依赖外部脚本或异步接口。`;
 }
+function buildLayoutPrompt(layout: ValidationResult['layout']): string {
+  if (!layout) return '';
+  const snapshot = {
+    viewport: layout.viewport,
+    document: layout.document,
+    elements: layout.elements.slice(0, 80),
+  };
+  return `## 当前 DOM 布局与计算样式\n以下是浏览器真实边界框和样式，用于定位区域尺寸、位置和排版差异：\n${JSON.stringify(snapshot)}`;
+}
 export function buildVisualRepairPrompt(input: {
   currentCode: string;
   suggestions: string[];
   regions: Array<{ type: string; diffPercentage: number }>;
+  layout?: ValidationResult['layout'];
 }): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
@@ -78,6 +88,8 @@ export function buildVisualRepairPrompt(input: {
 ## 检测到的差异
 ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
+
+${buildLayoutPrompt(input.layout)}
 
 ## 当前代码
 ${input.currentCode}
@@ -93,6 +105,7 @@ export function buildVisualPatchPrompt(input: {
   currentCode: string;
   suggestions: string[];
   regions: Array<{ type: string; diffPercentage: number }>;
+  layout?: ValidationResult['layout'];
 }): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
@@ -103,6 +116,8 @@ export function buildVisualPatchPrompt(input: {
 ## 检测到的差异
 ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
+
+${buildLayoutPrompt(input.layout)}
 
 ## 当前代码
 ${input.currentCode}
@@ -125,3 +140,4 @@ ${input.currentCode}
 - 不修改无关区域，不改变已确认的业务逻辑。
 - 不把页面替换为图片，不添加外部依赖。`;
 }
+
