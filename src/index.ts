@@ -8,7 +8,7 @@ import { buildCodeGenerationPrompt, buildRepairPrompt } from './prompts/code-gen
 import { VisualValidator } from './validator/visual-validator.js';
 import { TokenMapper } from './codegen/token-mapper.js';
 import { parsePageStructure } from './structure-parser.js';
-import { buildDirectGenerationPrompt, buildVisualPatchPrompt } from './prompts/direct-generation.js';
+import { buildDirectGenerationPrompt, buildVisualPatchPrompt, buildVisualRepairPrompt } from './prompts/direct-generation.js';
 import { applyCodeEdits, parseCodeEdits } from './codegen/patch-applier.js';
 import { runAutoCorrection } from './validator/auto-corrector.js';
 import sharp from 'sharp';
@@ -17,6 +17,7 @@ import { assembleHtmlDocument, buildRegionGenerationPrompt } from './segmented-g
 import { buildTextExtractionPrompt, parseVisibleTexts } from './prompts/text-extraction.js';
 import { calculateTextCoverage } from './validator/text-coverage.js';
 import { passesQualityGate } from './validator/quality-gate.js';
+import { createRepairImageContext } from './validator/repair-images.js';
 import { buildAssetDetectionPrompt, parseAssetRegions } from './prompts/asset-detection.js';
 import { extractImageAssets } from './assets/asset-extractor.js';
 import { getDefaultModelConfig, getDefaultValidationConfig, getDefaultCodegenOptions } from './config.js';
@@ -404,34 +405,45 @@ ${invalidContent}`,
     imageBase64: string,
     currentCode: string,
     validation: ValidationResult
-  ): Promise<string> {
-    const images = [imageBase64];
-    if (validation.screenshots.desktop) images.push(validation.screenshots.desktop);
-    if (validation.diffImage) images.push(validation.diffImage);
-
-    const repaired = await createVisionClient(this.modelConfig).generateWithImages(
-      buildVisualPatchPrompt({
-        currentCode,
-        suggestions: validation.suggestions,
-        layout: validation.layout,
-        regions: validation.regions.map((region) => ({
-          type: region.type,
-          diffPercentage: region.diffPercentage,
-        })),
-      }),
-      images,
+  ): Promise<{ code: string; modelCalls: number }> {
+    const context = await createRepairImageContext({
+      originalBase64: imageBase64,
+      renderedBase64: validation.screenshots.desktop,
+      diffBase64: validation.diffImage,
+      regions: validation.regions,
+    });
+    const promptInput = {
+      currentCode,
+      suggestions: validation.suggestions,
+      layout: validation.layout,
+      focusRegion: context.focusRegion,
+      regions: validation.regions.map((region) => ({
+        type: region.type,
+        diffPercentage: region.diffPercentage,
+      })),
+    };
+    const visionClient = createVisionClient(this.modelConfig);
+    const repaired = await visionClient.generateWithImages(
+      buildVisualPatchPrompt(promptInput),
+      context.images,
       { temperature: 0.1, maxTokens: 16384 }
     );
 
     try {
       const edits = parseCodeEdits(repaired);
-      return applyCodeEdits(currentCode, edits).code;
+      return { code: applyCodeEdits(currentCode, edits).code, modelCalls: 1 };
     } catch (error) {
-      console.error('[design-to-code] Invalid visual patch; keeping current version', error);
-      return currentCode;
+      console.error('[design-to-code] Invalid visual patch; trying a vision-guided full-code candidate', error);
+      const candidate = await visionClient.generateWithImages(
+        buildVisualRepairPrompt(promptInput),
+        context.images,
+        { temperature: 0.1, maxTokens: 16384 }
+      );
+      const cleanCode = candidate.trim().replace(/^```\w*\n/, '').replace(/\n```$/, '');
+      if (!cleanCode) throw new Error('Visual repair returned an empty candidate');
+      return { code: cleanCode, modelCalls: 2 };
     }
   }
-
   /** Repair framework source from real compiler/browser diagnostics. */
   async repairCodeWithDiagnostics(
     currentCode: GeneratedCode,
@@ -625,8 +637,9 @@ ${invalidContent}`,
             maxIterations,
             score: (result) => result.quality?.qualityScore ?? result.similarity,
             repair: async (currentCode, currentValidation) => {
-              modelCalls += 1;
-              return this.repairWithVision(imageBase64, currentCode, currentValidation);
+              const repaired = await this.repairWithVision(imageBase64, currentCode, currentValidation);
+              modelCalls += repaired.modelCalls;
+              return repaired.code;
             },
             validate: async (candidateCode) => {
               const candidateStartedAt = Date.now();
@@ -757,4 +770,6 @@ export async function designToCode(
     await d2c.close();
   }
 }
+
+
 

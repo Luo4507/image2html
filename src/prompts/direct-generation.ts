@@ -1,4 +1,4 @@
-import type { CodegenOptions, GeneratedAsset, ValidationResult } from '../types.js';
+import type { CodegenOptions, GeneratedAsset, ValidationResult, DiffRegion } from '../types.js';
 import { buildAssetManifestPrompt } from './asset-manifest.js';
 
 export function buildDirectGenerationPrompt(options: CodegenOptions, assets: GeneratedAsset[] = []): string {
@@ -78,6 +78,7 @@ export function buildVisualRepairPrompt(input: {
   suggestions: string[];
   regions: Array<{ type: string; diffPercentage: number }>;
   layout?: ValidationResult['layout'];
+  focusRegion?: DiffRegion;
 }): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
@@ -86,6 +87,7 @@ export function buildVisualRepairPrompt(input: {
   return `请根据提供的原始设计图和当前渲染图，修复当前代码中的视觉差异。
 
 ## 检测到的差异
+${input.focusRegion ? `本轮优先修复区域：${JSON.stringify(input.focusRegion)}` : ''}
 ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
 
@@ -106,6 +108,7 @@ export function buildVisualPatchPrompt(input: {
   suggestions: string[];
   regions: Array<{ type: string; diffPercentage: number }>;
   layout?: ValidationResult['layout'];
+  focusRegion?: DiffRegion;
 }): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
@@ -114,6 +117,7 @@ export function buildVisualPatchPrompt(input: {
   return `请根据原图、当前渲染图和差异图，为当前代码生成最小范围的精确补丁。
 
 ## 检测到的差异
+${input.focusRegion ? `本轮优先修复区域：${JSON.stringify(input.focusRegion)}` : ''}
 ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
 
@@ -140,4 +144,5 @@ ${input.currentCode}
 - 不修改无关区域，不改变已确认的业务逻辑。
 - 不把页面替换为图片，不添加外部依赖。`;
 }
+
 
