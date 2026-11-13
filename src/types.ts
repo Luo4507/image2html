@@ -174,6 +174,13 @@ export interface ValidationResult {
     tablet?: string;
     mobile?: string;
   };
+  /** 原图与渲染图的实际尺寸及画布差值 */
+  dimensions?: {
+    original: { width: number; height: number };
+    generated: { width: number; height: number };
+    widthDifference: number;
+    heightDifference: number;
+  };
   /** 内容区域和边缘感知质量指标 */
   quality?: VisualQualityMetrics;
   textCoverage?: number;
@@ -292,3 +299,4 @@ export interface ConversionMetrics {
   repairIterations: number;
   cacheHit?: boolean;
 }
+

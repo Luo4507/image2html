@@ -112,6 +112,7 @@ export class VisualValidator {
     diffImage: string;
     regions: DiffRegion[];
     quality: VisualQualityMetrics;
+    dimensions: NonNullable<ValidationResult['dimensions']>;
   }> {
     // 统一尺寸
     const original = sharp(originalBuffer);
@@ -121,15 +122,35 @@ export class VisualValidator {
     const width = originalMeta.width || 1440;
     const height = originalMeta.height || 900;
 
-    const originalResized = await original.resize(width, height).png().toBuffer();
-    const generatedResized = await generated.resize(width, height).png().toBuffer();
+    const generatedMeta = await generated.metadata();
+    const generatedWidth = generatedMeta.width || width;
+    const generatedHeight = generatedMeta.height || height;
+    const dimensions: NonNullable<ValidationResult['dimensions']> = {
+      original: { width, height },
+      generated: { width: generatedWidth, height: generatedHeight },
+      widthDifference: width - generatedWidth,
+      heightDifference: height - generatedHeight,
+    };
+    const cropWidth = Math.min(width, generatedWidth);
+    const cropHeight = Math.min(height, generatedHeight);
+    const generatedCanvas = await sharp(generatedBuffer)
+      .extract({ left: 0, top: 0, width: cropWidth, height: cropHeight })
+      .extend({
+        top: 0,
+        left: 0,
+        right: width - cropWidth,
+        bottom: height - cropHeight,
+        background: '#ffffff',
+      })
+      .png()
+      .toBuffer();
 
-    // 获取像素数据
-    const originalPixels = await sharp(originalResized)
+    // 原图保持不变，渲染图只裁剪/补白，不进行非等比拉伸。
+    const originalPixels = await sharp(originalBuffer)
       .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true });
-    const generatedPixels = await sharp(generatedResized)
+    const generatedPixels = await sharp(generatedCanvas)
       .ensureAlpha()
       .raw()
       .toBuffer({ resolveWithObject: true });
@@ -182,6 +203,7 @@ export class VisualValidator {
       diffImage: diffImage.toString('base64'),
       regions,
       quality,
+      dimensions,
     };
   }
 
@@ -305,3 +327,4 @@ export class VisualValidator {
     }
   }
 }
+
