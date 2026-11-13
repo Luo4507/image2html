@@ -238,11 +238,13 @@ pnpm verify:frameworks -- examples/fixtures/demo/login.png output/framework-veri
 
 | 框架 | 整图相似度 | 质量门禁 |
 | --- | ---: | --- |
-| HTML | 92.36% | 未通过 |
-| React | 93.50% | 未通过 |
-| Vue | 93.44% | 未通过 |
+| HTML | 92.04% | 未通过 |
+| React | 93.04% | 未通过 |
+| Vue | 92.99% | 未通过 |
 
 构建可运行与视觉质量通过是两个独立结论；当前内容/边缘门禁仍需继续优化，不能把成功生成工程报告为高保真通过。
+
+视觉一致性回测还覆盖掘金长页面：定位后的分段生成 React 为 92.73%，Vue 为 92.24%（无效区域触发单页回退）；直接修复的 Vue 为 92.63%。校验结果包含原图/渲染尺寸、DOM 边界框和计算样式，所有上述结果的严格质量门禁仍未通过。
 
 ```bash
 # 完整模型生成与视觉校验
@@ -294,4 +296,3 @@ image2html/
 ## License
 
 [MIT](LICENSE) © 2026 image2html contributors
-

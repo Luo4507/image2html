@@ -311,7 +311,7 @@ ${invalidContent}`,
 
     const assembled = options.framework === 'html'
       ? assembleHtmlDocument('GeneratedPage', fragments)
-      : assembleFrameworkRegionCode(options, fragments);
+      : assembleFrameworkRegionCode(options, fragments, regions);
     onProgress?.({
       stage: 'preview',
       message: '分段页面已组合',
@@ -772,7 +772,3 @@ export async function designToCode(
     await d2c.close();
   }
 }
-
-
-
-

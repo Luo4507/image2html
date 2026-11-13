@@ -9,6 +9,9 @@ export function buildCompileRepairPrompt(input: {
   const dependencies = options.framework === 'react'
     ? ['react', 'react-dom', ...(options.componentLibrary === 'antd' ? ['antd', '@ant-design/icons'] : [])]
     : ['vue', ...(options.componentLibrary === 'element' ? ['element-plus', '@element-plus/icons-vue'] : [])];
+  const iconContract = options.framework === 'react'
+    ? 'Ant Design 图标只能使用 SearchOutlined、ArrowUpOutlined、ArrowDownOutlined、ArrowRightOutlined、PlusOutlined、UserOutlined、FileTextOutlined、MenuOutlined、SettingOutlined、StarOutlined、ClockCircleOutlined、ReloadOutlined、UploadOutlined、DownloadOutlined、EditOutlined、DeleteOutlined、MoreOutlined、RiseOutlined。'
+    : 'Element Plus 图标只能使用 Search、ArrowUp、ArrowDown、ArrowRight、Plus、User、Document、Menu、Setting、Star、Clock、Refresh、Upload、Download、Edit、Delete、More、TrendCharts。';
   const frameworkContract = options.framework === 'react'
     ? '保持默认导出 React 页面组件；TypeScript 开启时返回合法 TSX，否则返回合法 JSX。'
     : '保持合法 Vue 3 SFC，包含 template、script setup 和必要 style；TypeScript 开启时提供合法类型。';
@@ -25,6 +28,7 @@ ${input.current.code}
 - ${frameworkContract}
 - 解决诊断中的根因，不删除整段页面来规避错误，不放宽 TypeScript 配置。
 - 仅允许这些外部依赖：${dependencies.join('、')}；不得创造不存在的导出或依赖。
+- ${iconContract} 不确定时使用文字或 CSS，禁止猜测图标名称。
 - 保留已有页面结构、文字、样式和资源 /assets 引用。
 - 输出修复后的完整源码文件，不要 Markdown、JSON、解释或分析。`;
 }

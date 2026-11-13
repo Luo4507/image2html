@@ -69,7 +69,10 @@ function buildRegionTargetContract(region: PlannedRegion, options: CodegenOption
 export function assembleFrameworkRegionCode(
   options: CodegenOptions,
   fragments: string[],
+  regions: PlannedRegion[] = [],
 ): string {
+  const pageHeight = Math.max(0, ...regions.map((region) => region.endY));
+
   if (options.framework === 'react') {
     const imports = new Set<string>();
     const componentNames: string[] = [];
@@ -83,7 +86,15 @@ export function assembleFrameworkRegionCode(
       componentNames.push(match[1]);
       return withoutImports;
     });
-    return `${Array.from(imports).join('\n')}\n\n${components.join('\n\n')}\n\nexport default function GeneratedPage() {\n  return (\n    <main>\n${componentNames.map((name) => `      <${name} />`).join('\n')}\n    </main>\n  );\n}`;
+    const renderedRegions = componentNames.map((name, index) => {
+      const region = regions[index];
+      if (!region) return `      <${name} />`;
+      return `      <div data-region="${region.id}" style={{ position: 'absolute', top: ${region.startY}, left: 0, width: '100%' }}><${name} /></div>`;
+    });
+    const rootStyle = regions.length
+      ? ` style={{ position: 'relative', minHeight: ${pageHeight} }}`
+      : '';
+    return `${Array.from(imports).join('\n')}\n\n${components.join('\n\n')}\n\nexport default function GeneratedPage() {\n  return (\n    <main${rootStyle}>\n${renderedRegions.join('\n')}\n    </main>\n  );\n}`;
   }
 
   if (options.framework === 'vue') {
@@ -100,7 +111,14 @@ export function assembleFrameworkRegionCode(
       if (style) styles.push(style[1].trim());
     }
     const scriptLines = Array.from(new Set(scripts.flatMap((script) => script.split('\n').map((line) => line.trim()).filter(Boolean))));
-    return `<template>\n<main>\n${templates.join('\n')}\n</main>\n</template>\n\n<script setup${options.typescript ? ' lang="ts"' : ''}>\n${scriptLines.join('\n')}\n</script>\n\n<style>\n${styles.join('\n\n')}\n</style>`;
+    const positionedTemplates = templates.map((template, index) => {
+      const region = regions[index];
+      return region
+        ? `<div data-region="${region.id}" style="position:absolute;top:${region.startY}px;left:0;width:100%">${template}</div>`
+        : template;
+    });
+    const rootStyle = regions.length ? ` style="position:relative;min-height:${pageHeight}px"` : '';
+    return `<template>\n<main${rootStyle}>\n${positionedTemplates.join('\n')}\n</main>\n</template>\n\n<script setup${options.typescript ? ' lang="ts"' : ''}>\n${scriptLines.join('\n')}\n</script>\n\n<style>\n${styles.join('\n\n')}\n</style>`;
   }
 
   return assembleHtmlDocument('GeneratedPage', fragments);

@@ -17,6 +17,7 @@ const targets = [
 
 const requestedTargets = process.argv[4]?.split(',').filter(Boolean);
 const assetMode = process.argv[5] === 'extract' ? 'extract' : 'none';
+const layoutMode = process.argv[6] === 'segmented' ? 'segmented' : 'single';
 const selectedTargets = requestedTargets?.length
   ? targets.filter((target) => requestedTargets.includes(target.name))
   : targets;
@@ -41,6 +42,7 @@ for (const target of selectedTargets) {
       pipeline: 'direct',
       qualityMode: 'balanced',
       assetMode,
+      layoutMode,
     };
     const result = await converter.convert({
       image: { source: imagePath, type: 'path' },
