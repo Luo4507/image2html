@@ -21,11 +21,23 @@ export async function createRepairImageContext(input: {
     const metadata = await image.metadata();
     const imageWidth = metadata.width || 0;
     const imageHeight = metadata.height || 0;
-    const left = Math.max(0, Math.min(focusRegion.x, imageWidth - 1));
-    const top = Math.max(0, Math.min(focusRegion.y, imageHeight - 1));
-    const width = Math.max(1, Math.min(focusRegion.width, imageWidth - left));
-    const height = Math.max(1, Math.min(focusRegion.height, imageHeight - top));
-    const cropped = await image.extract({ left, top, width, height }).png().toBuffer();
+    const regionLeft = Math.max(0, Math.min(focusRegion.x, imageWidth - 1));
+    const regionTop = Math.max(0, Math.min(focusRegion.y, imageHeight - 1));
+    const regionWidth = Math.max(1, Math.min(focusRegion.width, imageWidth - regionLeft));
+    const regionHeight = Math.max(1, Math.min(focusRegion.height, imageHeight - regionTop));
+    const width = Math.min(imageWidth, Math.max(16, regionWidth));
+    const height = Math.min(imageHeight, Math.max(16, regionHeight));
+    const centerX = regionLeft + regionWidth / 2;
+    const centerY = regionTop + regionHeight / 2;
+    const left = Math.max(0, Math.min(Math.floor(centerX - width / 2), imageWidth - width));
+    const top = Math.max(0, Math.min(Math.floor(centerY - height / 2), imageHeight - height));
+    const cropped = await image.extract({ left, top, width, height }).extend({
+      top: 0,
+      left: 0,
+      right: Math.max(0, 16 - width),
+      bottom: Math.max(0, 16 - height),
+      background: '#ffffff',
+    }).png().toBuffer();
     return cropped.toString('base64');
   }));
   return { images, focusRegion };

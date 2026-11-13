@@ -35,6 +35,7 @@ export function getDefaultValidationConfig(): ValidationConfig {
       mobile: { width: 375, height: 812 },
     },
     maxRetryCount: parseInt(process.env.MAX_RETRY_COUNT || '3', 10),
+    navigationTimeoutMs: parseInt(process.env.NAVIGATION_TIMEOUT_MS || '30000', 10),
   };
 }
 

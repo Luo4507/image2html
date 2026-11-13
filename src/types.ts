@@ -176,6 +176,9 @@ export interface LayoutSnapshot {
   viewport: { width: number; height: number };
   document: { width: number; height: number };
   elements: LayoutElementSnapshot[];
+  pendingRequests?: string[];
+  failedRequests?: string[];
+  navigationWarning?: string;
 }
 /** 视觉校验结果 */
 export interface ValidationResult {
@@ -249,6 +252,7 @@ export interface ValidationConfig {
     mobile: Viewport;
   };
   maxRetryCount: number;
+  navigationTimeoutMs?: number;
 }
 
 /** 模型配置 */

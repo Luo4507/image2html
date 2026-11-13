@@ -32,7 +32,7 @@
 | React 18 | `antd`、`none` | `tailwind`、`inline` | TypeScript 检查、Vite 构建、Playwright 截图 |
 | Vue 3 | `element`、`none` | `tailwind`、`inline` | `vue-tsc` 检查、Vite 构建、Playwright 截图 |
 
-非法组合会在模型调用前报错，例如 React + Element Plus、Vue + Ant Design，或 React/Vue + SCSS/CSS Modules。React TypeScript 输出 `.tsx`，JavaScript 输出 `.jsx`；Vue 输出合法 SFC。React/Vue 不再直接交给 `page.setContent()`，而是在临时 Vite 工程中完成真实构建和页面挂载后再进行视觉比较。
+非法组合会在模型调用前报错，例如 React + Element Plus、Vue + Ant Design，或 React/Vue + SCSS/CSS Modules。 页面渲染使用 DOM 就绪、根节点、字体和首帧判断，支持超时后恢复并记录 pending/failed 请求；视觉修复区域裁剪会以差异中心扩展到至少 16×16，避免小区域模型输入错误。React TypeScript 输出 `.tsx`，JavaScript 输出 `.jsx`；Vue 输出合法 SFC。React/Vue 不再直接交给 `page.setContent()`，而是在临时 Vite 工程中完成真实构建和页面挂载后再进行视觉比较。
 
 使用 `--project` 可导出完整 Vite 工程，包含 `package.json`、入口文件、Vite/TypeScript 配置和对应样式配置：
 

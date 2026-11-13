@@ -20,6 +20,18 @@ import { aggregateDiffRegions } from './region-diff.js';
 import { passesQualityGate } from './quality-gate.js';
 import { startFrameworkProject, type RunningFrameworkProject } from '../runtime/vite-runtime.js';
 
+async function evaluateWithRetry<T>(page: Page, operation: () => T | Promise<T>): Promise<T> {
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    try {
+      return await page.evaluate(operation);
+    } catch (error) {
+      const retryable = error instanceof Error && error.message.includes('Execution context was destroyed');
+      if (!retryable || attempt === 2) throw error;
+      await page.waitForTimeout(100);
+    }
+  }
+  throw new Error('Unable to evaluate page after navigation recovery');
+}
 interface RenderedPage {
   screenshot: Buffer;
   layout: LayoutSnapshot;
@@ -76,16 +88,35 @@ export class VisualValidator {
   private async renderHtml(target: RenderTarget, viewport: Viewport): Promise<RenderedPage> {
     const browser = await this.initBrowser();
     const page: Page = await browser.newPage({ viewport });
+    page.setDefaultNavigationTimeout(this.config.navigationTimeoutMs ?? 30_000);
     const runtimeErrors: string[] = [];
+    const pendingRequests = new Set<string>();
+    const failedRequests: string[] = [];
+    let navigationWarning: string | undefined;
     page.on('pageerror', (error) => runtimeErrors.push(error.message));
+    page.on('request', (request) => pendingRequests.add(request.url()));
+    page.on('requestfinished', (request) => pendingRequests.delete(request.url()));
+    page.on('requestfailed', (request) => {
+      pendingRequests.delete(request.url());
+      failedRequests.push(`${request.url()}: ${request.failure()?.errorText || 'failed'}`);
+    });
 
     try {
-      if (target.isUrl) {
-        await page.goto(target.content, { waitUntil: 'networkidle' });
-      } else {
-        await page.setContent(target.content, { waitUntil: 'networkidle' });
+      try {
+        if (target.isUrl) {
+          await page.goto(target.content, { waitUntil: 'domcontentloaded' });
+        } else {
+          await page.setContent(target.content, { waitUntil: 'networkidle' });
+        }
+      } catch (error) {
+        if (!(error instanceof Error) || error.name !== 'TimeoutError') throw error;
+        navigationWarning = `Navigation timeout after DOM readiness wait: ${error.message}`;
+        console.warn(`[design-to-code] ${navigationWarning}`);
       }
-      await page.evaluate(() => document.fonts.ready);
+      await evaluateWithRetry(page, () => document.fonts.ready);
+      await evaluateWithRetry(page, () => new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      }));
       await page.waitForTimeout(500);
 
       if (target.framework && target.framework !== 'html') {
@@ -93,11 +124,11 @@ export class VisualValidator {
         if (runtimeErrors.length > 0) {
           throw new Error(`${label} browser runtime failed: ${runtimeErrors.join('; ')}`);
         }
-        const mounted = await page.locator('#root').evaluate((root) => root.childElementCount > 0);
+        const mounted = await page.waitForFunction(() => Boolean((document.querySelector('#root')?.childElementCount || 0) > 0), { timeout: 2000 }).then(() => true).catch(() => false);
         if (!mounted) throw new Error(`${label} render failed: #root is empty after mount`);
       }
 
-      const layout = await page.evaluate(() => {
+      const layout = await evaluateWithRetry(page, () => {
         const root = document.documentElement;
         const elements = Array.from(document.querySelectorAll(
           'header,nav,main,aside,footer,section,article,img,button,input,h1,h2,h3,p,[data-testid]'
@@ -133,11 +164,20 @@ export class VisualValidator {
         };
       });
       const screenshot = await page.screenshot({ fullPage: true, type: 'png' });
-      return { screenshot, layout };
+      return {
+        screenshot,
+        layout: {
+          ...layout,
+          pendingRequests: Array.from(pendingRequests),
+          failedRequests,
+          navigationWarning,
+        },
+      };
     } finally {
       await page.close();
     }
-  }  /**
+  }
+  /**
    * 对比两张图片，返回相似度和差异区域
    */
   private async compareImages(
@@ -242,7 +282,6 @@ export class VisualValidator {
       dimensions,
     };
   }
-
   /**
    * 生成修复建议
    */
