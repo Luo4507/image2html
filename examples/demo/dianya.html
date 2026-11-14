@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电鸭 - 找人·找机会</title>
+  <style>
+    :root {
+      --primary: #f9b43d;
+      --primary-dark: #e69a2a;
+      --primary-light: #fff5e6;
+      --text-primary: #333;
+      --text-secondary: #666;
+      --text-gray: #999;
+      --border-color: #eee;
+      --bg-light: #f8f8f8;
+      --bg-white: #fff;
+      --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --radius-lg: 8px;
+      --spacing-xs: 4px;
+      --spacing-sm: 8px;
+      --spacing-md: 16px;
+      --spacing-lg: 24px;
+      --spacing-xl: 32px;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--text-primary);
+      background-color: var(--bg-light);
+      line-height: 1.6;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 var(--spacing-md);
+    }
+
+    /* Header */
+    header {
+      background-color: var(--bg-white);
+      border-bottom: 2px solid var(--primary);
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, #ff9800, #f9b43d);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: white;
+      font-size: 18px;
+    }
+
+    .logo-text {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .logo-text span {
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    .nav-links a.active {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-input {
+      width: 200px;
+      padding: 8px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .auth-buttons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-white);
+      color: var(--text-primary);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+
+    /* Hero Section */
+    .hero {
+      background-color: var(--bg-white);
+      padding: var(--spacing-lg) 0;
+      margin-bottom: var(--spacing-lg);
+    }
+
+    .hero-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: var(--spacing-md);
+    }
+
+    .hero-left {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero-title span {
+      color: var(--primary);
+    }
+
+    .hero-desc {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: var(--spacing-md);
+      margin-top: 16px;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-number {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--text-gray);
+    }
+
+    .hero-btn {
+      margin-top: 20px;
+      padding: 8px 24px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Main Content */
+    .main-content {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Featured Section */
+    .section {
+      background-color: var(--bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 4px;
+      height: 16px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    .section-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn-small {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-outline-small {
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-white);
+      color: var(--text-primary);
+    }
+
+    .btn-outline-small:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .featured-list {
+      padding: var(--spacing-md);
+    }
+
+    .featured-item {
+      display: flex;
+      gap: var(--spacing-md);
+      padding: var(--spacing-md) 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .featured-item:last-child {
+      border-bottom: none;
+    }
+
+    .featured-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      background-color: #f0f0f0;
+      flex-shrink: 0;
+    }
+
+    .featured-icon.logo1 {
+      background: linear-gradient(135deg, #2196f3, #1e88e5);
+      color: white;
+    }
+
+    .featured-icon.logo2 {
+      background: linear-gradient(135deg, #4caf50, #43a047);
+      color: white;
+    }
+
+    .featured-content {
+      flex: 1;
+    }
+
+    .featured-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .featured-title .tag {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    .featured-desc {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .featured-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-gray);
+    }
+
+    .meta-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .meta-item.up {
+      color: #e91e63;
+    }
+
+    .meta-item.up::before {
+      content: "↑";
+      font-size: 12px;
+    }
+
+    .meta-item.view {
+      color: var(--text-gray);
+    }
+
+    .meta-item.view::before {
+      content: "👁️";
+      font-size: 12px;
+    }
+
+    .meta-item.status {
+      color: #4caf50;
+    }
+
+    .meta-item.status::before {
+      content: "✓";
+    }
+
+    .meta-item.link {
+      color: var(--primary);
+    }
+
+    .meta-item.link::before {
+      content: "🔗";
+    }
+
+    /* Ranking Section */
+    .ranking-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .ranking-title {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ranking-count {
+      color: var(--text-gray);
+      font-size: 14px;
+    }
+
+    .filter-section {
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      color: var(--text-gray);
+      min-width: 60px;
+    }
+
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn {
+      padding: 6px 12px;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      background-color: var(--bg-white);
+      color: var(--text-primary);
+      cursor: pointer;
+    }
+
+    .filter-btn.active {
+      background-color: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .ranking-list {
+      padding: var(--spacing-md);
+    }
+
+    .ranking-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .ranking-item:last-child {
+      border-bottom: none;
+    }
+
+    .ranking-rank {
+      width: 32px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-gray);
+      text-align: center;
+    }
+
+    .ranking-rank.top1 {
+      color: #e91e63;
+    }
+
+    .ranking-rank.top2 {
+      color: #795548;
+    }
+
+    .ranking-rank.top3 {
+      color: #9e9e9e;
+    }
+
+    .ranking-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 var(--spacing-sm);
+      flex-shrink: 0;
+    }
+
+    .ranking-icon.top1 {
+      background: linear-gradient(135deg, #e91e63, #c62828);
+      color: white;
+    }
+
+    .ranking-icon.top2 {
+      background: linear-gradient(135deg, #795548, #5d4037);
+      color: white;
+    }
+
+    .ranking-icon.top3 {
+      background: linear-gradient(135deg, #9e9e9e, #757575);
+      color: white;
+    }
+
+    .ranking-content {
+      flex: 1;
+    }
+
+    .ranking-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ranking-title .tag {
+      background-color: var(--primary-light);
+      color: var(--primary);
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: var(--radius-sm);
+    }
+
+    .ranking-desc {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    .ranking-meta {
+      display: flex;
+      gap: 16px;
+      font-size: 12px;
+      color: var(--text-gray);
+    }
+
+    .ranking-meta .up {
+      color: #e91e63;
+    }
+
+    .ranking-meta .up::before {
+      content: "↑";
+      font-size: 12px;
+    }
+
+    .ranking-meta .view {
+      color: var(--text-gray);
+    }
+
+    .ranking-meta .view::before {
+      content: "👁️";
+      font-size: 12px;
+    }
+
+    .ranking-meta .time {
+      color: var(--text-gray);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-lg);
+    }
+
+    .sidebar-card {
+      background-color: var(--bg-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow: hidden;
+    }
+
+    .sidebar-card h3 {
+      font-size: 16px;
+      font-weight: 700;
+      padding: var(--spacing-md);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .sidebar-card h3::before {
+      content: "";
+      width: 4px;
+      height: 16px;
+      background-color: var(--primary);
+      border-radius: 2px;
+    }
+
+    .sidebar-content {
+      padding: var(--spacing-md);
+    }
+
+    .publish-cta {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 20px;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .publish-cta p {
+      margin-bottom: 16px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .btn-publish {
+      background-color: white;
+      color: var(--primary);
+      border: none;
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .rules-list {
+      list-style: none;
+    }
+
+    .rules-list li {
+      margin-bottom: 16px;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .rules-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: bold;
+    }
+
+    .rules-section {
+      margin-bottom: 20px;
+    }
+
+    .rules-section h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .job-recommend {
+      background-color: var(--bg-light);
+      padding: 16px;
+      border-radius: var(--radius-md);
+    }
+
+    .job-recommend h4 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .job-recommend p {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Footer */
+    footer {
+      margin-top: var(--spacing-xl);
+      padding: var(--spacing-lg) 0;
+      text-align: center;
+      color: var(--text-gray);
+      font-size: 12px;
+    }
+
+    /* Icons */
+    .icon-up {
+      color: #e91e63;
+      font-size: 12px;
+      margin-right: 4px;
+    }
+
+    .icon-view {
+      color: var(--text-gray);
+      font-size: 12px;
+      margin-right: 4px;
+    }
+
+    .icon-status {
+      color: #4caf50;
+      font-size: 12px;
+      margin-right: 4px;
+    }
+
+    .icon-link {
+      color: var(--primary);
+      font-size: 12px;
+      margin-right: 4px;
+    }
+
+    /* Accessibility */
+    [role="button"] {
+      cursor: pointer;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <div class="logo">
+          <div class="logo-icon">🦆</div>
+          <div class="logo-text">电鸭 <span>·</span> 找人·找机会</div>
+        </div>
+        <nav class="nav-links">
+          <a href="#" aria-current="page">广场</a>
+          <a href="#">机会</a>
+          <a href="#" class="active">项目</a>
+          <a href="#">群组</a>
+        </nav>
+        <div class="search-bar">
+          <input type="text" class="search-input" placeholder="请输入关键字" aria-label="搜索关键字">
+          <button class="search-btn" aria-label="搜索">
+            🔍
+          </button>
+        </div>
+        <div class="auth-buttons">
+          <button class="btn btn-outline">登录</button>
+          <button class="btn btn-primary">注册</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <h1 class="hero-title">发布你的「<span>项目 & 故事</span>」</h1>
+          <p class="hero-desc">会为你带来潜在的合作 / 连接 / 机会</p>
+          <div class="hero-stats">
+            <div class="stat-item">
+              <div class="stat-number">1,118</div>
+              <div class="stat-label">项目</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">968</div>
+              <div class="stat-label">项目故事</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">66.9w</div>
+              <div class="stat-label">曝光</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-number">167</div>
+              <div class="stat-label">合作</div>
+            </div>
+          </div>
+        </div>
+        <button class="hero-btn">
+          📌 我也要置顶推广
+        </button>
+      </div>
+    </section>
+
+    <!-- Main Content Grid -->
+    <div class="main-content">
+      <!-- Left Column -->
+      <div>
+        <!-- Featured Section -->
+        <section class="section">
+          <div class="section-header">
+            <h2 class="section-title">置顶推广中</h2>
+            <div class="section-actions">
+              <button class="btn btn-outline-small btn-outline">我也要置顶推广</button>
+            </div>
+          </div>
+          <div class="featured-list">
+            <div class="featured-item">
+              <div class="featured-icon logo1">C</div>
+              <div class="featured-content">
+                <h3 class="featured-title">
+                  太公钓点
+                  <span class="tag">置顶推广</span>
+                </h3>
+                <p class="featured-desc">太公钓点是帮助钓鱼爱好者找到好钓点与智能出钓指南，现...</p>
+                <div class="featured-meta">
+                  <span class="meta-item up">↑ 3</span>
+                  <span class="meta-item up">推广期 +2</span>
+                  <span class="meta-item view">52 看过</span>
+                </div>
+              </div>
+            </div>
+            <div class="featured-item">
+              <div class="featured-icon logo2">🦆</div>
+              <div class="featured-content">
+                <h3 class="featured-title">
+                  电鸭：找人找机会的自由工作社区
+                  <span class="tag">置顶推广</span>
+                </h3>
+                <p class="featured-desc">电鸭社区(eleduck.com)是国内影响力最大的自由工作社区，...</p>
+                <div class="featured-meta">
+                  <span class="meta-item up">↑ 37</span>
+                  <span class="meta-item up">推广期 +0</span>
+                  <span class="meta-item view">552 看过</span>
+                  <span class="meta-item status">正在找人 →</span>
+                  <span class="meta-item link">访问项目</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Ranking Section -->
+        <section class="section">
+          <div class="ranking-header">
+            <h2 class="ranking-title">项目排行榜</h2>
+            <div class="ranking-count">共 1,118 个项目</div>
+          </div>
+          
+          <!-- Filters -->
+          <div class="filter-section">
+            <div class="filter-group">
+              <span class="filter-label">按领域</span>
+              <div class="filter-options">
+                <button class="filter-btn active">全部</button>
+                <button class="filter-btn">AI/人工智能</button>
+                <button class="filter-btn">企业服务</button>
+                <button class="filter-btn">技术/开源</button>
+                <button class="filter-btn">内容/媒体</button>
+                <button class="filter-btn">跨境/出海</button>
+                <button class="filter-btn">区块链&Web3</button>
+                <button class="filter-btn">收起</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label">按类型</span>
+              <div class="filter-options">
+                <button class="filter-btn active">全部</button>
+                <button class="filter-btn">个人项目</button>
+                <button class="filter-btn">公司项目</button>
+                <button class="filter-btn">开源项目</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ranking Tabs -->
+          <div class="ranking-tabs">
+            <div style="display: flex; gap: 24px; padding: 0 var(--spacing-md) var(--spacing-md);">
+              <div>
+                <strong>最热</strong>
+                <span style="color: var(--text-gray); margin-left: 8px;">近 30 天顶得最多</span>
+              </div>
+              <div>
+                <strong>最新</strong>
+                <span style="color: var(--text-gray); margin-left: 8px;">按发布时间</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ranking List -->
+          <div class="ranking-list">
+            <!-- Hot Ranking -->
+            <div style="margin-bottom: 24px;">
+              <div class="ranking-item">
+                <div class="ranking-rank top1">1</div>
+                <div class="ranking-icon top1">🎣</div>
+                <div class="ranking-content">
+                  <h3 class="ranking-title">
+                    墨斗-专注AI写小说的工具
+                    <span class="tag">一人公司项目</span>
+                  </h3>
+                  <p class="ranking-desc">专注于AI辅助网络小说...</p>
+                  <div class="ranking-meta">
+                    <span class="up">↑ 64</span>
+                    <span class="view">2,029 看过</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="ranking-item">
+                <div class="ranking-rank top2">2</div>
+                <div class="ranking-icon top2">🦆</div>
+                <div class="ranking-content">
+                  <h3 class="ranking-title">
+                    电鸭：找人找...
+                    <span class="tag">置顶推广</span>
+                  </h3>
+                  <p class="ranking-desc">电鸭社区(eleduck.com)是国内影响力最大的...</p>
+                  <div class="ranking-meta">
+                    <span class="status">正在找人 →</span>
+                    <span class="up">↑ 37</span>
+                    <span class="view">552 看过</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="ranking-item">
+                <div class="ranking-rank top3">3</div>
+                <div class="ranking-icon top3">外</div>
+                <div class="ranking-content">
+                  <h3 class="ranking-title">
+                    外贸获客
+                  </h3>
+                  <p class="ranking-desc">基于全球企业数据 领英数据 高管数据 脸书...</p>
+                  <div class="ranking-meta">
+                    <span class="up">↑ 17</span>
+                    <span class="view">406 看过</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Latest Ranking -->
+            <div>
+              <div class="ranking-item">
+                <div class="ranking-rank">1</div>
+                <div class="ranking-icon" style="background: #f0f0f0; color: #666;">基</div>
+                <div class="ranking-content">
+                  <h3 class="ranking-title">
+                    基于LangGraph的智能预约agent平台
+                  </h3>
+                  <p class="ranking-desc">基于 Python + FastAPI + MySQL + LangGr...</p>
+                  <div class="ranking-meta">
+                    <span class="up">↑ 0</span>
+                    <span class="time">9 小时前</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="ranking-item">
+                <div class="ranking-rank">2</div>
+                <div class="ranking-icon" style="background: #f0f0f0; color: #666;">乙</div>
+                <div class="ranking-content">
+                  <h3 class="ranking-title">
+                    乙伴
+                  </h3>
+                  <p class="ranking-desc">面向移动端和PC端提供连续对话、长期记...</p>
+                  <div class="ranking-meta">
+                    <span class="up">↑ 1</span>
+                    <span class="time">11 小时前</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="ranking-item">
+                <div class="ranking-rank">3</div>
+                <div class="ranking-icon" style="background: #f0f0f0; color: #666;">A</div>
+                <div class="ranking-content">
+                  <h3 class="ranking-title">
+                    AiShell
+                  </h3>
+                  <p class="ranking-desc">根据专家经验学习一次，后续可无限复制...</p>
+                  <div class="ranking-meta">
+                    <span class="up">↑ 0</span>
+                    <span class="time">12 小时前</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column (Sidebar) -->
+      <div class="sidebar">
+        <!-- Publish Card -->
+        <div class="sidebar-card">
+          <h3>发布你的项目</h3>
+          <div class="sidebar-content">
+            <div class="publish-cta">
+              <p>把你在做的项目放到项目广场，被顶得越多，排得越靠前；想合作的人也能顺着项目找到你。</p>
+              <button class="btn-publish">登录并发布项目</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rules Card -->
+        <div class="sidebar-card">
+          <h3>项目规则</h3>
+          <div class="sidebar-content">
+            <ul class="rules-list">
+              <li class="rules-section">
+                <h4>【发布及排序】</h4>
+                <ul style="list-style-type: disc; padding-left: 20px; margin-top: 8px;">
+                  <li>社区用户最多可发布 2 个(暂定)项目到项目广场</li>
+                  <li>↑ 表示支持和热度，↑ 的数量决定项目排序</li>
+                </ul>
+              </li>
+              <li class="rules-section">
+                <h4>【支持与电量】</h4>
+                <ul style="list-style-type: disc; padding-left: 20px; margin-top: 8px;">
+                  <li>每个用户每天可以 ↑ 三个不同的项目</li>
+                  <li>↑ 只影响该项目排序，不消耗用户自身任何电量</li>
+                </ul>
+              </li>
+              <li class="rules-section">
+                <h4>【分享与置顶】</h4>
+                <ul style="list-style-type: disc; padding-left: 20px; margin-top: 8px;">
+                  <li>项目可以通过分享被更多人看到和支持</li>
+                  <li>作者也可以通过「置顶推广」来增加项目曝光</li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Job Recommendation -->
+        <div class="sidebar-card">
+          <h3>远程全职推荐</h3>
+          <div class="sidebar-content">
+            <div class="job-recommend">
+              <h4>
+                <span>刷新</span>
+                <span>查看全部</span>
+              </h4>
+              <p>【免费推荐/全职远程】年薪¥83W-120W/高级AI 视频/短剧 Agent 编排工程师/ AI Agent平台</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <p>© 2023 电鸭社区 | 京ICP备12345678号</p>
+    </footer>
+  </div>
+</body>
+</html>
