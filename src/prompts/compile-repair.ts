@@ -1,4 +1,5 @@
 import type { CodegenOptions, GeneratedCode } from '../types.js';
+import { buildComponentLibraryContract } from './component-library-contract.js';
 
 export function buildCompileRepairPrompt(input: {
   current: GeneratedCode;
@@ -25,6 +26,7 @@ ${input.diagnostics.slice(0, 8000)}
 ${input.current.code}
 
 ## 修复要求
+${buildComponentLibraryContract(options)}
 - ${frameworkContract}
 - 解决诊断中的根因，不删除整段页面来规避错误，不放宽 TypeScript 配置。
 - 仅允许这些外部依赖：${dependencies.join('、')}；不得创造不存在的导出或依赖。

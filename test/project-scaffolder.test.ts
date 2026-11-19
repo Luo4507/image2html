@@ -46,9 +46,22 @@ describe('framework project scaffolder', () => {
 
     expect(files['src/main.ts']).toContain('createApp');
     expect(files['src/main.ts']).toContain("import Component from './Demo.vue'");
+    expect(files['src/main.ts']).toContain("import ElementPlus from 'element-plus';");
+    expect(files['src/main.ts']).toContain("import 'element-plus/dist/index.css';");
+    expect(files['src/main.ts']).toContain('createApp(Component).use(ElementPlus).mount');
     expect(files['src/Demo.vue']).toContain('<template>');
     expect(files['package.json']).toContain('"element-plus"');
     expect(files['tailwind.config.cjs']).toBeUndefined();
+  });
+
+  it('does not register Element Plus when Vue uses no component library', () => {
+    const files = createFrameworkProjectFiles(generated({
+      code: '<template><main>Plain Vue</main></template><script setup lang="ts"></script>',
+      filename: 'Demo.vue', components: [],
+    }), options({ framework: 'vue', styleFramework: 'inline', componentLibrary: 'none' }));
+
+    expect(files['src/main.ts']).not.toContain('ElementPlus');
+    expect(files['src/main.ts']).toContain("createApp(Component).mount('#root')");
   });
 
   it('uses JavaScript entry files and normalizes the generated filename', () => {

@@ -1,5 +1,6 @@
 import type { CodegenOptions, GeneratedAsset, ValidationResult, DiffRegion } from '../types.js';
 import { buildAssetManifestPrompt } from './asset-manifest.js';
+import { buildComponentLibraryContract } from './component-library-contract.js';
 
 export function buildDirectGenerationPrompt(options: CodegenOptions, assets: GeneratedAsset[] = []): string {
   const frameworkContract = buildFrameworkContract(options);
@@ -42,6 +43,7 @@ function buildFrameworkContract(options: CodegenOptions): string {
 - TypeScript 接口的必填字段必须与初始化数据完全一致；优先使用类型推断，禁止缺失字段或导入未声明依赖。
 - 所有可见内容必须由该默认导出组件渲染，不要自行调用 createRoot。
 - Ant Design 图标仅使用 SearchOutlined、ArrowUpOutlined、ArrowDownOutlined、ArrowRightOutlined、PlusOutlined、UserOutlined、FileTextOutlined、MenuOutlined、SettingOutlined、StarOutlined、ClockCircleOutlined、ReloadOutlined、UploadOutlined、DownloadOutlined、EditOutlined、DeleteOutlined、MoreOutlined、RiseOutlined；不确定时使用文字或 CSS，不创造图标名称。
+${buildComponentLibraryContract(options)}
 - ${options.styleFramework === 'tailwind' ? '使用 Tailwind className，不导入 Tailwind CSS，入口工程已配置。' : '使用组件内 <style> 或 style 对象，不引用外部 CSS 文件。'}`;
   }
 
@@ -79,6 +81,7 @@ export function buildVisualRepairPrompt(input: {
   regions: Array<{ type: string; diffPercentage: number }>;
   layout?: ValidationResult['layout'];
   focusRegion?: DiffRegion;
+  options?: Pick<CodegenOptions, 'framework' | 'componentLibrary'>;
 }): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
@@ -92,6 +95,9 @@ ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
 
 ${buildLayoutPrompt(input.layout)}
+
+## 组件库契约
+${input.options ? buildComponentLibraryContract(input.options) : ''}
 
 ## 当前代码
 ${input.currentCode}
@@ -109,6 +115,7 @@ export function buildVisualPatchPrompt(input: {
   regions: Array<{ type: string; diffPercentage: number }>;
   layout?: ValidationResult['layout'];
   focusRegion?: DiffRegion;
+  options?: Pick<CodegenOptions, 'framework' | 'componentLibrary'>;
 }): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
@@ -122,6 +129,9 @@ ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
 
 ${buildLayoutPrompt(input.layout)}
+
+## 组件库契约
+${input.options ? buildComponentLibraryContract(input.options) : ''}
 
 ## 当前代码
 ${input.currentCode}

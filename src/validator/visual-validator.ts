@@ -90,10 +90,15 @@ export class VisualValidator {
     const page: Page = await browser.newPage({ viewport });
     page.setDefaultNavigationTimeout(this.config.navigationTimeoutMs ?? 30_000);
     const runtimeErrors: string[] = [];
+    const browserDiagnostics: string[] = [];
     const pendingRequests = new Set<string>();
     const failedRequests: string[] = [];
     let navigationWarning: string | undefined;
     page.on('pageerror', (error) => runtimeErrors.push(error.message));
+    page.on('console', (message) => {
+      if (!['error', 'warning', 'warn'].includes(message.type()) || browserDiagnostics.length >= 20) return;
+      browserDiagnostics.push(`${message.type()}: ${message.text().slice(0, 500)}`);
+    });
     page.on('request', (request) => pendingRequests.add(request.url()));
     page.on('requestfinished', (request) => pendingRequests.delete(request.url()));
     page.on('requestfailed', (request) => {
@@ -124,8 +129,13 @@ export class VisualValidator {
         if (runtimeErrors.length > 0) {
           throw new Error(`${label} browser runtime failed: ${runtimeErrors.join('; ')}`);
         }
-        const mounted = await page.waitForFunction(() => Boolean((document.querySelector('#root')?.childElementCount || 0) > 0), { timeout: 2000 }).then(() => true).catch(() => false);
-        if (!mounted) throw new Error(`${label} render failed: #root is empty after mount`);
+        const mounted = await page.waitForFunction(() => Boolean((document.querySelector('#root')?.childElementCount || 0) > 0), undefined, { timeout: 2000 }).then(() => true).catch(() => false);
+        if (!mounted) {
+          const details = browserDiagnostics.length > 0
+            ? `\nBrowser diagnostics: ${browserDiagnostics.join('; ')}`
+            : '';
+          throw new Error(`${label} render failed: #root is empty after mount${details}`);
+        }
       }
 
       const layout = await evaluateWithRetry(page, () => {

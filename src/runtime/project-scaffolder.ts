@@ -115,8 +115,9 @@ function viteConfig(options: CodegenOptions): string {
 
 function entry(options: CodegenOptions, filename: string): { name: string; content: string } {
   const extension = options.typescript ? 'ts' : 'js';
-  const libraryStyle = options.componentLibrary === 'element'
-    ? "import 'element-plus/dist/index.css';\n"
+  const usesElementPlus = options.componentLibrary === 'element';
+  const libraryImports = usesElementPlus
+    ? "import ElementPlus from 'element-plus';\nimport 'element-plus/dist/index.css';\n"
     : '';
 
   if (options.framework === 'react') {
@@ -125,13 +126,16 @@ function entry(options: CodegenOptions, filename: string): { name: string; conte
     const root = options.typescript ? "document.getElementById('root')!" : "document.getElementById('root')";
     return {
       name,
-      content: `import React from 'react';\nimport { createRoot } from 'react-dom/client';\nimport Component from './${importFilename}';\n${libraryStyle}import './index.css';\n\ncreateRoot(${root}).render(<Component />);\n`,
+      content: `import React from 'react';\nimport { createRoot } from 'react-dom/client';\nimport Component from './${importFilename}';\n${libraryImports}import './index.css';\n\ncreateRoot(${root}).render(<Component />);\n`,
     };
   }
 
+  const mountTarget = usesElementPlus
+    ? 'createApp(Component).use(ElementPlus)'
+    : 'createApp(Component)';
   return {
     name: `main.${extension}`,
-    content: `import { createApp } from 'vue';\nimport Component from './${filename}';\n${libraryStyle}import './index.css';\n\ncreateApp(Component).mount('#root');\n`,
+    content: `import { createApp } from 'vue';\nimport Component from './${filename}';\n${libraryImports}import './index.css';\n\n${mountTarget}.mount('#root');\n`,
   };
 }
 

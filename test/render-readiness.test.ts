@@ -54,4 +54,23 @@ describe('framework render readiness', () => {
     expect(result.layout.navigationWarning).toMatch(/timeout/i);
     expect(result.screenshot.length).toBeGreaterThan(100);
   }, 10_000);
+
+  it('includes browser warnings when a framework root stays empty', async () => {
+    const server = createServer((req, res) => {
+      res.setHeader('Content-Type', 'text/html');
+      res.end('<div id="root"></div><script>console.warn("missing component registration")</script>');
+    });
+    await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
+    cleanup.push(async () => {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+    });
+    const url = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
+    const validator = new VisualValidator(getDefaultValidationConfig());
+    cleanup.push(() => validator.close());
+
+    await expect((validator as any).renderHtml(
+      { content: url, isUrl: true, framework: 'vue' },
+      { width: 400, height: 300 },
+    )).rejects.toThrow(/#root is empty after mount[\s\S]*missing component registration/);
+  }, 10_000);
 });

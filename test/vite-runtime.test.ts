@@ -54,12 +54,59 @@ describe('Vite framework runtime', () => {
     );
   }, 60_000);
 
+  it('renders the Ant Design 5.0.0 Breadcrumb children API', async () => {
+    await expectRenderedText(
+      generated("import { Breadcrumb } from 'antd'; export default function Demo() { return <Breadcrumb><Breadcrumb.Item>Dashboard crumb</Breadcrumb.Item></Breadcrumb>; }", 'Demo.tsx'),
+      options({ styleFramework: 'tailwind', componentLibrary: 'antd' }),
+      'Dashboard crumb',
+    );
+  }, 60_000);
+
+  it('preserves light Header and dark Menu styles with Tailwind', async () => {
+    const running = await startFrameworkProject(
+      generated("import { Layout, Menu } from 'antd'; export default function Demo() { return <Layout><Layout.Sider width={200}><Menu theme=\"dark\" mode=\"inline\" defaultSelectedKeys={['overview']} items={[{ key: 'overview', label: '数据概览' }]} /></Layout.Sider><Layout><Layout.Header className=\"!bg-white\">首页</Layout.Header><Layout.Content>内容</Layout.Content></Layout></Layout>; }", 'Demo.tsx'),
+      options({ styleFramework: 'tailwind', componentLibrary: 'antd' }),
+    );
+    const page = await browser.newPage();
+    try {
+      await page.goto(running.url, { waitUntil: 'networkidle' });
+      const headerBackground = await page.locator('header.ant-layout-header').evaluate(
+        (element) => getComputedStyle(element).backgroundColor,
+      );
+      expect(headerBackground).toBe('rgb(255, 255, 255)');
+      const menuIsDark = await page.locator('.ant-menu').evaluate(
+        (element) => element.classList.contains('ant-menu-dark'),
+      );
+      expect(menuIsDark).toBe(true);
+    } finally {
+      await page.close();
+      await running.close();
+    }
+  }, 60_000);
+
   it('typechecks, builds and serves a Vue TypeScript SFC', async () => {
     await expectRenderedText(
       generated("<template><ElButton type=\"primary\" :icon=\"Search\">Vue runtime ready</ElButton></template><script setup lang=\"ts\">import { ElButton } from 'element-plus'; import { Search } from '@element-plus/icons-vue';</script>", 'Demo.vue'),
       options({ framework: 'vue', componentLibrary: 'element' }),
       'Vue runtime ready',
     );
+  }, 60_000);
+
+  it('renders globally registered Element Plus components without SFC imports', async () => {
+    const running = await startFrameworkProject(
+      generated('<template><el-button type="primary">Global Element Plus ready</el-button></template><script setup lang="ts"></script>', 'Demo.vue'),
+      options({ framework: 'vue', componentLibrary: 'element' }),
+    );
+    const page = await browser.newPage();
+    try {
+      await page.goto(running.url, { waitUntil: 'networkidle' });
+      const button = page.locator('#root button.el-button');
+      await button.waitFor({ timeout: 5000 });
+      expect(await button.textContent()).toContain('Global Element Plus ready');
+    } finally {
+      await page.close();
+      await running.close();
+    }
   }, 60_000);
 
   it('serves React JavaScript', async () => {

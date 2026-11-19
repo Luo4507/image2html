@@ -406,7 +406,8 @@ ${invalidContent}`,
   private async repairWithVision(
     imageBase64: string,
     currentCode: string,
-    validation: ValidationResult
+    validation: ValidationResult,
+    options?: CodegenOptions
   ): Promise<{ code: string; modelCalls: number }> {
     const context = await createRepairImageContext({
       originalBase64: imageBase64,
@@ -416,6 +417,7 @@ ${invalidContent}`,
     });
     const promptInput = {
       currentCode,
+      options,
       suggestions: validation.suggestions,
       layout: validation.layout,
       focusRegion: context.focusRegion,
@@ -639,7 +641,7 @@ ${invalidContent}`,
             maxIterations,
             score: (result) => result.quality?.qualityScore ?? result.similarity,
             repair: async (currentCode, currentValidation) => {
-              const repaired = await this.repairWithVision(imageBase64, currentCode, currentValidation);
+              const repaired = await this.repairWithVision(imageBase64, currentCode, currentValidation, request.options);
               modelCalls += repaired.modelCalls;
               return repaired.code;
             },
