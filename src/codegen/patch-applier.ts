@@ -26,6 +26,79 @@ export function parseCodeEdits(content: string): CodeEdit[] {
   return parsed.edits;
 }
 
+interface NormalizedSource {
+  /** Code with every whitespace run collapsed (to a space, or removed entirely). */
+  normalized: string;
+  /** Original start offset for each normalized character. */
+  starts: number[];
+  /** Original end offset (exclusive) for each normalized character. */
+  ends: number[];
+}
+
+/**
+ * Build a whitespace-insensitive view of the code, keeping a map back to
+ * original offsets. When keepSpace is true each whitespace run becomes a
+ * single space; otherwise whitespace is dropped completely.
+ */
+function normalizeWithMap(code: string, keepSpace: boolean): NormalizedSource {
+  const chars: string[] = [];
+  const starts: number[] = [];
+  const ends: number[] = [];
+  let i = 0;
+  let whitespace: { start: number; end: number } | null = null;
+  while (i < code.length) {
+    const ch = code[i];
+    if (ch === ' ' || ch === '\t' || ch === '\r' || ch === '\n') {
+      const start = i;
+      while (i < code.length && ' \t\r\n'.includes(code[i])) i += 1;
+      whitespace = { start, end: i };
+      continue;
+    }
+    if (whitespace && keepSpace) {
+      chars.push(' ');
+      starts.push(whitespace.start);
+      ends.push(whitespace.end);
+    }
+    whitespace = null;
+    chars.push(ch);
+    starts.push(i);
+    ends.push(i + 1);
+    i += 1;
+  }
+  return { normalized: chars.join(''), starts, ends };
+}
+
+function locateAndReplace(
+  code: string,
+  oldText: string,
+  newText: string,
+  keepSpace: boolean
+): string | null {
+  const source = normalizeWithMap(code, keepSpace);
+  const target = normalizeWithMap(oldText, keepSpace);
+  const core = target.normalized.trim();
+  if (!core) return null;
+  const index = source.normalized.indexOf(core);
+  if (index < 0) return null;
+  const spanStart = source.starts[index];
+  const spanEnd = source.ends[index + core.length - 1];
+  return code.slice(0, spanStart) + newText + code.slice(spanEnd);
+}
+
+/**
+ * Whitespace-tolerant replacement: locate oldText in code after collapsing
+ * whitespace on both sides, then replace the spanned original range.
+ * Returns the updated code, or null when oldText cannot be located.
+ */
+function fuzzyReplace(code: string, oldText: string, newText: string): string | null {
+  // Anchor on non-whitespace so leading/trailing indentation in oldText does
+  // not expand the replaced span into neighboring lines.
+  return locateAndReplace(code, oldText, newText, true)
+    // Retry with whitespace fully removed; this catches cases where the model
+    // joins lines that are separate (or vice versa) in the current code.
+    ?? locateAndReplace(code, oldText, newText, false);
+}
+
 export function applyCodeEdits(
   currentCode: string,
   edits: CodeEdit[]
@@ -34,10 +107,18 @@ export function applyCodeEdits(
   let appliedCount = 0;
 
   for (const edit of edits) {
-    if (!code.includes(edit.oldText)) {
+    if (code.includes(edit.oldText)) {
+      code = code.replace(edit.oldText, edit.newText);
+      appliedCount += 1;
+      continue;
+    }
+    // Fallback: models often re-indent or re-wrap oldText, so retry with
+    // whitespace-insensitive matching before giving up on the patch.
+    const replaced = fuzzyReplace(code, edit.oldText, edit.newText);
+    if (replaced === null) {
       throw new Error(`oldText not found: ${edit.oldText.slice(0, 80)}`);
     }
-    code = code.replace(edit.oldText, edit.newText);
+    code = replaced;
     appliedCount += 1;
   }
 

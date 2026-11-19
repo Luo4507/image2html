@@ -16,7 +16,9 @@ export async function createRepairImageContext(input: {
     .filter((value): value is string => Boolean(value));
   if (!focusRegion) return { images: sources };
 
-  const images = await Promise.all(sources.map(async (source) => {
+  // Keep the full-page images in context so the model can correlate diffs
+  // across regions, and append focused crops of the worst region on top.
+  const crops = await Promise.all(sources.map(async (source) => {
     const image = sharp(buffer(source));
     const metadata = await image.metadata();
     const imageWidth = metadata.width || 0;
@@ -40,5 +42,5 @@ export async function createRepairImageContext(input: {
     }).png().toBuffer();
     return cropped.toString('base64');
   }));
-  return { images, focusRegion };
+  return { images: [...sources, ...crops], focusRegion };
 }
