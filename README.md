@@ -86,13 +86,13 @@ cp .env.example .env
 编辑 `.env`，配置模型服务。不要将 `.env` 提交到版本库。
 
 ```env
-QWEN_VL_BASE_URL=http://vision-model.internal/v1
-QWEN_VL_API_KEY=replace-me
-VISION_MODEL=qwen-vl-plus
+LLM_VL_BASE_URL=http://vision-model.internal/v1
+LLM_VL_API_KEY=replace-me
+LLM_VL_MODEL=qwen-vl-plus
 
-GLM_BASE_URL=http://code-model.internal/v1
-GLM_API_KEY=replace-me
-CODE_MODEL=qwen-flash
+LLM_BASE_URL=http://code-model.internal/v1
+LLM_API_KEY=replace-me
+LLM_MODEL=qwen-flash
 
 VISUAL_SIMILARITY_THRESHOLD=85.0
 MAX_RETRY_COUNT=1
@@ -134,27 +134,7 @@ node dist/cli.js batch examples/fixtures --framework html --output output
 pnpm mcp
 ```
 
-OpenCode 配置示例：
-
-```json
-{
-  "mcp": {
-    "design-to-code": {
-      "type": "local",
-      "command": ["node", "/absolute/path/to/image2html/dist/mcp/index.js"],
-      "enabled": true,
-      "env": {
-        "QWEN_VL_BASE_URL": "http://vision-model.internal/v1",
-        "QWEN_VL_API_KEY": "replace-me",
-        "VISION_MODEL": "qwen-vl-plus",
-        "GLM_BASE_URL": "http://code-model.internal/v1",
-        "GLM_API_KEY": "replace-me",
-        "CODE_MODEL": "qwen-flash"
-      }
-    }
-  }
-}
-```
+OpenCode、Codex、Cursor 等 AI 工具的接入方式，以及 Windows 路径、模型变量、常见故障的完整说明，见[使用及 AI 工具接入指导](docs/usage-and-ai-integration.md)。本地 MCP 推荐使用入口文件绝对路径，并将进程工作目录设置为 image2html 安装目录，以确保读取该目录下的 `.env`。
 
 提供的 MCP 工具：
 
@@ -184,14 +164,14 @@ const result = await converter.convert({
   },
   modelConfig: {
     visionModel: {
-      baseUrl: process.env.QWEN_VL_BASE_URL!,
-      model: process.env.VISION_MODEL!,
-      apiKey: process.env.QWEN_VL_API_KEY!,
+      baseUrl: process.env.LLM_VL_BASE_URL!,
+      model: process.env.LLM_VL_MODEL!,
+      apiKey: process.env.LLM_VL_API_KEY!,
     },
     codeModel: {
-      baseUrl: process.env.GLM_BASE_URL!,
-      model: process.env.CODE_MODEL!,
-      apiKey: process.env.GLM_API_KEY!,
+      baseUrl: process.env.LLM_BASE_URL!,
+      model: process.env.LLM_MODEL!,
+      apiKey: process.env.LLM_API_KEY!,
     },
   },
 });
@@ -287,6 +267,7 @@ image2html/
 
 ## 文档
 
+- [使用及 AI 工具接入指导](docs/usage-and-ai-integration.md)
 - [完整技术方案](docs/design-to-code-solution.md)
 - [MCP 使用示例](examples/mcp-usage.md)
 - [screenshot-to-code 提速研究](docs/research/screenshot-to-code-optimization.md)

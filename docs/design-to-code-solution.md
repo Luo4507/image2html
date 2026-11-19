@@ -174,12 +174,12 @@ from pydantic import BaseSettings
 
 class Settings(BaseSettings):
     # 内网模型端点
-    QWEN_VL_BASE_URL: str = "http://qwen-vl.internal:8000/v1"
-    GLM_BASE_URL: str = "http://glm.internal:8001/v1"
+    LLM_VL_BASE_URL: str = "http://vision-model.internal:8000/v1"
+    LLM_BASE_URL: str = "http://code-model.internal:8001/v1"
     
     # 模型名称映射
-    VISION_MODEL: str = "qwen3.5-vl-72b-instruct"
-    CODE_MODEL: str = "glm-5.3"
+    LLM_VL_MODEL: str = "your-vision-model-name"
+    LLM_MODEL: str = "your-code-model-name"
     
     # 校验配置
     VISUAL_SIMILARITY_THRESHOLD: float = 85.0  # 相似度阈值
@@ -238,13 +238,13 @@ class InternalLLMClient:
 
 # 初始化客户端
 vision_client = InternalLLMClient(
-    base_url=settings.QWEN_VL_BASE_URL,
-    model=settings.VISION_MODEL
+    base_url=settings.LLM_VL_BASE_URL,
+    model=settings.LLM_VL_MODEL
 )
 
 code_client = InternalLLMClient(
-    base_url=settings.GLM_BASE_URL,
-    model=settings.CODE_MODEL
+    base_url=settings.LLM_BASE_URL,
+    model=settings.LLM_MODEL
 )
 ```
 
@@ -433,10 +433,10 @@ services:
     ports:
       - "7001:7001"
     environment:
-      - QWEN_VL_BASE_URL=http://qwen-vl.internal:8000/v1
-      - GLM_BASE_URL=http://glm.internal:8001/v1
-      - VISION_MODEL=qwen3.5-vl-72b-instruct
-      - CODE_MODEL=glm-5.3
+      - LLM_VL_BASE_URL=http://vision-model.internal:8000/v1
+      - LLM_BASE_URL=http://code-model.internal:8001/v1
+      - LLM_VL_MODEL=your-vision-model-name
+      - LLM_MODEL=your-code-model-name
       - VISUAL_SIMILARITY_THRESHOLD=85.0
     volumes:
       - ./backend:/app

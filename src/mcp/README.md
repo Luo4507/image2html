@@ -32,12 +32,12 @@ pnpm build
       "command": ["node", "/absolute/path/to/image2html/dist/mcp/index.js"],
       "enabled": true,
       "env": {
-        "QWEN_VL_BASE_URL": "http://your-qwen-vl-server:8000/v1",
-        "QWEN_VL_API_KEY": "your-key",
-        "VISION_MODEL": "qwen3.5-vl-72b-instruct",
-        "GLM_BASE_URL": "http://your-glm-server:8001/v1",
-        "GLM_API_KEY": "your-key",
-        "CODE_MODEL": "glm-5.3"
+        "LLM_VL_BASE_URL": "http://your-vision-server:8000/v1",
+        "LLM_VL_API_KEY": "your-key",
+        "LLM_VL_MODEL": "your-vision-model-name",
+        "LLM_BASE_URL": "http://your-code-server:8001/v1",
+        "LLM_API_KEY": "your-key",
+        "LLM_MODEL": "your-code-model-name"
       }
     }
   }
@@ -55,12 +55,12 @@ pnpm build
       "command": "node",
       "args": ["/absolute/path/to/image2html/dist/mcp/index.js"],
       "env": {
-        "QWEN_VL_BASE_URL": "http://your-qwen-vl-server:8000/v1",
-        "QWEN_VL_API_KEY": "your-key",
-        "VISION_MODEL": "qwen3.5-vl-72b-instruct",
-        "GLM_BASE_URL": "http://your-glm-server:8001/v1",
-        "GLM_API_KEY": "your-key",
-        "CODE_MODEL": "glm-5.3"
+        "LLM_VL_BASE_URL": "http://your-vision-server:8000/v1",
+        "LLM_VL_API_KEY": "your-key",
+        "LLM_VL_MODEL": "your-vision-model-name",
+        "LLM_BASE_URL": "http://your-code-server:8001/v1",
+        "LLM_API_KEY": "your-key",
+        "LLM_MODEL": "your-code-model-name"
       }
     }
   }

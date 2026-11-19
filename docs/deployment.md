@@ -28,12 +28,12 @@ cp .env.example .env
 至少配置：
 
 ```env
-QWEN_VL_BASE_URL=http://vision-model.internal/v1
-QWEN_VL_API_KEY=replace-me
-VISION_MODEL=qwen-vl-plus
-GLM_BASE_URL=http://code-model.internal/v1
-GLM_API_KEY=replace-me
-CODE_MODEL=qwen-flash
+LLM_VL_BASE_URL=http://vision-model.internal/v1
+LLM_VL_API_KEY=replace-me
+LLM_VL_MODEL=qwen-vl-plus
+LLM_BASE_URL=http://code-model.internal/v1
+LLM_API_KEY=replace-me
+LLM_MODEL=qwen-flash
 
 API_KEYS=alice:long-random-secret,bob:another-long-random-secret
 JOB_CONCURRENCY=2

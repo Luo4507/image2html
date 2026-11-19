@@ -21,8 +21,8 @@ pnpm mcp
       "command": ["node", "/absolute/path/to/image2html/dist/mcp/index.js"],
       "enabled": true,
       "env": {
-        "QWEN_VL_BASE_URL": "http://your-server:8000/v1",
-        "GLM_BASE_URL": "http://your-server:8001/v1"
+        "LLM_VL_BASE_URL": "http://your-server:8000/v1",
+        "LLM_BASE_URL": "http://your-server:8001/v1"
       }
     }
   }
@@ -156,8 +156,8 @@ OpenCode 执行过程：
       "command": "node",
       "args": ["/absolute/path/to/image2html/dist/mcp/index.js"],
       "env": {
-        "QWEN_VL_BASE_URL": "http://your-server:8000/v1",
-        "GLM_BASE_URL": "http://your-server:8001/v1"
+        "LLM_VL_BASE_URL": "http://your-server:8000/v1",
+        "LLM_BASE_URL": "http://your-server:8001/v1"
       }
     }
   }

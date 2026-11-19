@@ -9,14 +9,14 @@ import type { ModelConfig, ValidationConfig } from './types.js';
 export function getDefaultModelConfig(): ModelConfig {
   return {
     visionModel: {
-      baseUrl: process.env.QWEN_VL_BASE_URL || 'http://qwen-vl.internal:8000/v1',
-      model: process.env.VISION_MODEL || 'qwen3.5-vl-72b-instruct',
-      apiKey: process.env.QWEN_VL_API_KEY || 'internal-key',
+      baseUrl: process.env.LLM_VL_BASE_URL || process.env.QWEN_VL_BASE_URL || 'http://qwen-vl.internal:8000/v1',
+      model: process.env.LLM_VL_MODEL || process.env.VISION_MODEL || 'qwen3.5-vl-72b-instruct',
+      apiKey: process.env.LLM_VL_API_KEY || process.env.QWEN_VL_API_KEY || 'internal-key',
     },
     codeModel: {
-      baseUrl: process.env.GLM_BASE_URL || 'http://glm.internal:8001/v1',
-      model: process.env.CODE_MODEL || 'glm-5.3',
-      apiKey: process.env.GLM_API_KEY || 'internal-key',
+      baseUrl: process.env.LLM_BASE_URL || process.env.GLM_BASE_URL || 'http://glm.internal:8001/v1',
+      model: process.env.LLM_MODEL || process.env.CODE_MODEL || 'glm-5.3',
+      apiKey: process.env.LLM_API_KEY || process.env.GLM_API_KEY || 'internal-key',
     },
   };
 }
