@@ -4,10 +4,10 @@
     "image2html": {
       "type": "local",
       "command": [
-        "cmd",
-        "/c",
-        "cd /d F:\\code\\image2html && pnpm mcp"
+        "node",
+        "F:\\code\\image2html\\dist\\mcp\\index.js"
       ],
+      "cwd": "F:\\code\\image2html",
       "enabled": true
     }
   }

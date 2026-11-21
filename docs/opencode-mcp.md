@@ -1,5 +1,7 @@
 # OpenCode MCP 配置
 
+> 第一次使用或需要完整故障排查时，推荐阅读[配置与使用指导手册](configuration-and-usage-guide.md)。
+
 ## 当前运行方式
 
 Docker 容器提供 HTTP 服务。OpenCode 在本机启动 MCP 并读取项目根目录 `.env`，这样可以访问任意前端项目中的设计稿文件。
@@ -28,16 +30,16 @@ docker compose ps
   "image2html": {
     "type": "local",
     "command": [
-      "cmd",
-      "/c",
-      "cd /d F:\\code\\image2html && pnpm mcp"
+      "node",
+      "F:\\code\\image2html\\dist\\mcp\\index.js"
     ],
+    "cwd": "F:\\code\\image2html",
     "enabled": true
   }
 }
 ```
 
-不要覆盖配置文件中已有的模型和其他 MCP 配置。
+不要覆盖配置文件中已有的模型和其他 MCP 配置。直接运行 Node 入口不依赖终端安装 `pnpm`，也避免 `cmd /c ... && pnpm mcp` 因 PATH 差异导致连接关闭。
 
 ## 验证
 
@@ -47,17 +49,19 @@ docker compose ps
 opencode mcp list
 ```
 
-或在 OpenCode 会话中输入：
+正常应显示 `image2html connected`。也可以在 OpenCode 会话中输入：
 
 ```text
-请使用 image2html 的 analyze_structure 工具分析设计稿。
+请使用 image2html 的 validate_design 工具校验设计稿。
 ```
 
-可用工具：`generate_component`、`validate_design`、`repair_component`、`analyze_structure`。
+可用工具：`generate_component`、`validate_design`、`repair_component`、`analyze_structure`、`extract_assets`。
+
+本次使用 OpenCode `1.19.6` 实测：`image2html` 连接成功；`validate_design` 返回相似度 100%；`generate_component` 真实调用模型并返回完整 HTML。生成结果的整图相似度为 98.96%，但最终 `passed=false`，说明其他质量门禁未全部满足，不属于 MCP 连接或生成失败。未据此声称其余工具均已在 OpenCode 中逐一实测。
 
 ## 注意事项
 
 - MCP 在本机运行，不依赖 Docker 容器；HTTP 服务才需要 Docker。
 - 不要把模型密钥或用户密钥写入 `opencode.json`。
-- 当前配置使用 OpenCode Desktop 1.18.x 的 `mcp.image2html` 结构；OpenCode V2 才需要额外的 `mcp.servers` 层。
-- 此方式依赖本机 Docker。如需跨电脑直接连接服务器，需要单独实现远程 HTTP/SSE MCP Transport。
+- 当前 `mcp.image2html` 结构已在 OpenCode `1.19.6` 实测；采用 `mcp.servers` 的版本应按对应文档使用 V2 层级。
+- 跨电脑共享可使用 `dist/mcp/remote-index.js` stdio 适配器连接集中 HTTP 服务，目前仅开放 `generate_component`；原生 Streamable HTTP MCP 端点仍不包含在当前版本中。
