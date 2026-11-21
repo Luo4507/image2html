@@ -9,11 +9,12 @@
 | 使用方式 | 适用场景 | 主要产物 |
 | --- | --- | --- |
 | CLI | 命令行转换、脚本批处理、导出可运行工程 | 单个源码文件，或 `--project` 导出的完整 Vite 工程 |
-| MCP | OpenCode、Codex、Cursor 等 AI 工具调用生成、校验和修复能力 | 返回给 AI 客户端的源码文本、校验报告或结构 JSON |
+| 本地 MCP | OpenCode、Codex、Cursor 等 AI 工具调用生成、校验和修复能力 | 原文本及 `structuredContent` 结构化结果 |
+| 远程 MCP 适配器 | 公司多人共享集中服务，用户机器通过 stdio 接入 | 远程生成源码、精简校验结果；目前仅生成工具 |
 | Node.js API | 在自己的 Node.js 程序中集成 | 结构化转换结果 |
-| HTTP 服务 | 多用户、任务队列、权限隔离和产物下载 | 异步任务及可下载产物；不是远程 MCP 接口 |
+| HTTP 服务 | 多用户、任务队列、权限隔离和产物下载 | 异步任务及可下载产物；不是原生远程 MCP 接口 |
 
-本地 AI 工具接入通常选择 **MCP**。当前 MCP 使用 **stdio**：AI 客户端启动 `node .../dist/mcp/index.js` 子进程，双方通过标准输入输出通信。无需先运行 `pnpm serve`，也不需要 Docker；`localhost:3000` 属于另一套 HTTP 任务服务。
+本地 AI 工具接入通常选择 **MCP**。当前两种 MCP 入口都使用 **stdio**：本地五工具由 AI 客户端启动 `node .../dist/mcp/index.js`，无需先运行 `pnpm serve`；公司内网远程生成使用 `node .../dist/mcp/remote-index.js`，再连接集中 HTTP 服务。`localhost:3000` 属于 HTTP 任务服务，不是可直接填给客户端的 MCP URL。
 
 `generate_component` **不会自动在业务项目中创建文件，也不会导出完整 Vite 工程**。需要落盘时，让 AI 客户端把返回源码写入指定文件；需要完整工程时，使用 CLI `--project`。
 
@@ -369,17 +370,19 @@ env_vars = [
 
 其他工具遵循同样原则：使用 stdio 类型、Node 入口绝对路径、正确的安装目录和模型配置。不要把 `http://localhost:3000` 填进本地 MCP 的 `command` 或 `url`。
 
-## 8. 五个 MCP 工具
+## 8. 五个 MCP 工具与结构化结果
 
-客户端中的服务配置名是 `design-to-code`，对应服务内部名称也为 `design-to-code`。
+客户端中的服务配置名是 `design-to-code`，对应本地服务内部名称也为 `design-to-code`。
 
-| 工具 | 必填参数 | 常用可选参数 | 返回内容 |
+| 工具 | 必填参数 | 常用可选参数 | `structuredContent` 主要字段 |
 | --- | --- | --- | --- |
-| `generate_component` | `image_path` | `framework`、`style_framework`、`component_library`、`typescript`、`responsive`、`pipeline`、`quality_mode`、`layout_mode`、`asset_mode` | 源码文本、文件名，以及存在时的视觉校验结果 |
-| `validate_design` | `original_image`、`code` | `threshold`、`framework`、`style_framework`、`component_library`、`typescript` | 相似度、是否通过、差异区域及建议 |
-| `repair_component` | `original_image`、`code`、`diff_regions` | 无 | 修复后的源码文本；不会自行写回业务文件 |
-| `analyze_structure` | `image_path` | 无 | 页面结构、区域、组件和 Design Token 的 JSON 文本 |
-| `extract_assets` | `image_path` | `output_dir` | 裁剪后的 PNG 文件路径列表 |
+| `generate_component` | `image_path` | `framework`、`style_framework`、`component_library`、`typescript`、`responsive`、`pipeline`、`quality_mode`、`layout_mode`、`asset_mode` | `success`、`code`、`filename`、`imports`、`components`、`validation`、`metrics` |
+| `validate_design` | `original_image`、`code` | `threshold`、`framework`、`style_framework`、`component_library`、`typescript` | `success`、`passed`、`similarity`、`quality`、`regions`、`suggestions` |
+| `repair_component` | `original_image`、`code` | `diff_regions`、目标代码选项、`quality_mode`、`max_iterations`、`threshold` | `success`、`code`、最终 `validation`、`repairIterations`、`qualityHistory`、`metrics` |
+| `analyze_structure` | `image_path` | 无 | `success`、`structure` 对象 |
+| `extract_assets` | `image_path` | `output_dir` | `success`、`outputDir`、`paths` |
+
+所有工具仍保留原来的 `content` 文本，同时提供 `structuredContent` 和工具 `outputSchema`。校验截图与差异图的 base64 不会放入结构化结果，避免显著放大 AI 上下文。
 
 `generate_component` 的主要选项：
 
@@ -393,18 +396,72 @@ env_vars = [
 
 常用合法组合为 React + Ant Design、Vue + Element Plus、HTML + `none`。React/Vue 的样式方案使用 `tailwind` 或 `inline`；HTML 可使用四种样式方案。
 
-`repair_component` 的 `diff_regions` 是对象数组，每项至少提供校验结果中的 `type` 和 `diffPercentage`，例如：
+`repair_component` 会先校验当前代码，再执行视觉修复、候选重新校验和质量择优。质量没有提高的候选不会被采用。`quality_mode=fast|balanced|precision` 分别对应 0、2、4 轮预算，`max_iterations` 可进一步指定上限，但最终仍受 `MAX_RETRY_COUNT` 限制。目标代码选项必须与源码一致，否则 React/Vue 可能被误按 HTML 校验。
 
-```json
-[
-  {
-    "type": "header",
-    "diffPercentage": 12.3
-  }
-]
-```
+旧调用的 `diff_regions` 仍可传入，但现在是可选兼容参数；也可以直接将 `validate_design` 的 `structuredContent.regions` 传入。新流程以实时校验结果为准。
 
 `extract_assets` 会真实写文件。建议提供明确的绝对 `output_dir`；省略时使用图片同级的 `<图片名>-assets` 目录。
+
+### 8.1 工具错误与视觉未通过的区别
+
+文件不存在、模型生成失败或执行异常时，工具返回 `isError: true`，并附带稳定错误码：
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "FILE_NOT_FOUND",
+    "message": "文件不存在: ..."
+  }
+}
+```
+
+常见错误码有 `FILE_NOT_FOUND`、`GENERATION_FAILED`、`REPAIR_FAILED`、`TOOL_EXECUTION_FAILED`。视觉校验未通过则是正常业务结果：`success: true`、`passed: false`，不设置 `isError`。AI 调用方不能用“工具已返回”代替质量验收。
+
+### 8.2 公司内网多人使用：远程生成适配器
+
+公司服务器仍按[部署指南](deployment.md)运行单实例 HTTP 服务。每位同学的机器配置 `dist/mcp/remote-index.js` 作为 stdio MCP，它通过个人 API 密钥连接集中服务，复用鉴权、限流、任务队列和按用户隔离的产物。
+
+```text
+OpenCode / Codex → 本地 remote-index.js → HTTPS → 公司 HTTP 服务 → 内网模型与 Chromium
+```
+
+用户机器只需要：
+
+```env
+IMAGE2HTML_URL=https://image2html.internal.example
+IMAGE2HTML_API_KEY=replace-with-personal-key
+IMAGE2HTML_POLL_INTERVAL_MS=1000
+IMAGE2HTML_TIMEOUT_MS=600000
+```
+
+OpenCode V2 将 `command` 改为：
+
+```json
+{
+  "type": "local",
+  "command": ["node", "/absolute/path/to/image2html/dist/mcp/remote-index.js"],
+  "cwd": "/absolute/path/to/image2html",
+  "environment": {
+    "IMAGE2HTML_URL": "{env:IMAGE2HTML_URL}",
+    "IMAGE2HTML_API_KEY": "{env:IMAGE2HTML_API_KEY}"
+  }
+}
+```
+
+Codex 使用：
+
+```toml
+[mcp_servers.design-to-code]
+command = "node"
+args = ["/absolute/path/to/image2html/dist/mcp/remote-index.js"]
+cwd = "/absolute/path/to/image2html"
+env_vars = ["IMAGE2HTML_URL", "IMAGE2HTML_API_KEY"]
+startup_timeout_sec = 30
+tool_timeout_sec = 600
+```
+
+远程适配器当前只注册 `generate_component`，执行图片上传、任务轮询、源码下载和精简校验结果返回。它不支持 `asset_mode=extract`；`validate_design`、`repair_component`、`analyze_structure`、`extract_assets` 仍由本地入口提供。它不是原生 Streamable HTTP MCP 服务，`IMAGE2HTML_URL` 只能由该适配器读取，不能直接填到客户端的远程 MCP `url` 字段。个人密钥只通过环境变量传递，不要提交到 Git 或写入日志。
 
 ## 9. 可直接使用的 AI 提示词
 
@@ -431,9 +488,9 @@ original_image=F:\designs\dashboard.png，framework=react，style_framework=tail
 ### 9.3 修复后重新校验
 
 ```text
-使用上一条 validate_design 返回的差异区域调用 repair_component，传入原始图片绝对路径、当前完整源码和 diff_regions。
-将修复后的完整源码写回 src/components/Dashboard.tsx，再运行项目构建，并重新调用 validate_design。
-如果仍未通过，保留真实失败结果和差异说明，不要把生成成功描述为验收通过。
+调用 repair_component，传入原始图片绝对路径、当前完整源码，以及与代码一致的 framework、style_framework、component_library 和 typescript。
+quality_mode=precision。工具会先校验，再修复、重新校验并择优；请读取最终 validation 和 qualityHistory。
+将采用的完整源码写回 src/components/Dashboard.tsx，再运行项目构建。不要只根据“修复完成”文本宣称质量通过。
 ```
 
 ### 9.4 只分析设计稿
@@ -448,7 +505,7 @@ original_image=F:\designs\dashboard.png，framework=react，style_framework=tail
 ### 10.1 质量模式
 
 - `fast`：生成和校验，不自动修复。
-- `balanced`：校验失败时进行有界自动修复，并保留最高相似度版本。
+- `balanced`：校验失败时进行有界自动修复，并保留质量分数更高的版本。
 - `precision`：允许更多修复轮次，仍受 `MAX_RETRY_COUNT` 限制。
 
 `direct` 是默认生成路径；`structured` 会先产生结构化页面表示，适合需要结构审计的场景，但通常增加模型调用。
@@ -465,7 +522,7 @@ original_image=F:\designs\dashboard.png，framework=react，style_framework=tail
 
 ### 10.3 产物边界
 
-- MCP 生成和修复：主要返回文本，由 AI 客户端决定是否写入文件。
+- MCP 生成和修复：返回原文本及 `structuredContent`，由 AI 客户端决定是否写入文件。
 - MCP 资源提取：写入指定输出目录，并返回路径。
 - CLI 普通转换：写入单个源码文件；有差异图时同时保存差异图。
 - CLI `--project`：写入完整 Vite 工程。

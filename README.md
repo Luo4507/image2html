@@ -134,7 +134,9 @@ node dist/cli.js batch examples/fixtures --framework html --output output
 pnpm mcp
 ```
 
-OpenCode、Codex、Cursor 等 AI 工具的接入方式，以及 Windows 路径、模型变量、常见故障的完整说明，见[使用及 AI 工具接入指导](docs/usage-and-ai-integration.md)。本地 MCP 推荐使用入口文件绝对路径，并将进程工作目录设置为 image2html 安装目录，以确保读取该目录下的 `.env`。
+OpenCode、Codex、Cursor 等 AI 工具的接入方式，以及 Windows 路径、模型变量、常见故障的完整说明，见[使用及 AI 工具接入指导](docs/usage-and-ai-integration.md)。本地 MCP 推荐使用入口文件绝对路径，并将进程工作目录设置为 image2html 安装目录，以确保读取该目录下的 `.env`。五个工具均提供原文本和 `structuredContent` 结构化结果。
+
+公司多人使用时，可在服务器运行 `image2html-server`，用户机器改用 `dist/mcp/remote-index.js` stdio 适配器并配置 `IMAGE2HTML_URL`、`IMAGE2HTML_API_KEY`。远程模式目前只开放 `generate_component`，复用服务端的鉴权、队列和产物隔离；其余工具仍走本地 MCP。
 
 提供的 MCP 工具：
 
@@ -142,7 +144,7 @@ OpenCode、Codex、Cursor 等 AI 工具的接入方式，以及 Windows 路径�
 | --- | --- |
 | `generate_component` | 根据设计稿生成组件代码 |
 | `validate_design` | 渲染代码并与原图进行视觉对比 |
-| `repair_component` | 根据差异区域修复代码 |
+| `repair_component` | 校验后执行视觉修复、重新校验和质量择优 |
 | `analyze_structure` | 输出设计稿的结构化 JSON |
 | `extract_assets` | 识别并裁剪可复用的 Logo、图标和图片 |
 

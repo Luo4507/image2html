@@ -379,6 +379,82 @@ ${invalidContent}`,
   }
 
   /**
+   * 独立视觉修复：先校验当前代码，再修复、重新校验并保留质量更优的候选。
+   */
+  async repair(
+    originalImageBuffer: Buffer,
+    currentCode: GeneratedCode,
+    targetOptions: CodegenOptions,
+    repairOptions: {
+      maxIterations?: number;
+      validationOverrides?: Partial<ValidationConfig>;
+    } = {}
+  ): Promise<DesignToCodeResult> {
+    const startedAt = Date.now();
+    let validationMs = 0;
+    let modelCalls = 0;
+    assertValidCodegenOptions(targetOptions);
+
+    const imageBase64 = `data:image/png;base64,${originalImageBuffer.toString('base64')}`;
+    const validateCandidate = async (candidate: GeneratedCode) => {
+      const started = Date.now();
+      try {
+        return await this.validate(
+          originalImageBuffer,
+          candidate,
+          targetOptions,
+          repairOptions.validationOverrides
+        );
+      } finally {
+        validationMs += Date.now() - started;
+      }
+    };
+
+    const initialValidation = await validateCandidate(currentCode);
+    const requestedIterations = Math.max(0, Math.floor(repairOptions.maxIterations ?? 2));
+    const maxIterations = Math.min(
+      requestedIterations,
+      Math.max(0, this.validationConfig.maxRetryCount)
+    );
+    const repairStartedAt = Date.now();
+    const corrected = await runAutoCorrection({
+      initialCode: currentCode.code,
+      initialValidation,
+      maxIterations,
+      score: (result) => result.quality?.qualityScore ?? result.similarity,
+      repair: async (code, validation) => {
+        const repaired = await this.repairWithVision(imageBase64, code, validation, targetOptions);
+        modelCalls += repaired.modelCalls;
+        return repaired.code;
+      },
+      validate: async (code) => validateCandidate({ ...currentCode, code }),
+    });
+    const repairMs = Date.now() - repairStartedAt;
+    const code = {
+      ...currentCode,
+      code: corrected.code,
+      imports: this.extractImports(corrected.code),
+      components: this.extractComponents(corrected.code),
+    };
+
+    return {
+      code,
+      validation: corrected.validation,
+      qualityHistory: corrected.history,
+      metrics: {
+        analysisMs: 0,
+        generationMs: 0,
+        validationMs,
+        repairMs,
+        totalMs: Date.now() - startedAt,
+        modelCalls,
+        repairIterations: corrected.iterations,
+      },
+      success: true,
+    };
+  }
+
+  /**
    * 修复代码
    */
   async repairCode(

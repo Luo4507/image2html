@@ -129,6 +129,14 @@ curl -O http://localhost:3000/v1/jobs/job-id/artifacts/code \
 
 用户只能查询和下载自己创建的任务。其他用户的任务统一返回 `404`，避免暴露任务是否存在。
 
+任务结果还包含 `imports`、`components` 和精简 `validation`，供内网 MCP 适配器组装结构化生成结果；这些字段不包含截图或差异图 base64。完整图片仍通过对应产物接口下载。
+
+### OpenCode / Codex 内网 MCP 适配器
+
+用户机器将 `dist/mcp/remote-index.js` 配置为 stdio MCP，并设置 `IMAGE2HTML_URL`、`IMAGE2HTML_API_KEY`。适配器上传图片、轮询上述任务接口并下载源码，不需要在用户机器配置模型密钥或安装 Chromium。
+
+远程适配器目前只开放 `generate_component`，不支持 `asset_mode=extract`。其余四个工具仍由本地 `dist/mcp/index.js` 提供。HTTP 服务本身没有新增原生 MCP 端点，不要把服务 URL 直接填成客户端的 Streamable HTTP MCP 地址。完整客户端配置见[使用及 AI 工具接入指导](usage-and-ai-integration.md)。
+
 ### 实时进度与预览
 
 ```text

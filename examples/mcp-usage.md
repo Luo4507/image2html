@@ -1,173 +1,118 @@
-# MCP Server 使用示例
+# MCP 使用示例
 
-## 1. 启动 MCP Server
+完整安装和客户端字段说明见[使用及 AI 工具接入指导](../docs/usage-and-ai-integration.md)。
+
+## 1. 构建
 
 ```bash
 cd image2html
 pnpm install
 pnpm build
-pnpm mcp
 ```
 
-## 2. 在 OpenCode 中配置
+本地五工具入口为 `dist/mcp/index.js`，公司内网远程生成入口为 `dist/mcp/remote-index.js`。两者都是 stdio MCP，由 AI 客户端启动。
 
-编辑 `~/.config/opencode/opencode.json`:
+## 2. 生成组件
+
+```text
+请调用 design-to-code 的 generate_component。
+图片绝对路径：F:\designs\login.png
+参数：framework=react，style_framework=tailwind，component_library=antd，typescript=true，quality_mode=balanced。
+拿到 structuredContent.code 后，将完整源码写入当前项目的 src/components/LoginForm.tsx。
+```
+
+生成结果的机器可读字段：
 
 ```json
 {
-  "mcp": {
-    "design-to-code": {
-      "type": "local",
-      "command": ["node", "/absolute/path/to/image2html/dist/mcp/index.js"],
-      "enabled": true,
-      "env": {
-        "LLM_VL_BASE_URL": "http://your-server:8000/v1",
-        "LLM_BASE_URL": "http://your-server:8001/v1"
-      }
-    }
+  "success": true,
+  "code": "完整源码",
+  "filename": "LoginForm.tsx",
+  "imports": ["react", "antd"],
+  "components": ["LoginForm"],
+  "validation": {
+    "passed": false,
+    "similarity": 78.2,
+    "regions": [],
+    "suggestions": []
   }
 }
 ```
 
-## 3. 使用示例
+`content` 中仍保留原来的文本报告和源码。生成成功不代表视觉校验通过，应继续检查 `validation.passed`。
 
-### 生成组件
+## 3. 校验还原度
 
-```
-用户：@design-to-code 请根据 designs/login.png 生成 React + TypeScript + Ant Design 的登录页面组件
-
-OpenCode：
-1. 调用 generate_component 工具
-2. Qwen3.5-VL 分析设计稿结构
-3. GLM 5.3 生成 React 代码
-4. 自动 Token 映射和组件替换
-5. 返回生成的代码
-
-输出：
-✅ 代码生成成功！
-
-📄 文件名: LoginForm.tsx
-🧩 组件: LoginForm
-📦 依赖: react, antd
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-import { Button, Input, Card, Form } from 'antd';
-...
+```text
+读取 src/components/LoginForm.tsx，并调用 validate_design。
+original_image=F:\designs\login.png，framework=react，style_framework=tailwind，component_library=antd，typescript=true。
+返回实际 similarity、quality、regions 和 suggestions。
 ```
 
-### 校验还原度
+`structuredContent.regions` 是对象数组，可以直接用于后续修复。视觉未通过时 `success` 仍为 `true`、`passed` 为 `false`，这不是 MCP 连接错误。
 
-```
-用户：请校验这段代码与原图的还原度
+## 4. 修复并重新校验
 
-OpenCode：
-1. 调用 validate_design 工具
-2. Playwright 渲染代码并截图
-3. Pixelmatch 对比原图
-4. 返回相似度报告
-
-输出：
-📊 相似度: 87.5% (阈值: 85%)
-✅ 视觉校验通过
+```text
+使用当前完整源码调用 repair_component，并传入与原代码一致的 framework、style_framework、component_library 和 typescript。
+quality_mode=precision。读取工具返回的最终 validation 和 qualityHistory，将采用的源码写回业务文件。
+不要只根据“修复完成”文本宣称质量通过。
 ```
 
-### 修复差异
+工具内部执行：
 
-```
-用户：请修复 Header 区域的差异
-
-OpenCode：
-1. 调用 repair_component 工具
-2. AI 分析差异原因
-3. 自动修复代码
-4. 返回修复后的代码
-
-输出：
-✅ 代码修复完成！
-
-修复的差异区域:
-  - header: 12.3%
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-[修复后的代码]
+```text
+当前代码
+  → 视觉校验
+  → 视觉模型生成修复候选
+  → 候选重新校验
+  → 质量分数提高才采用
+  → 通过、不再提升或达到轮次上限时停止
 ```
 
-### 分析结构
+旧参数 `diff_regions` 仍可传递，但新流程会重新校验，不依赖调用方手工拼接差异文本。
 
-```
-用户：请分析 designs/dashboard.png 的结构
+## 5. 结构分析与资源提取
 
-OpenCode：
-1. 调用 analyze_structure 工具
-2. Qwen3.5-VL 分析设计稿
-3. 返回 JSON 结构
-
-输出：
-✅ 结构分析完成！
-
-📄 页面: Dashboard (dashboard)
-📐 布局: grid / row
-🧩 组件数: 15
-🎨 区域数: 4
-
-{
-  "page": { "title": "Dashboard", "type": "dashboard" },
-  "regions": [...],
-  "components": [...],
-  "designTokens": {...}
-}
+```text
+调用 analyze_structure 分析 F:\designs\dashboard.png。
+直接读取 structuredContent.structure，总结页面区域、组件、布局和 Design Token，不生成代码。
 ```
 
-## 4. 完整工作流
-
-```
-用户：请完成以下任务：
-1. 读取 designs/login.png
-2. 生成 React 组件
-3. 校验还原度，要求 ≥85%
-4. 如果未通过，自动修复并重新校验
-
-OpenCode 执行过程：
-┌─────────────────────────────────────────┐
-│ 1. generate_component                   │
-│    输出：LoginForm.tsx                  │
-├─────────────────────────────────────────┤
-│ 2. validate_design                      │
-│    输出：相似度 78%（未通过）           │
-├─────────────────────────────────────────┤
-│ 3. repair_component                     │
-│    输出：修复后的代码                   │
-├─────────────────────────────────────────┤
-│ 4. validate_design                      │
-│    输出：相似度 92%（通过）✅           │
-└─────────────────────────────────────────┘
+```text
+调用 extract_assets，将 F:\designs\dashboard.png 中可复用的图片提取到 F:\designs\dashboard-assets。
+返回 structuredContent.outputDir 和 paths。
 ```
 
-## 5. 与 Cursor 集成
+资源提取会真实写文件；其他生成和修复工具不会自行写回业务项目。
 
-编辑 `.cursor/mcp.json`:
+## 6. 公司内网远程生成
+
+用户机器只需配置：
+
+```env
+IMAGE2HTML_URL=https://image2html.internal.example
+IMAGE2HTML_API_KEY=replace-with-personal-key
+```
+
+客户端启动：
+
+```bash
+node /absolute/path/to/image2html/dist/mcp/remote-index.js
+```
+
+远程适配器只列出 `generate_component`，执行“上传图片 → 轮询集中任务 → 下载源码和精简校验结果”。模型密钥和 Chromium 仅在服务器侧。远程模式不支持 `asset_mode=extract`，其余四个工具仍使用本地入口。
+
+## 7. 错误处理
 
 ```json
 {
-  "mcpServers": {
-    "design-to-code": {
-      "command": "node",
-      "args": ["/absolute/path/to/image2html/dist/mcp/index.js"],
-      "env": {
-        "LLM_VL_BASE_URL": "http://your-server:8000/v1",
-        "LLM_BASE_URL": "http://your-server:8001/v1"
-      }
-    }
+  "success": false,
+  "error": {
+    "code": "FILE_NOT_FOUND",
+    "message": "文件不存在: ..."
   }
 }
 ```
 
-在 Cursor 中：
-
-```
-用户：@design-to-code 请根据 designs/login.png 生成 React 组件
-
-Cursor：调用 MCP Server → 生成代码并插入编辑器
-```
+工具执行失败时还会有 `isError: true`。调用方应优先检查 `isError` 和 `structuredContent.error.code`，不要通过文本中的 emoji 猜测执行状态。

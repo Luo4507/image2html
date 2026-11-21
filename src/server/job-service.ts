@@ -8,6 +8,7 @@ import type {
   CodegenOptions,
   ConversionProgressEvent,
   DesignToCodeResult,
+  ValidationResult,
 } from '../types.js';
 import type { ServerConfig } from './config.js';
 import { JobQueue, type JobRecord } from './job-queue.js';
@@ -22,8 +23,16 @@ export interface ConversionArtifacts {
   diff?: string;
 }
 
+function compactValidation(validation: ValidationResult) {
+  const { diffImage: _diffImage, screenshots: _screenshots, ...compact } = validation;
+  return compact;
+}
+
 export interface ConversionJobResult {
   codeFilename: string;
+  imports: string[];
+  components: string[];
+  validation?: Omit<ValidationResult, 'diffImage' | 'screenshots'>;
   similarity?: number;
   passed?: boolean;
   metrics?: DesignToCodeResult['metrics'];
@@ -382,6 +391,9 @@ export class JobService {
 
       return {
         codeFilename,
+        imports: result.code.imports,
+        components: result.code.components,
+        validation: result.validation ? compactValidation(result.validation) : undefined,
         similarity: result.validation?.similarity,
         passed: result.validation?.passed,
         metrics: result.metrics,
