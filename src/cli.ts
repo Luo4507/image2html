@@ -47,7 +47,7 @@ program
   .option('--pipeline <pipeline>', '生成流程 (direct/structured)', 'direct')
   .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'precision')
   .option('--layout <layout>', '布局生成方式 (single/segmented/auto)', 'single')
-  .option('--cache', '复用本地已通过的转换结果', process.env.CONVERSION_CACHE === 'true')
+  .option('--cache', '复用本地成功的转换结果', process.env.CONVERSION_CACHE === 'true')
   .action(async (image: string, options: any) => {
     try {
       const componentLibrary = options.componentLibrary || (options.framework === 'vue' ? 'element' : options.framework === 'html' ? 'none' : 'antd');
@@ -171,7 +171,7 @@ program
   .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'precision')
   .option('--layout <layout>', '布局生成方式 (single/segmented/auto)', 'single')
   .option('--concurrency <number>', '并行转换数量，默认串行', '1')
-  .option('--cache', '复用本地已通过的转换结果', process.env.CONVERSION_CACHE === 'true')
+  .option('--cache', '复用本地成功的转换结果', process.env.CONVERSION_CACHE === 'true')
   .action(async (dir: string, options: any) => {
     try {
       const { readdir } = await import('fs/promises');

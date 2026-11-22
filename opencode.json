@@ -1,14 +1,16 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "image2html": {
-      "type": "local",
-      "command": [
-        "node",
-        "F:\\code\\image2html\\dist\\mcp\\index.js"
-      ],
-      "cwd": "F:\\code\\image2html",
-      "enabled": true
+    "servers": {
+      "image2html": {
+        "type": "local",
+        "command": [
+          "node",
+          "F:\\code\\image2html\\dist\\mcp\\index.js"
+        ],
+        "cwd": "F:\\code\\image2html",
+        "codemode": false
+      }
     }
   }
 }

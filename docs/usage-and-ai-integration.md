@@ -81,6 +81,8 @@ DEFAULT_PIPELINE=direct
 QUALITY_MODE=precision
 ```
 
+`DEFAULT_*` 和 `QUALITY_MODE` 用于 HTTP 服务以及 Node.js 的 `designToCode()` 快捷函数。CLI 和本地 MCP 使用各自参数的默认值；如需改变它们的框架、质量或布局行为，请显式传入对应参数，不要只修改这些环境变量。
+
 | 变量 | 作用 |
 | --- | --- |
 | `LLM_VL_BASE_URL` | 视觉模型的 OpenAI 兼容 API 根地址，通常包含 `/v1` |
@@ -141,10 +143,12 @@ node dist/cli.js convert examples/login.png --framework vue --style inline --com
 | `--pipeline` | `direct` 直接生成，`structured` 先生成结构 JSON | `direct` |
 | `--quality` | `fast`、`balanced`、`precision` | `precision` |
 | `--layout` | `single`、`segmented`、`auto`；`auto` 只对大长图分段 | `single` |
-| `--cache` | 复用本地已通过的结果；失败和视觉未通过不缓存 | 默认关闭 |
+| `--cache` | 复用本地成功结果；失败和视觉未通过不缓存 | 默认关闭 |
 | `--extract-assets` | 先提取图片资源并在生成代码中引用 | 默认不提取 |
 | `--project` | 导出完整 Vite 工程 | 默认只写源码文件 |
 | `--output` | 输出目录 | `./generated` |
+
+React/Vue 目前只支持 `tailwind` 和 `inline`；`scss`、`css-modules` 仅适用于 HTML。使用 `--no-validate` 时，成功的未校验结果也可以写入缓存；缓存命中不代表通过视觉质量门禁。
 
 ### 3.2 导出完整可运行工程
 
@@ -527,7 +531,7 @@ quality_mode=precision。工具会先校验，再修复、重新校验并择优�
 
 默认使用 `precision`，`MAX_RETRY_COUNT=4`，并开启文字完整性检查。`direct` 是默认生成路径；`structured` 会先产生结构化页面表示，适合需要结构审计的场景，但通常增加模型调用。
 
-需要复用相同图片的已通过结果时，CLI 使用 `--cache`；本地 MCP 在环境变量中设置 `CONVERSION_CACHE=true`。默认缓存目录是 `.cache/image2html-conversions`，可用 `CONVERSION_CACHE_DIR` 修改。缓存键包含图片内容、模型和参数；执行失败或视觉未通过不会缓存。清理该目录即可清空本地缓存。
+需要复用相同图片的成功结果时，CLI 使用 `--cache`；本地 MCP 在环境变量中设置 `CONVERSION_CACHE=true`。默认缓存目录是 `.cache/image2html-conversions`，可用 `CONVERSION_CACHE_DIR` 修改。缓存键包含图片内容、模型和参数；执行失败或视觉未通过不会缓存，但主动跳过校验的成功结果可以缓存。缓存命中不代表通过视觉质量门禁。清理该目录即可清空本地缓存。
 
 结果中的 `metrics.modelRequests` 记录各次模型请求的首响应、首内容、总耗时、字符数和可用的 token 统计；`validation.timings` 记录主渲染、图片比较和额外视口耗时。`repairMs` 包含候选重新校验，因此与累计的 `validationMs` 有重叠，不能把各阶段数字直接相加当作总耗时。
 
@@ -611,6 +615,29 @@ pnpm verify:mcp
 ```
 
 随后重启使用它的 AI 客户端会话。如果修改了 `.env`、Node 路径、MCP 入口或模型变量，也需要重启对应 MCP 连接。
+
+## 13. Node.js API
+
+作为依赖安装后，可以使用 `designToCode()` 快捷函数。它会读取模型与校验配置，并在结束后自动关闭浏览器资源：
+
+```ts
+import { designToCode } from 'image2html';
+
+const result = await designToCode('F:/designs/dashboard.png', {
+  framework: 'html',
+  styleFramework: 'inline',
+  componentLibrary: 'none',
+  typescript: false,
+  qualityMode: 'precision',
+  layoutMode: 'single',
+});
+
+if (!result.success) throw new Error(result.error || '转换失败');
+console.log(result.code.code);
+console.log(result.validation?.passed);
+```
+
+直接在源码仓库中运行时，先执行 `pnpm build`，再从 `./dist/index.js` 导入。`.env` 仍从进程当前工作目录读取，图片路径应使用绝对路径。API 只返回结构化结果，不会自动把源码写入业务文件；需要落盘时由调用方自行写入。需要复用转换器、自定义模型配置或监听进度时，改用 `new DesignToCode()`，并在 `finally` 中调用 `close()`。
 
 ## 参考资料
 

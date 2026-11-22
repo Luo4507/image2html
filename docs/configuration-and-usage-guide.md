@@ -27,8 +27,10 @@ opencode --version
 
 ```powershell
 npm install -g pnpm@10
-npm install -g opencode-ai@1.19.6
+npm install -g opencode-ai
 ```
+
+本指南使用当前 OpenCode V2 配置。如果仍使用 `1.19.6` 等 V1 版本，请改用[完整接入指导](usage-and-ai-integration.md)中的 V1 示例，不要混用两种配置层级。
 
 ## 2. 安装并填写模型配置
 
@@ -91,11 +93,13 @@ Structured validation: similarity=100, passed=true
 {
   "$schema": "https://opencode.ai/config.json",
   "mcp": {
-    "image2html": {
-      "type": "local",
-      "command": ["node", "F:\\code\\image2html\\dist\\mcp\\index.js"],
-      "cwd": "F:\\code\\image2html",
-      "enabled": true
+    "servers": {
+      "image2html": {
+        "type": "local",
+        "command": ["node", "F:\\code\\image2html\\dist\\mcp\\index.js"],
+        "cwd": "F:\\code\\image2html",
+        "codemode": false
+      }
     }
   }
 }
@@ -105,8 +109,9 @@ Structured validation: similarity=100, passed=true
 
 - `command` 第二项：指向 MCP 入口文件。
 - `cwd`：指向 image2html 安装目录，用于读取 `.env`。
+- `codemode: false`：让五个工具直接出现在 OpenCode 的原生工具列表中。
 
-要在其他业务项目中使用，把上面的 `mcp.image2html` 配置合并到：
+要在其他业务项目中使用，把上面的 `mcp.servers.image2html` 配置合并到：
 
 ```text
 %USERPROFILE%\.config\opencode\opencode.jsonc

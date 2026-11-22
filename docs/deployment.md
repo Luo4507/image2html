@@ -30,10 +30,10 @@ cp .env.example .env
 ```env
 LLM_VL_BASE_URL=http://vision-model.internal/v1
 LLM_VL_API_KEY=replace-me
-LLM_VL_MODEL=qwen-vl-plus
+LLM_VL_MODEL=your-vision-model-name
 LLM_BASE_URL=http://code-model.internal/v1
 LLM_API_KEY=replace-me
-LLM_MODEL=qwen-flash
+LLM_MODEL=your-code-model-name
 
 API_KEYS=alice:long-random-secret,bob:another-long-random-secret
 JOB_CONCURRENCY=2
@@ -56,6 +56,7 @@ DATA_DIR=data
 
 ```bash
 pnpm install
+pnpm exec playwright install chromium
 pnpm build
 pnpm serve
 ```
@@ -109,7 +110,7 @@ curl -X POST http://localhost:3000/v1/jobs \
 }
 ```
 
-支持的图片类型：PNG、JPEG、WebP。生成选项：`framework=react|vue|html`、`styleFramework=tailwind|scss|css-modules|inline`、`componentLibrary=antd|element|none`、`typescript`、`responsive`、`accessibility`、`pipeline=direct|structured`、`qualityMode=fast|balanced|precision`、`layoutMode=single|segmented|auto`、`assetMode=none|extract`。非法框架/组件库组合返回 HTTP 400；未显式指定组件库时，HTML 默认 none、Vue 默认 element、React 默认 antd。
+支持的图片类型：PNG、JPEG、WebP。生成选项：`framework=react|vue|html`、`styleFramework=tailwind|scss|css-modules|inline`、`componentLibrary=antd|element|none`、`typescript`、`responsive`、`accessibility`、`pipeline=direct|structured`、`qualityMode=fast|balanced|precision`、`layoutMode=single|segmented|auto`、`assetMode=none|extract`。非法框架、样式或组件库组合返回 HTTP 400；React/Vue 仅支持 `tailwind` 或 `inline`，HTML 支持四种样式方案。未显式指定组件库时，HTML 默认 none、Vue 默认 element、React 默认 antd。
 
 ### 查询任务
 
@@ -118,12 +119,12 @@ curl http://localhost:3000/v1/jobs/job-id \
   -H "Authorization: Bearer long-random-secret"
 ```
 
-任务状态：`queued`、`running`、`succeeded`、`failed`。完成后，`job.result.artifacts` 包含代码、结构、校验报告、渲染截图和差异图的下载地址。
+任务状态：`queued`、`running`、`succeeded`、`failed`。成功后，`job.result.artifacts` 包含代码下载地址；结构、校验报告、渲染截图和差异图等产物会根据生成流程及校验结果提供，并非每个任务都包含全部类型。
 
 ### 下载产物
 
 ```bash
-curl -O http://localhost:3000/v1/jobs/job-id/artifacts/code \
+curl -fL -o component.html http://localhost:3000/v1/jobs/job-id/artifacts/code \
   -H "Authorization: Bearer long-random-secret"
 ```
 
@@ -137,23 +138,22 @@ curl -O http://localhost:3000/v1/jobs/job-id/artifacts/code \
 
 远程适配器目前只开放 `generate_component`，不支持 `asset_mode=extract`。其余四个工具仍由本地 `dist/mcp/index.js` 提供。HTTP 服务本身没有新增原生 MCP 端点，不要把服务 URL 直接填成客户端的 Streamable HTTP MCP 地址。完整客户端配置见[使用及 AI 工具接入指导](usage-and-ai-integration.md)。
 
-### 实时进度与预览
+### 实时进度与代码预览
 
 ```text
 GET /v1/jobs/:id/events    SSE 进度事件
-GET /v1/jobs/:id/preview   当前最新 HTML 预览
+GET /v1/jobs/:id/preview   当前最新代码快照
 ```
 
-两个接口都需要相同的用户密钥。SSE 会推送 `reading`、`generating`、`preview`、`validating`、`repairing`、`completed` 或 `failed` 事件；`preview` 事件携带代码快照。客户端断开后，服务器自动清理订阅。
+两个接口都需要相同的用户密钥。SSE 会推送 `reading`、`analyzing`、`generating`、`preview`、`validating`、`repairing`、`completed` 或 `failed` 事件；`preview` 事件携带代码快照。客户端断开后，服务器自动清理订阅。
 
 ## 重启恢复
 
 服务启动时会读取 `DATA_DIR/jobs`：
 
-- 已完成和失败任务恢复查询状态与产物下载；
-- 原队列中或运行中的任务恢复为队列任务，并使用保存的 `input.json` 与 `source.png` 重新执行；
-- 成功任务的 `conversion.json` 用于恢复转换缓存，相同图片、选项、模型和校验配置可直接命中，不再调用模型；
-- 旧版本缺少 `input.json` 或 `conversion.json` 时仍恢复已有状态，但不恢复对应执行或缓存能力。
+- 成功任务恢复查询状态与已有产物下载，失败任务恢复状态与错误信息；
+- 原队列中或运行中的任务在输入记录存在时重新入队，并使用保存的 `input.json` 与可用源图重新执行；缺少 `input.json` 的未完成任务会标记为失败；
+- 成功任务的输入、源图和 `conversion.json` 完整时可恢复转换缓存，相同图片、选项、模型和校验配置可直接命中，不再调用模型；缺少缓存文件不影响已有任务状态和产物查询。
 
 恢复仍是单进程语义，不支持多实例共享队列或分布式锁。
 
@@ -167,7 +167,7 @@ pnpm verify:mcp
 pnpm verify:server
 ```
 
-`verify:server` 会启动真实服务、创建转换任务、轮询状态并下载生成的 HTML。
+`verify:server` 会启动真实服务、创建转换任务、轮询状态并下载生成的 HTML。它会真实调用已配置的模型，并将验证数据写入 `output/server-verification`；执行前需确保模型服务和 Chromium 可用。
 
 ## 运维建议
 
