@@ -6,7 +6,7 @@
 
 | 文档 | 适合场景 |
 | --- | --- |
-| [OpenCode 快速上手](configuration-and-usage-guide.md) | Windows 下安装、配置模型、连接 OpenCode，并完成第一次校验与生成 |
+| [OpenCode 快速上手](configuration-and-usage-guide.md) | 配置远程 MCP URL 和个人密钥，在 OpenCode 中生成组件 |
 | [完整使用及 AI 工具接入指导](usage-and-ai-integration.md) | CLI、OpenCode V1/V2、Codex、Cursor、本地与远程 MCP、质量配置和故障排查 |
 | [多用户服务器部署指南](deployment.md) | 公司内网单实例部署、HTTP API、用户隔离、任务恢复与转换缓存 |
 | [MCP 实现说明](../src/mcp/README.md) | 查看本地 MCP 的五个工具及开发入口 |

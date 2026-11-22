@@ -9,12 +9,13 @@
 | 使用方式 | 适用场景 | 主要产物 |
 | --- | --- | --- |
 | CLI | 命令行转换、脚本批处理、导出可运行工程 | 单个源码文件，或 `--project` 导出的完整 Vite 工程 |
+| 原生远程 MCP | OpenCode 通过 `/mcp` URL 调用集中服务，不启动本地 MCP 进程 | 远程生成源码、精简校验结果；目前仅生成工具 |
 | 本地 MCP | OpenCode、Codex、Cursor 等 AI 工具调用生成、校验和修复能力 | 原文本及 `structuredContent` 结构化结果 |
-| 远程 MCP 适配器 | 公司多人共享集中服务，用户机器通过 stdio 接入 | 远程生成源码、精简校验结果；目前仅生成工具 |
+| stdio 远程适配器 | 需要兼容旧客户端的集中生成方式 | 远程生成源码、精简校验结果；目前仅生成工具 |
 | Node.js API | 在自己的 Node.js 程序中集成 | 结构化转换结果 |
-| HTTP 服务 | 多用户、任务队列、权限隔离和产物下载 | 异步任务及可下载产物；不是原生远程 MCP 接口 |
+| HTTP 服务 | 多用户、任务队列、权限隔离和产物下载 | `/mcp` 原生远程 MCP、`/v1/jobs` 异步任务及可下载产物 |
 
-本地 AI 工具接入通常选择 **MCP**。当前两种 MCP 入口都使用 **stdio**：本地五工具由 AI 客户端启动 `node .../dist/mcp/index.js`，无需先运行 `pnpm serve`；公司内网远程生成使用 `node .../dist/mcp/remote-index.js`，再连接集中 HTTP 服务。`localhost:3000` 属于 HTTP 任务服务，不是可直接填给客户端的 MCP URL。
+OpenCode 远程接入推荐使用 **`http(s)://<服务地址>/mcp`**，传输方式为 Streamable HTTP，服务端复用 API 密钥、任务队列与用户隔离。本地五工具仍由 AI 客户端启动 `node .../dist/mcp/index.js`；兼容适配器使用 `node .../dist/mcp/remote-index.js` 连接集中 HTTP 服务。只有 `/mcp` 是原生远程 MCP 地址，不要把服务根 URL 或 `/v1/jobs` 填进远程 MCP 的 `url`。
 
 `generate_component` **不会自动在业务项目中创建文件，也不会导出完整 Vite 工程**。需要落盘时，让 AI 客户端把返回源码写入指定文件；需要完整工程时，使用 CLI `--project`。
 
@@ -207,7 +208,49 @@ OpenCode 可读取项目根目录的 `opencode.json(c)` 或 `.opencode/opencode.
 
 修改配置时，请合并已有的 `mcp` 配置，不要覆盖其他模型或 MCP 服务。
 
-### 5.1 OpenCode V2：当前配置格式
+### 5.1 OpenCode V2：原生远程 MCP（推荐）
+
+远程方式不需要 OpenCode 机器安装项目、Node.js、模型密钥或 Chromium。先在 OpenCode 所在机器设置个人密钥：
+
+```powershell
+[Environment]::SetEnvironmentVariable("IMAGE2HTML_API_KEY", "replace-with-your-personal-key", "User")
+```
+
+完全重启终端和 OpenCode 后，将下面配置合并到项目或全局 `opencode.jsonc`：
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "image2html": {
+        "type": "remote",
+        "url": "http://localhost:3000/mcp",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {env:IMAGE2HTML_API_KEY}"
+        },
+        "codemode": false,
+        "timeout": {
+          "execution": 600000
+        }
+      }
+    }
+  }
+}
+```
+
+公司部署时将 `url` 换成 `https://<公司服务域名>/mcp`。`type: "remote"` 使用 Streamable HTTP；`oauth: false` 表示只用 API 密钥，不启动 OAuth 登录。远程工具目前只有 `generate_component`，图片使用 `image_base64` 上传，避免服务端无法访问 OpenCode 本机路径。
+
+检查连接：
+
+```bash
+opencode mcp list
+```
+
+也可在 OpenCode 中使用 `/mcps`。看到 `image2html connected` 即表示远程连接成功。
+
+### 5.2 OpenCode V2：本地 stdio MCP
 
 V2 将服务名放在 `mcp.servers` 下，并使用 `environment` 传递额外环境变量；不需要 `enabled: true`，默认就会连接。
 
@@ -257,13 +300,13 @@ opencode mcp list
 
 也可在 OpenCode 中使用 `/mcps` 查看服务。如果刚刚修改配置但状态没有变化，重启 OpenCode 后重新检查。
 
-### 5.2 已验证的 OpenCode 示例
+### 5.3 已验证的 OpenCode 示例
 
 项目曾在 OpenCode `1.19.6` 上使用 V1 的 `mcp.image2html` 配置完成实际验证：MCP 连接成功，`validate_design` 对项目示例返回相似度 100%，`generate_component` 真实调用模型并返回完整 HTML。该次生成结果的整图相似度为 98.96%，但最终 `passed=false`，说明仍有其他质量门禁未满足，不属于连接或生成失败。
 
 这只是指定版本和示例的历史实测记录，不代表其他版本、图片或五个工具均已逐一验证。其他版本应按其实际配置层级选择上述 V1 或 V2 示例。
 
-### 5.3 OpenCode V1：旧版配置格式
+### 5.4 OpenCode V1：旧版配置格式
 
 V1 不使用 `mcp.servers` 这一层，并将服务名直接放在 `mcp` 下：
 
@@ -284,7 +327,7 @@ V1 不使用 `mcp.servers` 这一层，并将服务名直接放在 `mcp` 下：
 
 Windows 下同样将入口和 `cwd` 改为双反斜线路径。V1、V2 的配置层级不同，不要混用。
 
-### 5.4 不使用 `.env` 时传递模型配置
+### 5.5 不使用 `.env` 时传递模型配置
 
 推荐仍使用安装目录中的 `.env`。确需在 OpenCode 中显式传参时，将下面内容加入对应服务的 `environment` 对象，而不是使用名为 `env` 的字段：
 
@@ -389,7 +432,7 @@ env_vars = [
 
 这是 Cursor 风格的 `mcpServers` 示例，不是 Codex 或 OpenCode V2 的配置格式。通用字段无法替代具体客户端文档：如果客户端支持工作目录，请设置为 image2html 安装目录；否则可在该目录启动客户端，或按客户端规范显式传递六个模型环境变量。
 
-其他工具遵循同样原则：使用 stdio 类型、Node 入口绝对路径、正确的安装目录和模型配置。不要把 `http://localhost:3000` 填进本地 MCP 的 `command` 或 `url`。
+本地 stdio 接入遵循同样原则：使用 Node 入口绝对路径、正确的安装目录和模型配置，不要把 HTTP 地址填进 `command`。支持原生远程 MCP 的客户端则应使用 `type: "remote"` 和 `http(s)://<服务地址>/mcp`。
 
 ## 8. 五个 MCP 工具与结构化结果
 
@@ -439,35 +482,25 @@ env_vars = [
 
 常见错误码有 `FILE_NOT_FOUND`、`GENERATION_FAILED`、`REPAIR_FAILED`、`TOOL_EXECUTION_FAILED`。视觉校验未通过则是正常业务结果：`success: true`、`passed: false`，不设置 `isError`。AI 调用方不能用“工具已返回”代替质量验收。
 
-### 8.2 公司内网多人使用：远程生成适配器
+### 8.2 公司内网多人使用：原生远程 MCP
 
-公司服务器仍按[部署指南](deployment.md)运行单实例 HTTP 服务。每位同学的机器配置 `dist/mcp/remote-index.js` 作为 stdio MCP，它通过个人 API 密钥连接集中服务，复用鉴权、限流、任务队列和按用户隔离的产物。
+公司服务器按[部署指南](deployment.md)运行单实例服务，OpenCode 直接连接 `/mcp`，不再需要在每位同学机器上运行适配器：
 
 ```text
-OpenCode / Codex → 本地 remote-index.js → HTTPS → 公司 HTTP 服务 → 内网模型与 Chromium
+OpenCode → Streamable HTTP + 个人 Bearer API 密钥 → 公司 /mcp → 任务队列 → 内网模型与 Chromium
 ```
 
-用户机器只需要：
+配置见 5.1。原生端点只注册 `generate_component`，复用鉴权、限流、任务队列和按用户隔离的产物。OpenCode 本机图片通过 `image_base64` 上传；只有服务端可见的图片才使用 `image_path`。`asset_mode=extract` 不受支持，独立校验、修复、结构分析和资源提取仍由本地五工具入口提供。
+
+### 8.3 兼容旧客户端：stdio 远程适配器
+
+需要 stdio 的客户端仍可使用 `dist/mcp/remote-index.js`。用户机器设置：
 
 ```env
 IMAGE2HTML_URL=https://image2html.internal.example
 IMAGE2HTML_API_KEY=replace-with-personal-key
 IMAGE2HTML_POLL_INTERVAL_MS=1000
 IMAGE2HTML_TIMEOUT_MS=600000
-```
-
-OpenCode V2 将 `command` 改为：
-
-```json
-{
-  "type": "local",
-  "command": ["node", "/absolute/path/to/image2html/dist/mcp/remote-index.js"],
-  "cwd": "/absolute/path/to/image2html",
-  "environment": {
-    "IMAGE2HTML_URL": "{env:IMAGE2HTML_URL}",
-    "IMAGE2HTML_API_KEY": "{env:IMAGE2HTML_API_KEY}"
-  }
-}
 ```
 
 Codex 使用：
@@ -482,7 +515,7 @@ startup_timeout_sec = 30
 tool_timeout_sec = 600
 ```
 
-远程适配器当前只注册 `generate_component`，执行图片上传、任务轮询、源码下载和精简校验结果返回。它不支持 `asset_mode=extract`；`validate_design`、`repair_component`、`analyze_structure`、`extract_assets` 仍由本地入口提供。它不是原生 Streamable HTTP MCP 服务，`IMAGE2HTML_URL` 只能由该适配器读取，不能直接填到客户端的远程 MCP `url` 字段。个人密钥只通过环境变量传递，不要提交到 Git 或写入日志。
+适配器同样只注册 `generate_component`，支持本机 `image_path` 或 `image_base64`，执行任务上传、轮询和源码下载。它不是原生 Streamable HTTP 端点，`IMAGE2HTML_URL` 只能由适配器读取，不能直接填到远程 MCP 的 `url` 字段。个人密钥只通过环境变量传递，不要提交到 Git 或写入日志。
 
 ## 9. 可直接使用的 AI 提示词
 
@@ -496,7 +529,9 @@ tool_timeout_sec = 600
 随后安装缺失依赖并执行项目构建。请区分“源码已返回”“文件已写入”“构建成功”“视觉门禁通过”这四个状态，不要混淆。
 ```
 
-macOS/Linux 用户将图片路径换成实际绝对路径即可。
+macOS/Linux 用户将图片路径换成实际绝对路径即可。原生远程 MCP 不要传 OpenCode 本机路径，应改为 `image_base64=data:image/png;base64,<图片内容>` 和 `image_filename=dashboard.png`；远程服务名按配置使用 `image2html`。
+
+下面 9.2 和 9.3 的独立校验、修复提示词用于本地五工具入口。远程 `generate_component` 使用 `quality_mode=precision` 时已在同一次生成中执行校验和视觉修复。
 
 ### 9.2 校验当前文件
 

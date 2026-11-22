@@ -3,13 +3,16 @@
   "mcp": {
     "servers": {
       "image2html": {
-        "type": "local",
-        "command": [
-          "node",
-          "F:\\code\\image2html\\dist\\mcp\\index.js"
-        ],
-        "cwd": "F:\\code\\image2html",
-        "codemode": false
+        "type": "remote",
+        "url": "http://localhost:3000/mcp",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {env:IMAGE2HTML_API_KEY}"
+        },
+        "codemode": false,
+        "timeout": {
+          "execution": 600000
+        }
       }
     }
   }

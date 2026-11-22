@@ -9,28 +9,16 @@ import express, {
 import helmet from 'helmet';
 import multer from 'multer';
 import { z } from 'zod';
-import { getDefaultCodegenOptions } from '../config.js';
-import { assertValidCodegenOptions, CodegenOptionError } from '../runtime/codegen-options.js';
+import { CodegenOptionError } from '../runtime/codegen-options.js';
 import { JobService, type JobServiceOptions } from './job-service.js';
+import { resolveJobOptions } from './job-options.js';
 import type { JobRecord } from './job-queue.js';
 import type { ConversionJobResult } from './job-service.js';
+import { createMcpHttpHandler } from './mcp-http.js';
 
 interface AuthenticatedRequest extends Request {
   userId?: string;
 }
-
-const optionSchema = z.object({
-  framework: z.enum(['react', 'vue', 'html']).optional(),
-  styleFramework: z.enum(['tailwind', 'scss', 'css-modules', 'inline']).optional(),
-  componentLibrary: z.enum(['antd', 'element', 'none']).optional(),
-  typescript: z.boolean().optional(),
-  responsive: z.boolean().optional(),
-  accessibility: z.boolean().optional(),
-  pipeline: z.enum(['direct', 'structured']).optional(),
-  qualityMode: z.enum(['fast', 'balanced', 'precision']).optional(),
-  layoutMode: z.enum(['single', 'segmented', 'auto']).optional(),
-  assetMode: z.enum(['none', 'extract']).optional(),
-});
 
 function publicJob(job: JobRecord<ConversionJobResult>) {
   return {
@@ -65,6 +53,21 @@ export async function createServerApp(options: {
   const app = express();
   app.disable('x-powered-by');
   app.use(helmet());
+
+  app.use(['/v1', '/mcp'], (req: AuthenticatedRequest, res, next) => {
+    const authorization = req.get('authorization') || '';
+    const key = authorization.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
+    const userId = config.apiKeys.get(key);
+    if (!userId) {
+      res.status(401).json({ error: 'Unauthorized', message: 'A valid API key is required' });
+      return;
+    }
+    req.userId = userId;
+    next();
+  });
+
+  const mcpBodyLimitMb = Math.ceil(config.maxUploadMb * 4 / 3 + 1);
+  app.use('/mcp', express.json({ limit: `${mcpBodyLimitMb}mb` }));
   app.use(express.json({ limit: '1mb' }));
 
   app.get('/', (_req, res) => {
@@ -77,20 +80,8 @@ export async function createServerApp(options: {
     res.json({ status: 'ready' });
   });
 
-  app.use('/v1', (req: AuthenticatedRequest, res, next) => {
-    const authorization = req.get('authorization') || '';
-    const key = authorization.startsWith('Bearer ') ? authorization.slice(7).trim() : '';
-    const userId = config.apiKeys.get(key);
-    if (!userId) {
-      res.status(401).json({ error: 'Unauthorized', message: 'A valid API key is required' });
-      return;
-    }
-    req.userId = userId;
-    next();
-  });
-
   const windows = new Map<string, { count: number; resetAt: number }>();
-  app.use('/v1', (req: AuthenticatedRequest, res, next) => {
+  app.use(['/v1', '/mcp'], (req: AuthenticatedRequest, res, next) => {
     const now = Date.now();
     const key = req.userId || req.ip || 'unknown';
     const current = windows.get(key);
@@ -108,6 +99,8 @@ export async function createServerApp(options: {
     next();
   });
 
+  app.all('/mcp', createMcpHttpHandler({ service, config }));
+
   const upload = multer({
     dest: join(config.dataDir, 'uploads'),
     limits: { fileSize: config.maxUploadMb * 1024 * 1024, files: 1 },
@@ -124,7 +117,7 @@ export async function createServerApp(options: {
     }
 
     try {
-      const parsed = optionSchema.parse({
+      const codegenOptions = resolveJobOptions({
         framework: req.body.framework,
         styleFramework: req.body.styleFramework,
         componentLibrary: req.body.componentLibrary,
@@ -136,12 +129,6 @@ export async function createServerApp(options: {
         layoutMode: req.body.layoutMode,
         assetMode: req.body.assetMode,
       });
-      const codegenOptions = { ...getDefaultCodegenOptions(), ...parsed };
-      if (parsed.componentLibrary === undefined) {
-        if (codegenOptions.framework === 'html') codegenOptions.componentLibrary = 'none';
-        if (codegenOptions.framework === 'vue') codegenOptions.componentLibrary = 'element';
-      }
-      assertValidCodegenOptions(codegenOptions);
       const job = service.submit({
         userId: req.userId!,
         imagePath: req.file.path,

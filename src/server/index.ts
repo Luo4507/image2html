@@ -13,7 +13,8 @@ const server = app.listen(config.port, config.host, () => {
   console.log(`[server] data=${config.dataDir}`);
 });
 
-server.requestTimeout = 30_000;
+// MCP tool calls wait for queued generation and visual repair; allow the same 10-minute budget.
+server.requestTimeout = 630_000;
 server.headersTimeout = 35_000;
 
 async function shutdown(signal: string) {

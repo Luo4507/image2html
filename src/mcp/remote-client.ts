@@ -1,7 +1,5 @@
-import { existsSync } from 'node:fs';
-import { readFile } from 'node:fs/promises';
-import { basename, extname } from 'node:path';
 import type { ConversionProgressEvent } from '../types.js';
+import { ImageInputError, resolveImageInput } from './image-input.js';
 import { toolError, type MCPToolResult } from './results.js';
 
 export interface RemoteMCPConfig {
@@ -62,15 +60,6 @@ export function getRemoteMCPConfig(env: NodeJS.ProcessEnv = process.env): Remote
   };
 }
 
-function mimeType(path: string): string | undefined {
-  return {
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.jpeg': 'image/jpeg',
-    '.webp': 'image/webp',
-  }[extname(path).toLowerCase()];
-}
-
 function delay(milliseconds: number): Promise<void> {
   return milliseconds > 0
     ? new Promise((resolve) => setTimeout(resolve, milliseconds))
@@ -124,24 +113,24 @@ export class RemoteMCPClient {
     args: any = {},
     onStatus?: (status: string) => void,
   ): Promise<MCPToolResult> {
-    const imagePath = args.image_path;
-    if (!imagePath || !existsSync(imagePath)) {
-      return toolError('FILE_NOT_FOUND', `文件不存在: ${String(imagePath)}`);
-    }
     if (args.asset_mode === 'extract') {
       return toolError('UNSUPPORTED_REMOTE_OPTION', '远程生成适配器暂不支持 asset_mode=extract，请使用本地 MCP 提取资源');
     }
-    const type = mimeType(imagePath);
-    if (!type) return toolError('INVALID_IMAGE_TYPE', '远程生成仅支持 PNG、JPG、JPEG、WebP 图片');
+    let image: Awaited<ReturnType<typeof resolveImageInput>>;
+    try {
+      image = await resolveImageInput(args);
+    } catch (error) {
+      if (error instanceof ImageInputError) return toolError(error.code, error.message);
+      throw error;
+    }
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), this.#timeoutMs);
     timer.unref();
 
     try {
-      const image = await readFile(imagePath);
       const form = new FormData();
-      form.append('image', new File([new Uint8Array(image)], basename(imagePath), { type }));
+      form.append('image', new File([new Uint8Array(image.data)], image.filename, { type: image.type }));
       const framework = args.framework || 'react';
       const componentLibrary = args.component_library || (
         framework === 'vue' ? 'element' : framework === 'html' ? 'none' : 'antd'

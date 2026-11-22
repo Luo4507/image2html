@@ -1,13 +1,14 @@
 # Design-to-Code MCP
 
-为 OpenCode、Codex、Cursor 等 AI 工具提供设计稿转代码能力。项目支持两种入口：
+为 OpenCode、Codex、Cursor 等 AI 工具提供设计稿转代码能力。项目支持三种入口：
 
 | 入口 | 用途 | 可用工具 |
 | --- | --- | --- |
+| HTTP 服务 `/mcp` | OpenCode 通过 Streamable HTTP 原生远程调用 | 仅 `generate_component` |
 | `dist/mcp/index.js` | 本地模型调用、浏览器校验与文件处理 | 全部五个工具 |
 | `dist/mcp/remote-index.js` | 本地 stdio 适配器连接公司集中 HTTP 服务 | 仅 `generate_component` |
 
-两种入口都使用 stdio。远程适配器不是原生 HTTP MCP 端点，不要把 `IMAGE2HTML_URL` 直接填成 MCP 客户端的远程 URL。
+两个 Node.js 入口使用 stdio；`/mcp` 是原生远程端点。远程适配器的 `IMAGE2HTML_URL` 使用服务根地址，OpenCode 远程配置的 `url` 则以 `/mcp` 结尾，两者不要混用。
 
 ## 安装
 
@@ -103,60 +104,47 @@ AI 客户端通常负责启动这个进程，不需要在终端长期运行。�
 
 返回 `code`、最终 `validation`、`repairIterations`、精简 `qualityHistory` 和 `metrics`。候选没有提升质量分数时不会被采用。
 
-## 公司内网远程生成
+## 公司内网原生远程 MCP
 
 架构：
 
 ```text
-OpenCode / Codex
-      │ stdio
+OpenCode
+      │ Streamable HTTP + 个人 Bearer API 密钥
       ▼
-dist/mcp/remote-index.js
-      │ HTTPS + 个人 Bearer API 密钥
-      ▼
-公司 image2html 单实例 HTTP 服务
+公司 image2html /mcp
       ├── 用户鉴权与限流
       ├── 有界任务队列
       ├── 内网模型与 Chromium
       └── 按用户隔离的任务产物
 ```
 
-在运行 AI 客户端的用户机器上配置：
-
-```env
-IMAGE2HTML_URL=https://image2html.internal.example
-IMAGE2HTML_API_KEY=replace-with-personal-key
-IMAGE2HTML_POLL_INTERVAL_MS=1000
-IMAGE2HTML_TIMEOUT_MS=600000
-```
-
-启动命令：
-
-```bash
-pnpm mcp:remote
-```
-
-OpenCode V2 示例：
+OpenCode V2 配置：
 
 ```json
 {
   "mcp": {
     "servers": {
-      "design-to-code": {
-        "type": "local",
-        "command": ["node", "/absolute/path/to/image2html/dist/mcp/remote-index.js"],
-        "cwd": "/absolute/path/to/image2html",
-        "environment": {
-          "IMAGE2HTML_URL": "{env:IMAGE2HTML_URL}",
-          "IMAGE2HTML_API_KEY": "{env:IMAGE2HTML_API_KEY}"
-        }
+      "image2html": {
+        "type": "remote",
+        "url": "https://image2html.internal.example/mcp",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {env:IMAGE2HTML_API_KEY}"
+        },
+        "codemode": false,
+        "timeout": { "execution": 600000 }
       }
     }
   }
 }
 ```
 
-Codex 示例：
+远程端点只开放 `generate_component`。本机图片使用 `image_base64` 和 `image_filename` 上传；`image_path` 仅适用于服务端可见路径。`asset_mode=extract` 不受支持；独立校验、修复、结构分析和资源提取仍使用本地 MCP。个人密钥只通过环境变量提供，不要写入源码、日志或 Git。
+
+## 兼容 stdio 远程适配器
+
+旧客户端仍可使用 `dist/mcp/remote-index.js`，它通过 `IMAGE2HTML_URL`、`IMAGE2HTML_API_KEY` 连接服务根地址，执行图片上传、任务轮询和源码下载。Codex 配置：
 
 ```toml
 [mcp_servers.design-to-code]
@@ -168,4 +156,4 @@ startup_timeout_sec = 30
 tool_timeout_sec = 600
 ```
 
-远程适配器只开放 `generate_component`，会上传本机图片、轮询任务并下载源码与精简校验结果。`asset_mode=extract` 不受支持；独立校验、修复、结构分析和资源提取仍使用本地 MCP。个人密钥只通过环境变量提供，不要写入源码、日志或 Git。
+适配器同样只开放 `generate_component`，支持本机 `image_path` 或 `image_base64`。它不是原生 HTTP MCP 端点，`IMAGE2HTML_URL` 不应包含 `/mcp`。

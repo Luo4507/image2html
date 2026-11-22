@@ -79,7 +79,7 @@ Docker 镜像包含生产依赖和 Chromium。任务数据保存在 `image2html-
 
 ## HTTP API
 
-所有 `/v1/*` 接口需要：
+所有 `/v1/*` 和 `/mcp` 接口需要：
 
 ```text
 Authorization: Bearer <用户密钥>
@@ -132,11 +132,34 @@ curl -fL -o component.html http://localhost:3000/v1/jobs/job-id/artifacts/code \
 
 任务结果还包含 `imports`、`components` 和精简 `validation`，供内网 MCP 适配器组装结构化生成结果；这些字段不包含截图或差异图 base64。完整图片仍通过对应产物接口下载。
 
-### OpenCode / Codex 内网 MCP 适配器
+### OpenCode 原生远程 MCP（推荐）
 
-用户机器将 `dist/mcp/remote-index.js` 配置为 stdio MCP，并设置 `IMAGE2HTML_URL`、`IMAGE2HTML_API_KEY`。适配器上传图片、轮询上述任务接口并下载源码，不需要在用户机器配置模型密钥或安装 Chromium。
+服务在 `/mcp` 提供 Streamable HTTP MCP，使用与 `/v1/*` 相同的 `Authorization: Bearer <用户密钥>` 鉴权、限流、任务队列和用户隔离。OpenCode 机器不需要项目源码、Node.js、模型密钥或 Chromium。
 
-远程适配器目前只开放 `generate_component`，不支持 `asset_mode=extract`。其余四个工具仍由本地 `dist/mcp/index.js` 提供。HTTP 服务本身没有新增原生 MCP 端点，不要把服务 URL 直接填成客户端的 Streamable HTTP MCP 地址。完整客户端配置见[使用及 AI 工具接入指导](usage-and-ai-integration.md)。
+```json
+{
+  "mcp": {
+    "servers": {
+      "image2html": {
+        "type": "remote",
+        "url": "https://image2html.example.com/mcp",
+        "oauth": false,
+        "headers": {
+          "Authorization": "Bearer {env:IMAGE2HTML_API_KEY}"
+        },
+        "codemode": false,
+        "timeout": { "execution": 600000 }
+      }
+    }
+  }
+}
+```
+
+远程端点目前只开放 `generate_component`。OpenCode 本机图片通过 `image_base64` 上传，只有服务端可见路径才使用 `image_path`；不支持 `asset_mode=extract`。其余四个工具仍由本地 `dist/mcp/index.js` 提供。完整客户端配置见[使用及 AI 工具接入指导](usage-and-ai-integration.md)。
+
+### Codex / 旧客户端 stdio 适配器
+
+需要 stdio 的客户端仍可将 `dist/mcp/remote-index.js` 配置为本地入口，并设置 `IMAGE2HTML_URL`、`IMAGE2HTML_API_KEY`。该入口是兼容适配器，不是原生远程 MCP；`IMAGE2HTML_URL` 使用服务根地址，不包含 `/mcp`。
 
 ### 实时进度与代码预览
 
