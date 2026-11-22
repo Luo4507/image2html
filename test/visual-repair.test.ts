@@ -38,4 +38,25 @@ describe('visual repair fallback', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2);
     await converter.close();
   });
+
+  it('reuses a full-code patch response instead of requesting the same candidate twice', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(response('<!DOCTYPE html><html><body>fixed</body></html>'));
+    vi.stubGlobal('fetch', fetchMock);
+    const converter = new DesignToCode();
+    const validation: ValidationResult = {
+      similarity: 50, passed: false, regions: [], suggestions: [], screenshots: {},
+    };
+
+    const result = await (converter as any).repairWithVision(
+      'data:image/png;base64,aGVsbG8=',
+      '<main>current</main>',
+      validation,
+      { framework: 'html' },
+    );
+
+    expect(result.code).toBe('<!DOCTYPE html><html><body>fixed</body></html>');
+    expect(result.modelCalls).toBe(1);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    await converter.close();
+  });
 });

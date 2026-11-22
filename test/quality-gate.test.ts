@@ -38,4 +38,14 @@ describe('passesQualityGate', () => {
       textCoverage: 50,
     }, { ...config, checkTextCoverage: true, minTextCoverage: 80 })).toBe(false);
   });
+
+  it('does not treat an unmeasured text metric as zero coverage', () => {
+    expect(passesQualityGate({
+      overallSimilarity: 100,
+      contentSimilarity: 100,
+      edgeSimilarity: 100,
+      contentRatio: 0.1,
+      qualityScore: 100,
+    }, { ...config, checkTextCoverage: true, minTextCoverage: 80 })).toBe(true);
+  });
 });

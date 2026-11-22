@@ -154,7 +154,7 @@ export class RemoteMCPClient {
         responsive: args.responsive ?? true,
         accessibility: true,
         pipeline: args.pipeline || 'direct',
-        qualityMode: args.quality_mode || 'balanced',
+        qualityMode: args.quality_mode || 'precision',
         layoutMode: args.layout_mode || 'single',
         assetMode: 'none',
         validate: true,

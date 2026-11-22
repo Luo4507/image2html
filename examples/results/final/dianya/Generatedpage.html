@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>电鸭 - 项目 · 找人 · 找机会</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;background:#f0f1f2;color:#333;font-size:14px}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+input{font-family:inherit}
+:focus-visible{outline:2px solid #f2a93c;outline-offset:2px}
+.container{max-width:1504px;margin:0 auto;padding:0 24px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 416px;gap:36px;align-items:start;padding:28px 0 64px}
+.promo-grid{display:grid;grid-template-columns:1fr 1fr}
+.rank-cols{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:1160px){
+.layout{grid-template-columns:1fr !important}
+.promo-grid{grid-template-columns:1fr !important}
+.promo-second{border-left:none !important;border-top:1px solid #eee !important}
+.rank-cols{grid-template-columns:1fr !important}
+.rank-right{border-left:none !important;border-top:1px solid #eee !important;margin-top:8px !important}
+}
+@media (max-width:860px){
+.header-inner{flex-wrap:wrap;height:auto !important;padding:14px 0 !important;row-gap:12px}
+.main-nav{order:5;width:100%;justify-content:flex-start !important}
+.banner-flex{flex-direction:column !important;align-items:flex-start !important;gap:18px}
+.stats-box{flex-wrap:wrap}
+.stat-item{border-left:none !important;padding:6px 18px !important}
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-up" viewBox="0 0 16 16"><path d="M8 1.2l5.6 6.1h-3.1v7.5H5.5V7.3H2.4z" fill="currentColor"/></symbol>
+<symbol id="i-search" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="7" cy="7" r="4.6"/><path d="M10.6 10.6l3.6 3.6"/></g></symbol>
+<symbol id="i-ext" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 3.5h4v4"/><path d="M12.5 3.5L7 9"/><path d="M11 10v3.5H3.5V6H7"/></g></symbol>
+<symbol id="i-swap" viewBox="0 0 16 16"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h9L10.3 3.3"/><path d="M12.5 10.5h-9l2.2 2.2"/></g></symbol>
+<symbol id="i-caret" viewBox="0 0 16 16"><path d="M4 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="i-hand" viewBox="0 0 16 16"><path d="M8 1.5c.9 0 1.6.7 1.6 1.6v3.4h3.1c.8 0 1.4.7 1.2 1.5l-.9 4.6c-.1.8-.8 1.4-1.6 1.4H5.2c-.5 0-1-.2-1.3-.6L1.6 10.6c-.5-.6-.4-1.5.2-2 .5-.4 1.3-.4 1.8.1l1 1V3.1c0-.9.7-1.6 1.6-1.6z" fill="currentColor"/></symbol>
+<symbol id="i-medal" viewBox="0 0 16 16"><circle cx="8" cy="5.6" r="3.4" fill="currentColor"/><path d="M5.6 8.6L4 14l4-1.6L12 14l-1.6-5.4z" fill="currentColor"/></symbol>
+<symbol id="i-duck" viewBox="0 0 64 64"><path d="M32 6c14 0 24 10 24 23 0 14-11 25-24 25S8 43 8 29C8 16 18 6 32 6z" fill="#f6c445"/><rect x="12" y="23" width="40" height="6" rx="3" fill="#1d1d1f"/><circle cx="22" cy="30" r="7" fill="#1d1d1f"/><circle cx="42" cy="30" r="7" fill="#1d1d1f"/><path d="M25 42h14l-7 8z" fill="#ec8f2a"/></symbol>
+<symbol id="i-nib" viewBox="0 0 40 40"><path d="M20 5l9 12-9 18-9-18z" fill="#d8453e"/><circle cx="20" cy="19" r="3" fill="#fff"/><path d="M20 22v8" stroke="#fff" stroke-width="1.6"/></symbol>
+</svg>
+
+<header style="background:#fff;border-bottom:2px solid #f2a93c">
+  <div class="container header-inner" style="display:flex;align-items:center;height:92px;gap:8px">
+    <a href="#" style="display:flex;align-items:center;gap:10px;flex:none" aria-label="电鸭首页">
+      <svg width="42" height="42" aria-hidden="true"><use href="#i-duck"/></svg>
+      <span style="font-size:27px;font-weight:700;color:#f0a63c;letter-spacing:2px">电鸭</span>
+    </a>
+    <span style="width:1px;height:22px;background:#ddd;margin:0 12px;flex:none" aria-hidden="true"></span>
+    <span style="color:#666;font-size:15px;letter-spacing:2px;flex:none">找人 · 找机会</span>
+    <nav class="main-nav" aria-label="主导航" style="display:flex;align-items:center;gap:6px;margin-left:56px">
+      <a href="#" style="padding:12px 24px;font-size:17px;color:#333;border-radius:6px">广场</a>
+      <a href="#" style="padding:12px 24px;font-size:17px;color:#333;border-radius:6px">机会</a>
+      <a href="#" aria-current="page" style="padding:12px 24px;font-size:17px;color:#fff;background:#f2b049;border-radius:6px">项目</a>
+      <a href="#" style="padding:12px 24px;font-size:17px;color:#333;border-radius:6px">群组</a>
+    </nav>
+    <div style="flex:1"></div>
+    <div class="search-area" role="search" style="display:flex;align-items:center;margin-right:16px">
+      <input type="text" placeholder="请输入关键字" aria-label="搜索关键字" style="width:200px;height:42px;border:1px solid #ddd;border-right:none;border-radius:4px 0 0 4px;padding:0 12px;font-size:14px;color:#333;background:#fff">
+      <button type="button" aria-label="搜索" style="width:58px;height:42px;background:#f2b049;border:none;border-radius:0 4px 4px 0;display:flex;align-items:center;justify-content:center;color:#fff">
+        <svg width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg>
+      </button>
+    </div>
+    <button type="button" style="height:42px;padding:0 26px;background:#fff;border:1px solid #ddd;border-radius:4px;font-size:15px;color:#333;margin-right:12px">登录</button>
+    <button type="button" style="height:42px;padding:0 24px;background:#f2b049;border:none;border-radius:4px;font-size:15px;color:#fff">注册</button>
+  </div>
+</header>
+
+<main class="container layout">
+  <div style="min-width:0;display:flex;flex-direction:column;gap:24px">
+
+    <!-- 顶部横幅 -->
+    <section class="banner-flex" style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);padding:26px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+      <div>
+        <h1 style="margin:0 0 10px;font-size:23px;color:#222;font-weight:700">发布你的「<span style="color:#f0a63c">项目 &amp; 故事</span>」</h1>
+        <p style="margin:0;font-size:14px;color:#888">会为你带来潜在的合作 / 连接 / 机会</p>
+      </div>
+      <div class="stats-box" style="display:flex;align-items:center;background:#f7f8f9;border-radius:6px;padding:16px 0">
+        <div class="stat-item" style="padding:0 24px;display:flex;align-items:center;gap:8px">
+          <strong style="color:#f0a63c;font-size:20px;font-weight:700">1,118</strong><span style="color:#888;font-size:13px">项目</span>
+        </div>
+        <div class="stat-item" style="padding:0 24px;border-left:1px solid #e5e5e5;display:flex;align-items:center;gap:8px">
+          <strong style="color:#f0a63c;font-size:20px;font-weight:700">968</strong><span style="color:#888;font-size:13px">项目故事</span>
+        </div>
+        <div class="stat-item" style="padding:0 24px;border-left:1px solid #e5e5e5;display:flex;align-items:center;gap:8px">
+          <strong style="color:#f0a63c;font-size:20px;font-weight:700">66.9w</strong><span style="color:#888;font-size:13px">曝光</span>
+        </div>
+        <div class="stat-item" style="padding:0 24px;border-left:1px solid #e5e5e5;display:flex;align-items:center;gap:8px">
+          <strong style="color:#f0a63c;font-size:20px;font-weight:700">167</strong><span style="color:#888;font-size:13px">合作</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 置顶推广中 -->
+    <section style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid #f0f0f0">
+        <h2 style="margin:0;font-size:18px;color:#222;display:flex;align-items:center;gap:10px">
+          <span style="display:inline-block;width:4px;height:18px;background:#f2a93c;border-radius:2px" aria-hidden="true"></span>置顶推广中
+        </h2>
+        <button type="button" style="display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 18px;background:#fff;border:1px solid #f0c070;border-radius:6px;color:#e0a13c;font-size:14px">
+          <svg width="14" height="14" aria-hidden="true" style="color:#e0a13c"><use href="#i-hand"/></svg>我也要置顶推广
+        </button>
+      </div>
+      <div class="promo-grid">
+        <article style="padding:26px 24px;display:flex;flex-direction:column;gap:16px;min-width:0">
+          <div style="display:flex;align-items:center;gap:14px;min-width:0">
+            <span style="flex:none;width:52px;height:52px;border-radius:12px;background:#1d7a63;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;font-weight:700" aria-hidden="true">C</span>
+            <h3 style="margin:0;font-size:18px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">太公钓点</h3>
+            <span style="flex:none;display:inline-flex;align-items:center;gap:5px;background:#fdf5e6;color:#e0a13c;font-size:12px;padding:4px 9px;border-radius:4px">
+              <svg width="11" height="11" aria-hidden="true"><use href="#i-medal"/></svg>置顶推广
+            </span>
+          </div>
+          <p style="margin:0;font-size:14px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">太公钓点是帮助钓鱼爱好者找到好钓点与智能出钓指南，现…</p>
+          <div style="display:flex;align-items:center;gap:20px">
+            <span style="display:inline-flex;align-items:center;gap:5px;color:#f0a63c;font-weight:700;font-size:16px"><svg width="14" height="14" aria-hidden="true"><use href="#i-up"/></svg>3</span>
+            <span style="color:#999;font-size:13px">推广期 <strong style="color:#f0a63c">+2</strong></span>
+            <span style="color:#999;font-size:13px">52 看过</span>
+          </div>
+        </article>
+        <article class="promo-second" style="padding:26px 24px;border-left:1px solid #eee;display:flex;flex-direction:column;gap:16px;min-width:0">
+          <div style="display:flex;align-items:center;gap:14px;min-width:0">
+            <svg width="52" height="52" style="flex:none" aria-hidden="true"><use href="#i-duck"/></svg>
+            <h3 style="margin:0;font-size:18px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">电鸭：找人找机会的自由工作社区</h3>
+            <span style="flex:none;display:inline-flex;align-items:center;gap:5px;background:#fdf5e6;color:#e0a13c;font-size:12px;padding:4px 9px;border-radius:4px">
+              <svg width="11" height="11" aria-hidden="true"><use href="#i-medal"/></svg>置顶推广
+            </span>
+          </div>
+          <p style="margin:0;font-size:14px;color:#888;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">电鸭社区(eleduck.com)是国内影响力最大的自由工作社区，…</p>
+          <div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+            <span style="display:inline-flex;align-items:center;gap:5px;color:#f0a63c;font-weight:700;font-size:16px"><svg width="14" height="14" aria-hidden="true"><use href="#i-up"/></svg>37</span>
+            <span style="color:#999;font-size:13px">推广期 <strong style="color:#f0a63c">+0</strong></span>
+            <span style="color:#999;font-size:13px">552 看过</span>
+            <a href="#" style="margin-left:auto;color:#43a047;font-size:13px">正在找人 →</a>
+            <a href="#" style="display:inline-flex;align-items:center;gap:5px;color:#888;font-size:13px">访问项目 <svg width="12" height="12" aria-hidden="true" style="color:#999"><use href="#i-ext"/></svg></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 项目排行榜 -->
+    <section style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05)">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:22px 24px">
+        <h2 style="margin:0;font-size:18px;color:#222;display:flex;align-items:center;gap:10px">
+          <span style="display:inline-block;width:4px;height:18px;background:#f2a93c;border-radius:2px" aria-hidden="true"></span>项目排行榜
+        </h2>
+        <span style="color:#888;font-size:14px">共 <strong style="color:#f0a63c">1,118</strong> 个项目</span>
+      </div>
+
+      <div style="padding:4px 24px 22px;border-top:1px solid #f0f0f0;display:flex;flex-direction:column;gap:14px">
+        <div style="display:flex;align-items:flex-start;gap:16px;padding-top:18px">
+          <span style="flex:none;color:#666;font-size:14px;padding-top:8px;width:52px">按领域</span>
+          <div style="flex:1;display:flex;flex-wrap:wrap;gap:12px;row-gap:12px">
+            <button type="button" style="padding:7px 20px;border:1px solid #f0c070;background:#fdf8ec;border-radius:18px;font-size:14px;color:#e0a13c">全部</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">AI/人工智能</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">企业服务</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">技术/开源</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">内容/媒体</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">跨境/出海</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">区块链&amp;Web3</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">电商/消费</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">工具/应用</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">社交/游戏</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">金融/投资</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">健康/医疗</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">其他</button>
+          </div>
+          <button type="button" style="flex:none;display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#888;font-size:13px;padding-top:8px">收起 <svg width="12" height="12" aria-hidden="true"><use href="#i-caret"/></svg></button>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px">
+          <span style="flex:none;color:#666;font-size:14px;width:52px">按类型</span>
+          <div style="flex:1;display:flex;flex-wrap:wrap;gap:12px">
+            <button type="button" style="padding:7px 20px;border:1px solid #f0c070;background:#fdf8ec;border-radius:18px;font-size:14px;color:#e0a13c">全部</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">个人项目</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">公司项目</button>
+            <button type="button" style="padding:7px 20px;border:1px solid #e3e3e3;background:#fff;border-radius:18px;font-size:14px;color:#444">开源项目</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="rank-cols" style="border-top:1px solid #f0f0f0">
+        <!-- 最热 -->
+        <div style="padding:0 24px 10px;min-width:0">
+          <div style="display:flex;align-items:center;gap:10px;padding:20px 0 6px">
+            <h3 style="margin:0;font-size:18px;color:#222">最热</h3>
+            <span style="color:#aaa;font-size:13px">近 30 天顶得最多</span>
+            <a href="#" style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;color:#777;font-size:13px"><svg width="13" height="13" aria-hidden="true" style="color:#999"><use href="#i-swap"/></svg>总排行</a>
+          </div>
+          <article style="display:flex;gap:12px;padding:18px 0;min-width:0">
+            <span style="flex:none;width:14px;text-align:center;font-style:italic;font-weight:700;color:#f0a63c;font-size:17px;padding-top:2px">1</span>
+            <span style="flex:none;width:40px;height:40px;border-radius:8px;background:#fff;border:1px solid #eee;display:flex;align-items:center;justify-content:center" aria-hidden="true"><svg width="26" height="26"><use href="#i-nib"/></svg></span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                <h4 style="margin:0;font-size:16px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">墨斗-专注AI写小说的工具</h4>
+                <span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;color:#f0a63c;font-weight:700;font-size:15px"><svg width="13" height="13" aria-hidden="true"><use href="#i-up"/></svg>64</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                <p style="margin:0;flex:1;min-width:0;font-size:13px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">【一人公司项目】专注于AI辅助网络小说…</p>
+                <span style="flex:none;font-size:12px;color:#bbb">2,029 看过</span>
+              </div>
+            </div>
+          </article>
+          <article style="display:flex;gap:12px;padding:18px 0;min-width:0">
+            <span style="flex:none;width:14px;text-align:center;font-style:italic;font-weight:700;color:#f0a63c;font-size:17px;padding-top:2px">2</span>
+            <svg width="40" height="40" style="flex:none" aria-hidden="true"><use href="#i-duck"/></svg>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                <h4 style="margin:0;font-size:16px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">电鸭：找人找…</h4>
+                <span style="flex:none;display:inline-flex;align-items:center;gap:4px;background:#fdf5e6;color:#e0a13c;font-size:12px;padding:3px 8px;border-radius:4px"><svg width="10" height="10" aria-hidden="true"><use href="#i-medal"/></svg>置顶推广</span>
+                <span style="flex:none;color:#43a047;font-size:13px">正在找人 →</span>
+                <span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;color:#f0a63c;font-weight:700;font-size:15px"><svg width="13" height="13" aria-hidden="true"><use href="#i-up"/></svg>37</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                <p style="margin:0;flex:1;min-width:0;font-size:13px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">电鸭社区(eleduck.com)是国内影响力最大的…</p>
+                <span style="flex:none;font-size:12px;color:#bbb">552 看过</span>
+              </div>
+            </div>
+          </article>
+          <article style="display:flex;gap:12px;padding:18px 0;min-width:0">
+            <span style="flex:none;width:14px;text-align:center;font-style:italic;font-weight:700;color:#f0a63c;font-size:17px;padding-top:2px">3</span>
+            <span style="flex:none;width:40px;height:40px;border-radius:8px;background:#faf3e0;color:#d9a03f;font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center" aria-hidden="true">外</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                <h4 style="margin:0;font-size:16px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">外贸获客</h4>
+                <span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;color:#f0a63c;font-weight:700;font-size:15px"><svg width="13" height="13" aria-hidden="true"><use href="#i-up"/></svg>17</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                <p style="margin:0;flex:1;min-width:0;font-size:13px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">基于全球企业数据 领英数据 高管数据 脸书…</p>
+                <span style="flex:none;font-size:12px;color:#bbb">406 看过</span>
+              </div>
+            </div>
+          </article>
+        </div>
+        <!-- 最新 -->
+        <div class="rank-right" style="padding:0 24px 10px;border-left:1px solid #eee;min-width:0">
+          <div style="display:flex;align-items:center;gap:10px;padding:20px 0 6px">
+            <h3 style="margin:0;font-size:18px;color:#222">最新</h3>
+            <span style="color:#aaa;font-size:13px">按发布时间</span>
+          </div>
+          <article style="display:flex;gap:12px;padding:18px 0;min-width:0">
+            <span style="flex:none;width:14px;text-align:center;font-style:italic;font-weight:700;color:#f0a63c;font-size:17px;padding-top:2px">1</span>
+            <span style="flex:none;width:40px;height:40px;border-radius:8px;background:#faf3e0;color:#d9a03f;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center" aria-hidden="true">基</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                <h4 style="margin:0;font-size:16px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">基于LangGraph的智能预约agent平台</h4>
+                <span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;color:#f0a63c;font-weight:700;font-size:15px"><svg width="13" height="13" aria-hidden="true"><use href="#i-up"/></svg>0</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                <p style="margin:0;flex:1;min-width:0;font-size:13px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">基于 Python + FastAPI + MySQL + LangGr…</p>
+                <span style="flex:none;font-size:12px;color:#bbb">9 小时前</span>
+              </div>
+            </div>
+          </article>
+          <article style="display:flex;gap:12px;padding:18px 0;min-width:0">
+            <span style="flex:none;width:14px;text-align:center;font-style:italic;font-weight:700;color:#f0a63c;font-size:17px;padding-top:2px">2</span>
+            <span style="flex:none;width:40px;height:40px;border-radius:8px;background:linear-gradient(145deg,#9a8f96,#5c5260)" aria-hidden="true"></span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                <h4 style="margin:0;font-size:16px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">乙伴</h4>
+                <span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;color:#f0a63c;font-weight:700;font-size:15px"><svg width="13" height="13" aria-hidden="true"><use href="#i-up"/></svg>1</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                <p style="margin:0;flex:1;min-width:0;font-size:13px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">面向移动端和PC端提供连续对话、长期记…</p>
+                <span style="flex:none;font-size:12px;color:#bbb">11 小时前</span>
+              </div>
+            </div>
+          </article>
+          <article style="display:flex;gap:12px;padding:18px 0;min-width:0">
+            <span style="flex:none;width:14px;text-align:center;font-style:italic;font-weight:700;color:#f0a63c;font-size:17px;padding-top:2px">3</span>
+            <span style="flex:none;width:40px;height:40px;border-radius:8px;background:#faf3e0;color:#d9a03f;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center" aria-hidden="true">A</span>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:9px">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0">
+                <h4 style="margin:0;font-size:16px;color:#222;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">AiShell</h4>
+                <span style="margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:4px;color:#f0a63c;font-weight:700;font-size:15px"><svg width="13" height="13" aria-hidden="true"><use href="#i-up"/></svg>0</span>
+              </div>
+              <div style="display:flex;align-items:center;gap:12px;min-width:0">
+                <p style="margin:0;flex:1;min-width:0;font-size:13px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">根据专家经验学习一次，后续可无限复制…</p>
+                <span style="flex:none;font-size:12px;color:#bbb">12 小时前</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 侧边栏 -->
+  <aside aria-label="侧边栏" style="display:flex;flex-direction:column;gap:24px;min-width:0">
+    <section style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);padding:24px">
+      <h2 style="margin:0 0 16px;font-size:18px;color:#222;display:flex;align-items:center;gap:10px">
+        <span style="display:inline-block;width:4px;height:18px;background:#f2a93c;border-radius:2px" aria-hidden="true"></span>发布你的项目
+      </h2>
+      <div style="border-top:1px solid #eee;padding-top:18px">
+        <p style="margin:0 0 22px;font-size:14px;color:#777;line-height:1.9">把你在做的项目放到项目广场，被顶得越多，排得越靠前；想合作的人也能顺着项目找到你。</p>
+        <button type="button" style="width:100%;height:46px;background:#f2b049;border:none;border-radius:6px;color:#fff;font-size:15px">登录并发布项目</button>
+      </div>
+    </section>
+
+    <section style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);padding:24px">
+      <h2 style="margin:0 0 16px;font-size:18px;color:#222;display:flex;align-items:center;gap:10px">
+        <span style="display:inline-block;width:4px;height:18px;background:#f2a93c;border-radius:2px" aria-hidden="true"></span>项目规则
+      </h2>
+      <div style="border-top:1px solid #eee;padding-top:20px">
+        <h3 style="margin:0 0 12px;font-size:15px;color:#222">【发布及排序】</h3>
+        <ul style="list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:10px">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#777;line-height:1.7"><span style="color:#ccc;flex:none" aria-hidden="true">•</span>社区用户最多可发布 2 个(暂定)项目到项目广场</li>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#777;line-height:1.7"><span style="color:#ccc;flex:none" aria-hidden="true">•</span><span><svg width="12" height="12" aria-hidden="true" style="color:#666;vertical-align:-1px"><use href="#i-up"/></svg> 表示支持和热度，<svg width="12" height="12" aria-hidden="true" style="color:#666;vertical-align:-1px"><use href="#i-up"/></svg> 的数量决定项目排序</span></li>
+        </ul>
+        <h3 style="margin:0 0 12px;font-size:15px;color:#222">【支持与电量】</h3>
+        <ul style="list-style:none;margin:0 0 20px;padding:0;display:flex;flex-direction:column;gap:10px">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#777;line-height:1.7"><span style="color:#ccc;flex:none" aria-hidden="true">•</span><span>每个用户每天可以 <svg width="12" height="12" aria-hidden="true" style="color:#666;vertical-align:-1px"><use href="#i-up"/></svg> 三个不同的项目</span></li>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#777;line-height:1.7"><span style="color:#ccc;flex:none" aria-hidden="true">•</span><span><svg width="12" height="12" aria-hidden="true" style="color:#666;vertical-align:-1px"><use href="#i-up"/></svg> 只影响该项目排序，不消耗用户自身任何电量</span></li>
+        </ul>
+        <h3 style="margin:0 0 12px;font-size:15px;color:#222">【分享与置顶】</h3>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px">
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#777;line-height:1.7"><span style="color:#ccc;flex:none" aria-hidden="true">•</span>项目可以通过分享来被更多人看到和支持</li>
+          <li style="display:flex;align-items:flex-start;gap:8px;font-size:14px;color:#777;line-height:1.7"><span style="color:#ccc;flex:none" aria-hidden="true">•</span>作者也可以通过「置顶推广」来增加项目曝光</li>
+        </ul>
+      </div>
+    </section>
+
+    <section style="background:#fff;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.05);padding:24px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <h2 style="margin:0;font-size:18px;color:#222;display:flex;align-items:center;gap:10px">
+          <span style="display:inline-block;width:4px;height:18px;background:#f2a93c;border-radius:2px" aria-hidden="true"></span>远程全职推荐
+        </h2>
+        <span style="display:flex;gap:16px">
+          <a href="#" style="color:#888;font-size:13px">刷新</a>
+          <a href="#" style="color:#888;font-size:13px">查看全部</a>
+        </span>
+      </div>
+      <div style="border-top:1px solid #eee;padding-top:18px">
+        <div style="background:#f7f8f9;border-radius:6px;padding:18px 20px">
+          <p style="margin:0;font-size:15px;color:#333;line-height:1.8">【免费推荐/全职远程】 年薪¥93W-120W/高级AI 视频/短剧 Agent 编排工程师/AI Agent平台</p>
+        </div>
+      </div>
+    </section>
+  </aside>
+</main>
+</body>
+</html>

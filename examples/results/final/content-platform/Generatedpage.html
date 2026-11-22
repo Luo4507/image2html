@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>内容平台 - 发布内容</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    background: #f0f2f5;
+    color: #262626;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  a { text-decoration: none; }
+  button { font-family: inherit; }
+
+  /* ===== 顶部导航 ===== */
+  .topbar {
+    background: #fff;
+    border-bottom: 1px solid #e8e8e8;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    gap: 24px;
+  }
+  .topbar-left { flex: 1; display: flex; align-items: center; }
+  .brand { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; color: #1890ff; }
+  .brand .logo { font-size: 22px; line-height: 1; }
+  .main-nav { display: flex; gap: 36px; }
+  .main-nav a { font-size: 14px; color: #595959; padding: 6px 2px; }
+  .main-nav a:hover { color: #1890ff; }
+  .main-nav a.active { color: #1890ff; }
+  .topbar-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; gap: 16px; }
+  .creator-link { font-size: 14px; color: #333; }
+  .avatar {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, #9b8ce0, #6f5bd0);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600; flex-shrink: 0;
+  }
+
+  /* ===== 主体布局 ===== */
+  .layout {
+    max-width: 1182px;
+    margin: 0 auto;
+    padding: 24px 16px 48px;
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+  }
+  .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03); }
+
+  /* ===== 左侧编辑卡片 ===== */
+  .editor-card { flex: 1; min-width: 0; padding: 24px; }
+  .card-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-bottom: 20px; border-bottom: 1px solid #f0f0f0; margin-bottom: 24px;
+  }
+  .card-header h1 { font-size: 20px; font-weight: 700; color: #222; }
+  .btn-primary {
+    background: #1890ff; color: #fff; border: none; border-radius: 6px;
+    height: 36px; padding: 0 22px; font-size: 14px; cursor: pointer;
+  }
+  .btn-primary:hover { background: #40a9ff; }
+  .btn-primary:focus-visible { outline: 2px solid #096dd9; outline-offset: 2px; }
+
+  .form-group { margin-bottom: 24px; }
+  .form-label { display: block; font-size: 14px; color: #333; margin-bottom: 10px; }
+  .text-input {
+    width: 100%; height: 40px; padding: 0 12px;
+    border: 1px solid #d9d9d9; border-radius: 6px;
+    font-size: 14px; color: #262626; outline: none;
+  }
+  .text-input::placeholder { color: #bfbfbf; }
+  .text-input:focus { border-color: #1890ff; box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.15); }
+
+  .tag-row { display: flex; flex-wrap: wrap; gap: 12px; }
+  .tag {
+    border: 1px solid transparent; background: #e9e9e9; color: #444;
+    font-size: 13px; padding: 0 18px; height: 34px; border-radius: 17px; cursor: pointer;
+  }
+  .tag:hover { background: #dedede; }
+  .tag[aria-pressed="true"] { background: #e6f4ff; border-color: #7db8f5; color: #1890ff; }
+
+  .editor { border: 1px solid #d9d9d9; border-radius: 6px; overflow: hidden; }
+  .toolbar {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 9px 10px; background: #f7f7f7; border-bottom: 1px solid #e8e8e8;
+  }
+  .tool-btn {
+    min-width: 32px; height: 30px; padding: 0 9px;
+    background: #fff; border: 1px solid #d9d9d9; border-radius: 4px;
+    font-size: 13px; color: #333; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .tool-btn:hover { border-color: #1890ff; color: #1890ff; }
+  .tool-btn .b { font-weight: 700; }
+  .tool-btn .i { font-style: italic; font-weight: 600; }
+  .tool-btn .u { text-decoration: underline; font-weight: 600; }
+  .content-input {
+    display: block; width: 100%; min-height: 185px;
+    padding: 12px 14px; border: none; outline: none; resize: vertical;
+    font-size: 14px; line-height: 1.7; font-family: inherit; color: #262626;
+  }
+  .content-input::placeholder { color: #bfbfbf; }
+
+  .upload {
+    display: block; border: 2px dashed #d9d9d9; border-radius: 8px;
+    padding: 42px 20px; text-align: center; cursor: pointer; transition: border-color 0.2s;
+  }
+  .upload:hover, .upload:focus-within { border-color: #1890ff; }
+  .upload-icon { font-size: 48px; line-height: 1; display: block; margin-bottom: 14px; }
+  .upload-title { font-size: 14px; color: #8c8c8c; }
+  .upload-hint { font-size: 12px; color: #b0b0b0; margin-top: 6px; }
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+
+  /* ===== 右侧边栏 ===== */
+  .sidebar { width: 320px; flex-shrink: 0; display: flex; flex-direction: column; gap: 24px; }
+  .side-card { padding: 20px; }
+  .side-title { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #222; margin-bottom: 6px; }
+  .side-title .icon { font-size: 16px; line-height: 1; }
+  .stat-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 13px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .stat-row:last-child { border-bottom: none; padding-bottom: 6px; }
+  .stat-label { font-size: 13px; color: #595959; }
+  .stat-value { font-size: 15px; font-weight: 700; color: #1890ff; }
+
+  .draft-list { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 12px; }
+  .draft-item { background: #f6f6f7; border-radius: 6px; padding: 12px 14px; }
+  .draft-title { font-size: 14px; color: #333; font-weight: 400; }
+  .draft-time { font-size: 12px; color: #999; margin-top: 6px; }
+
+  /* ===== 响应式 ===== */
+  @media (max-width: 992px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; flex-direction: row; flex-wrap: wrap; }
+    .side-card { flex: 1 1 280px; }
+  }
+  @media (max-width: 720px) {
+    .topbar { padding: 0 16px; }
+    .main-nav { display: none; }
+    .creator-link { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-left">
+    <a class="brand" href="#" aria-label="内容平台首页">
+      <span class="logo" aria-hidden="true">📝</span>
+      <span>内容平台</span>
+    </a>
+  </div>
+  <nav class="main-nav" aria-label="主导航">
+    <a href="#" class="active" aria-current="page">发布内容</a>
+    <a href="#">我的内容</a>
+    <a href="#">数据分析</a>
+    <a href="#">设置</a>
+  </nav>
+  <div class="topbar-right">
+    <a class="creator-link" href="#">创作者中心</a>
+    <span class="avatar" role="img" aria-label="用户头像">U</span>
+  </div>
+</header>
+
+<main class="layout">
+  <!-- 左侧：发布新内容 -->
+  <section class="card editor-card" aria-labelledby="editor-title">
+    <div class="card-header">
+      <h1 id="editor-title">发布新内容</h1>
+      <button type="button" class="btn-primary">发布文章</button>
+    </div>
+
+    <form action="#" method="post" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="article-title">文章标题</label>
+        <input class="text-input" id="article-title" name="title" type="text" maxlength="50" placeholder="请输入文章标题（5-50字）" />
+      </div>
+
+      <div class="form-group">
+        <span class="form-label" id="category-label">内容分类</span>
+        <div class="tag-row" role="group" aria-labelledby="category-label">
+          <button type="button" class="tag" aria-pressed="true">技术分享</button>
+          <button type="button" class="tag" aria-pressed="false">产品心得</button>
+          <button type="button" class="tag" aria-pressed="false">行业资讯</button>
+          <button type="button" class="tag" aria-pressed="false">生活随笔</button>
+          <button type="button" class="tag" aria-pressed="false">教程攻略</button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="article-content">正文内容</label>
+        <div class="editor">
+          <div class="toolbar" role="toolbar" aria-label="编辑工具栏">
+            <button type="button" class="tool-btn" aria-label="加粗"><span class="b">B</span></button>
+            <button type="button" class="tool-btn" aria-label="斜体"><span class="i">I</span></button>
+            <button type="button" class="tool-btn" aria-label="下划线"><span class="u">U</span></button>
+            <button type="button" class="tool-btn" aria-label="插入链接">🔗</button>
+            <button type="button" class="tool-btn" aria-label="插入图片">🖼️</button>
+            <button type="button" class="tool-btn" aria-label="插入代码">📷</button>
+            <button type="button" class="tool-btn" aria-label="插入图表">📊</button>
+          </div>
+          <textarea class="content-input" id="article-content" name="content" placeholder="开始创作你的内容...支持 Markdown 语法"></textarea>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 0;">
+        <span class="form-label" id="cover-label">封面图片</span>
+        <label class="upload" for="cover-input" aria-labelledby="cover-label">
+          <span class="upload-icon" aria-hidden="true">📷</span>
+          <span class="upload-title" id="upload-title">点击或拖拽上传封面图片</span>
+          <span class="upload-hint" style="display:block;">支持 JPG、PNG 格式，建议尺寸 1200x630</span>
+          <input class="visually-hidden" id="cover-input" name="cover" type="file" accept="image/jpeg,image/png" />
+        </label>
+      </div>
+    </form>
+  </section>
+
+  <!-- 右侧：数据与草稿 -->
+  <aside class="sidebar" aria-label="创作概览">
+    <section class="card side-card" aria-labelledby="stats-title">
+      <h2 class="side-title" id="stats-title"><span class="icon" aria-hidden="true">📊</span>创作数据</h2>
+      <dl>
+        <div class="stat-row">
+          <dt class="stat-label">累计发布</dt>
+          <dd class="stat-value">128 篇</dd>
+        </div>
+        <div class="stat-row">
+          <dt class="stat-label">总阅读量</dt>
+          <dd class="stat-value">45.2K</dd>
+        </div>
+        <div class="stat-row">
+          <dt class="stat-label">获赞数</dt>
+          <dd class="stat-value">3,891</dd>
+        </div>
+        <div class="stat-row">
+          <dt class="stat-label">粉丝数</dt>
+          <dd class="stat-value">2,456</dd>
+        </div>
+      </dl>
+    </section>
+
+    <section class="card side-card" aria-labelledby="drafts-title">
+      <h2 class="side-title" id="drafts-title"><span class="icon" aria-hidden="true">📝</span>最近草稿</h2>
+      <ul class="draft-list">
+        <li class="draft-item">
+          <h3 class="draft-title">React 性能优化实践</h3>
+          <p class="draft-time">2小时前</p>
+        </li>
+        <li class="draft-item">
+          <h3 class="draft-title">产品设计思维分享</h3>
+          <p class="draft-time">昨天</p>
+        </li>
+        <li class="draft-item">
+          <h3 class="draft-title">前端工程化指南</h3>
+          <p class="draft-time">3天前</p>
+        </li>
+      </ul>
+    </section>
+  </aside>
+</main>
+
+<script lang="ts">
+  // 分类标签单选切换
+  var tags = document.querySelectorAll('.tag');
+  tags.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      tags.forEach(function (b) {
+        b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+      });
+    });
+  });
+
+  // 封面选择后回显文件名
+  var coverInput = document.getElementById('cover-input');
+  var uploadTitle = document.getElementById('upload-title');
+  if (coverInput && uploadTitle) {
+    coverInput.addEventListener('change', function () {
+      var files = coverInput.files;
+      if (files && files.length > 0) {
+        uploadTitle.textContent = '已选择：' + files[0].name;
+      }
+    });
+  }
+</script>
+</body>
+</html>

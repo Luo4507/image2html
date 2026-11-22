@@ -70,6 +70,9 @@ visual_reports/
 !examples/demo/*.jpeg
 !examples/fixtures/demo/*.jpg
 !examples/fixtures/demo/*.jpeg
+!examples/results/final/**/*.png
+!examples/results/final/**/*.jpg
+!examples/results/final/**/*.jpeg
 
 # Playwright
 test-results/

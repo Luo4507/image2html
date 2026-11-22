@@ -5,18 +5,28 @@
 import 'dotenv/config';
 import type { ModelConfig, ValidationConfig } from './types.js';
 
+function optionalBoolean(value: string | undefined): boolean | undefined {
+  if (value === 'true') return true;
+  if (value === 'false') return false;
+  return undefined;
+}
+
 /** 默认模型配置（从环境变量读取） */
 export function getDefaultModelConfig(): ModelConfig {
+  const visionThinking = optionalBoolean(process.env.LLM_VL_ENABLE_THINKING);
+  const codeThinking = optionalBoolean(process.env.LLM_ENABLE_THINKING);
   return {
     visionModel: {
       baseUrl: process.env.LLM_VL_BASE_URL || process.env.QWEN_VL_BASE_URL || 'http://qwen-vl.internal:8000/v1',
       model: process.env.LLM_VL_MODEL || process.env.VISION_MODEL || 'qwen3.5-vl-72b-instruct',
       apiKey: process.env.LLM_VL_API_KEY || process.env.QWEN_VL_API_KEY || 'internal-key',
+      ...(visionThinking === undefined ? {} : { enableThinking: visionThinking }),
     },
     codeModel: {
       baseUrl: process.env.LLM_BASE_URL || process.env.GLM_BASE_URL || 'http://glm.internal:8001/v1',
       model: process.env.LLM_MODEL || process.env.CODE_MODEL || 'glm-5.3',
       apiKey: process.env.LLM_API_KEY || process.env.GLM_API_KEY || 'internal-key',
+      ...(codeThinking === undefined ? {} : { enableThinking: codeThinking }),
     },
   };
 }
@@ -27,14 +37,14 @@ export function getDefaultValidationConfig(): ValidationConfig {
     threshold: parseFloat(process.env.VISUAL_SIMILARITY_THRESHOLD || '85.0'),
     minContentSimilarity: parseFloat(process.env.MIN_CONTENT_SIMILARITY || '60.0'),
     minEdgeSimilarity: parseFloat(process.env.MIN_EDGE_SIMILARITY || '40.0'),
-    checkTextCoverage: process.env.CHECK_TEXT_COVERAGE === 'true',
+    checkTextCoverage: process.env.CHECK_TEXT_COVERAGE !== 'false',
     minTextCoverage: parseFloat(process.env.MIN_TEXT_COVERAGE || '80.0'),
     viewports: {
       desktop: { width: 1440, height: 900 },
       tablet: { width: 768, height: 1024 },
       mobile: { width: 375, height: 812 },
     },
-    maxRetryCount: parseInt(process.env.MAX_RETRY_COUNT || '3', 10),
+    maxRetryCount: parseInt(process.env.MAX_RETRY_COUNT || '4', 10),
     navigationTimeoutMs: parseInt(process.env.NAVIGATION_TIMEOUT_MS || '30000', 10),
   };
 }
@@ -49,7 +59,8 @@ export function getDefaultCodegenOptions() {
     responsive: process.env.DEFAULT_RESPONSIVE !== 'false',
     accessibility: process.env.DEFAULT_ACCESSIBILITY !== 'false',
     pipeline: (process.env.DEFAULT_PIPELINE || 'direct') as 'direct' | 'structured',
-    qualityMode: (process.env.QUALITY_MODE || 'balanced') as 'fast' | 'balanced' | 'precision',
+    qualityMode: (process.env.QUALITY_MODE || 'precision') as 'fast' | 'balanced' | 'precision',
+    layoutMode: (process.env.DEFAULT_LAYOUT_MODE || 'single') as 'single' | 'segmented' | 'auto',
     assetMode: 'none' as const,
   };
 }

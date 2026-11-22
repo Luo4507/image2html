@@ -1,0 +1,3501 @@
+{
+  "image": "examples\\jifen.png",
+  "options": {
+    "framework": "html",
+    "styleFramework": "inline",
+    "componentLibrary": "none",
+    "typescript": true,
+    "responsive": true,
+    "accessibility": true,
+    "pipeline": "direct",
+    "qualityMode": "precision",
+    "assetMode": "none"
+  },
+  "success": true,
+  "code": {
+    "filename": "Generatedpage.html",
+    "imports": [],
+    "components": []
+  },
+  "validation": {
+    "similarity": 92.28,
+    "quality": {
+      "overallSimilarity": 86.35,
+      "contentSimilarity": 86.42,
+      "edgeSimilarity": 40.55,
+      "contentRatio": 1,
+      "qualityScore": 74.92,
+      "textCoverage": 77.42
+    },
+    "dimensions": {
+      "original": {
+        "width": 375,
+        "height": 1235
+      },
+      "generated": {
+        "width": 375,
+        "height": 1276
+      },
+      "widthDifference": 0,
+      "heightDifference": -41
+    },
+    "layout": {
+      "viewport": {
+        "width": 375,
+        "height": 1235
+      },
+      "document": {
+        "width": 375,
+        "height": 1276
+      },
+      "elements": [
+        {
+          "selector": "header.header#0",
+          "tagName": "header",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 375,
+            "height": 180
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h1#1",
+          "tagName": "h1",
+          "bounds": {
+            "x": 16,
+            "y": 20,
+            "width": 76,
+            "height": 24
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "18px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button#2",
+          "tagName": "button",
+          "bounds": {
+            "x": 287.5625,
+            "y": 21,
+            "width": 28.71875,
+            "height": 22
+          },
+          "styles": {
+            "color": "rgb(0, 0, 0)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "18px",
+            "fontWeight": "400",
+            "padding": "2px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button#3",
+          "tagName": "button",
+          "bounds": {
+            "x": 330.28125,
+            "y": 21,
+            "width": 28.71875,
+            "height": 22
+          },
+          "styles": {
+            "color": "rgb(0, 0, 0)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "18px",
+            "fontWeight": "400",
+            "padding": "2px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.points-label#4",
+          "tagName": "p",
+          "bounds": {
+            "x": 20,
+            "y": 88,
+            "width": 114.09375,
+            "height": 17
+          },
+          "styles": {
+            "color": "rgba(255, 255, 255, 0.92)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px 0px 6px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.points-value#5",
+          "tagName": "p",
+          "bounds": {
+            "x": 20,
+            "y": 111,
+            "width": 114.09375,
+            "height": 45
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "4px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.signin-btn#6",
+          "tagName": "button",
+          "bounds": {
+            "x": 233,
+            "y": 100.5,
+            "width": 122,
+            "height": 43
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "14px",
+            "fontWeight": "600",
+            "padding": "12px 26px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "999px"
+          }
+        },
+        {
+          "selector": "nav.tabs#7",
+          "tagName": "nav",
+          "bounds": {
+            "x": 0,
+            "y": 180,
+            "width": 375,
+            "height": 56
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px 20px",
+            "margin": "0px",
+            "gap": "30px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.tab#8",
+          "tagName": "button",
+          "bounds": {
+            "x": 20,
+            "y": 180,
+            "width": 28,
+            "height": 56
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "600",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "4px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.tab#9",
+          "tagName": "button",
+          "bounds": {
+            "x": 78,
+            "y": 180,
+            "width": 56,
+            "height": 56
+          },
+          "styles": {
+            "color": "rgb(102, 102, 102)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "4px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.tab#10",
+          "tagName": "button",
+          "bounds": {
+            "x": 164,
+            "y": 180,
+            "width": 56,
+            "height": 56
+          },
+          "styles": {
+            "color": "rgb(102, 102, 102)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "4px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.tab#11",
+          "tagName": "button",
+          "bounds": {
+            "x": 250,
+            "y": 180,
+            "width": 42,
+            "height": 56
+          },
+          "styles": {
+            "color": "rgb(102, 102, 102)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "4px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "main#12",
+          "tagName": "main",
+          "bounds": {
+            "x": 0,
+            "y": 236,
+            "width": 375,
+            "height": 1039.78125
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px 0px 76px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section#13",
+          "tagName": "section",
+          "bounds": {
+            "x": 0,
+            "y": 236,
+            "width": 375,
+            "height": 630.1875
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h2#14",
+          "tagName": "h2",
+          "bounds": {
+            "x": 61.96875,
+            "y": 254,
+            "width": 64,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.goods-name#15",
+          "tagName": "h3",
+          "bounds": {
+            "x": 32,
+            "y": 452,
+            "width": 136.5,
+            "height": 40.59375
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 8px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.goods-price#16",
+          "tagName": "p",
+          "bounds": {
+            "x": 32,
+            "y": 504.59375,
+            "width": 76.546875,
+            "height": 24
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.redeem-btn#17",
+          "tagName": "button",
+          "bounds": {
+            "x": 116.5,
+            "y": 500.59375,
+            "width": 52,
+            "height": 32
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(249, 115, 22)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "8px 14px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "p.goods-stock#18",
+          "tagName": "p",
+          "bounds": {
+            "x": 32,
+            "y": 541.59375,
+            "width": 136.5,
+            "height": 16
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "9px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.goods-name#19",
+          "tagName": "h3",
+          "bounds": {
+            "x": 206.5,
+            "y": 452,
+            "width": 136.5,
+            "height": 40.59375
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 8px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.goods-price#20",
+          "tagName": "p",
+          "bounds": {
+            "x": 206.5,
+            "y": 504.59375,
+            "width": 76.546875,
+            "height": 24
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.redeem-btn#21",
+          "tagName": "button",
+          "bounds": {
+            "x": 291,
+            "y": 500.59375,
+            "width": 52,
+            "height": 32
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(249, 115, 22)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "8px 14px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "p.goods-stock#22",
+          "tagName": "p",
+          "bounds": {
+            "x": 206.5,
+            "y": 541.59375,
+            "width": 136.5,
+            "height": 16
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "9px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.goods-name#23",
+          "tagName": "h3",
+          "bounds": {
+            "x": 32,
+            "y": 748.59375,
+            "width": 136.5,
+            "height": 40.59375
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 8px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.goods-price#24",
+          "tagName": "p",
+          "bounds": {
+            "x": 32,
+            "y": 801.1875,
+            "width": 60.3125,
+            "height": 24
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.redeem-btn#25",
+          "tagName": "button",
+          "bounds": {
+            "x": 116.5,
+            "y": 797.1875,
+            "width": 52,
+            "height": 32
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(249, 115, 22)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "8px 14px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "p.goods-stock#26",
+          "tagName": "p",
+          "bounds": {
+            "x": 32,
+            "y": 838.1875,
+            "width": 136.5,
+            "height": 16
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "9px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.goods-name#27",
+          "tagName": "h3",
+          "bounds": {
+            "x": 206.5,
+            "y": 748.59375,
+            "width": 136.5,
+            "height": 40.59375
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 8px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.goods-price#28",
+          "tagName": "p",
+          "bounds": {
+            "x": 206.5,
+            "y": 801.1875,
+            "width": 60.3125,
+            "height": 24
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.redeem-btn#29",
+          "tagName": "button",
+          "bounds": {
+            "x": 291,
+            "y": 797.1875,
+            "width": 52,
+            "height": 32
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(249, 115, 22)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "8px 14px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "p.goods-stock#30",
+          "tagName": "p",
+          "bounds": {
+            "x": 206.5,
+            "y": 838.1875,
+            "width": 136.5,
+            "height": 16
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "9px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section#31",
+          "tagName": "section",
+          "bounds": {
+            "x": 0,
+            "y": 866.1875,
+            "width": 375,
+            "height": 333.59375
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h2#32",
+          "tagName": "h2",
+          "bounds": {
+            "x": 61.96875,
+            "y": 884.1875,
+            "width": 64,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.goods-name#33",
+          "tagName": "h3",
+          "bounds": {
+            "x": 32,
+            "y": 1082.1875,
+            "width": 136.5,
+            "height": 40.59375
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 8px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.goods-price#34",
+          "tagName": "p",
+          "bounds": {
+            "x": 32,
+            "y": 1134.78125,
+            "width": 60.3125,
+            "height": 24
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.redeem-btn#35",
+          "tagName": "button",
+          "bounds": {
+            "x": 116.5,
+            "y": 1130.78125,
+            "width": 52,
+            "height": 32
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(249, 115, 22)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "8px 14px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "p.goods-stock#36",
+          "tagName": "p",
+          "bounds": {
+            "x": 32,
+            "y": 1171.78125,
+            "width": 136.5,
+            "height": 16
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "9px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.goods-name#37",
+          "tagName": "h3",
+          "bounds": {
+            "x": 206.5,
+            "y": 1082.1875,
+            "width": 136.5,
+            "height": 40.59375
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 8px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.goods-price#38",
+          "tagName": "p",
+          "bounds": {
+            "x": 206.5,
+            "y": 1134.78125,
+            "width": 60.3125,
+            "height": 24
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.redeem-btn#39",
+          "tagName": "button",
+          "bounds": {
+            "x": 291,
+            "y": 1130.78125,
+            "width": 52,
+            "height": 32
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(249, 115, 22)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "8px 14px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "p.goods-stock#40",
+          "tagName": "p",
+          "bounds": {
+            "x": 206.5,
+            "y": 1171.78125,
+            "width": 136.5,
+            "height": 16
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "9px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "nav.bottom-nav#41",
+          "tagName": "nav",
+          "bounds": {
+            "x": 0,
+            "y": 1177,
+            "width": 375,
+            "height": 58
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.nav-item#42",
+          "tagName": "button",
+          "bounds": {
+            "x": 0,
+            "y": 1177,
+            "width": 93.75,
+            "height": 58
+          },
+          "styles": {
+            "color": "rgb(249, 115, 22)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "11px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.nav-item#43",
+          "tagName": "button",
+          "bounds": {
+            "x": 93.75,
+            "y": 1177,
+            "width": 93.75,
+            "height": 58
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "11px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.nav-item#44",
+          "tagName": "button",
+          "bounds": {
+            "x": 187.5,
+            "y": 1177,
+            "width": 93.75,
+            "height": 58
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "11px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.nav-item#45",
+          "tagName": "button",
+          "bounds": {
+            "x": 281.25,
+            "y": 1177,
+            "width": 93.75,
+            "height": 58
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "11px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "3px",
+            "borderRadius": "0px"
+          }
+        }
+      ],
+      "pendingRequests": [],
+      "failedRequests": []
+    },
+    "passed": false,
+    "regions": [
+      {
+        "x": 0,
+        "y": 0,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1289,
+        "diffPercentage": 12.89,
+        "type": "header"
+      },
+      {
+        "x": 200,
+        "y": 100,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1059,
+        "diffPercentage": 10.59,
+        "type": "header"
+      },
+      {
+        "x": 0,
+        "y": 200,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1009,
+        "diffPercentage": 10.09,
+        "type": "sidebar"
+      },
+      {
+        "x": 200,
+        "y": 400,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1126,
+        "diffPercentage": 11.26,
+        "type": "main"
+      },
+      {
+        "x": 100,
+        "y": 500,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1112,
+        "diffPercentage": 11.12,
+        "type": "main"
+      },
+      {
+        "x": 300,
+        "y": 500,
+        "width": 75,
+        "height": 100,
+        "diffPixels": 853,
+        "diffPercentage": 11.37,
+        "type": "main"
+      },
+      {
+        "x": 200,
+        "y": 700,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1063,
+        "diffPercentage": 10.63,
+        "type": "main"
+      },
+      {
+        "x": 200,
+        "y": 1000,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1002,
+        "diffPercentage": 10.02,
+        "type": "main"
+      },
+      {
+        "x": 200,
+        "y": 1100,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1920,
+        "diffPercentage": 19.2,
+        "type": "main"
+      },
+      {
+        "x": 0,
+        "y": 1100,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1004,
+        "diffPercentage": 10.04,
+        "type": "sidebar"
+      },
+      {
+        "x": 100,
+        "y": 1100,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 2867,
+        "diffPercentage": 28.67,
+        "type": "main"
+      },
+      {
+        "x": 300,
+        "y": 1100,
+        "width": 75,
+        "height": 100,
+        "diffPixels": 2110,
+        "diffPercentage": 28.13,
+        "type": "main"
+      }
+    ],
+    "suggestions": [
+      "检查 Header 区域高度、背景色和边框是否一致",
+      "验证 Sidebar 宽度、背景色和菜单项样式",
+      "检查主内容区 padding、margin 和布局结构",
+      "确认字体大小和字重是否匹配设计稿",
+      "检查颜色值是否使用了 Design Token",
+      "验证圆角、阴影等细节样式"
+    ],
+    "textCoverage": 77.42,
+    "missingTexts": [
+      "2,580 分",
+      "1,280 积分",
+      "2,500 积分",
+      "680 积分",
+      "300 积分",
+      "150 积分",
+      "200 积分"
+    ]
+  },
+  "metrics": {
+    "analysisMs": 0,
+    "generationMs": 218081,
+    "validationMs": 98372,
+    "repairMs": 247873,
+    "totalMs": 561497,
+    "modelCalls": 3,
+    "repairIterations": 1
+  },
+  "qualityHistory": [
+    {
+      "iteration": 0,
+      "validation": {
+        "similarity": 84.45,
+        "quality": {
+          "overallSimilarity": 61.4,
+          "contentSimilarity": 61.45,
+          "edgeSimilarity": 11.53,
+          "contentRatio": 1,
+          "qualityScore": 48.95,
+          "textCoverage": 77.42
+        },
+        "dimensions": {
+          "original": {
+            "width": 375,
+            "height": 1235
+          },
+          "generated": {
+            "width": 375,
+            "height": 1235
+          },
+          "widthDifference": 0,
+          "heightDifference": 0
+        },
+        "layout": {
+          "viewport": {
+            "width": 375,
+            "height": 1235
+          },
+          "document": {
+            "width": 375,
+            "height": 1235
+          },
+          "elements": [
+            {
+              "selector": "header.header#0",
+              "tagName": "header",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 375,
+                "height": 156
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h1#1",
+              "tagName": "h1",
+              "bounds": {
+                "x": 16,
+                "y": 14,
+                "width": 76,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "18px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button#2",
+              "tagName": "button",
+              "bounds": {
+                "x": 287.5625,
+                "y": 15,
+                "width": 28.71875,
+                "height": 22
+              },
+              "styles": {
+                "color": "rgb(0, 0, 0)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "18px",
+                "fontWeight": "400",
+                "padding": "2px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button#3",
+              "tagName": "button",
+              "bounds": {
+                "x": 330.28125,
+                "y": 15,
+                "width": 28.71875,
+                "height": 22
+              },
+              "styles": {
+                "color": "rgb(0, 0, 0)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "18px",
+                "fontWeight": "400",
+                "padding": "2px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.points-label#4",
+              "tagName": "p",
+              "bounds": {
+                "x": 20,
+                "y": 58,
+                "width": 114.09375,
+                "height": 17
+              },
+              "styles": {
+                "color": "rgba(255, 255, 255, 0.92)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.points-value#5",
+              "tagName": "p",
+              "bounds": {
+                "x": 20,
+                "y": 81,
+                "width": 114.09375,
+                "height": 45
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.signin-btn#6",
+              "tagName": "button",
+              "bounds": {
+                "x": 233,
+                "y": 70.5,
+                "width": 122,
+                "height": 43
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "600",
+                "padding": "12px 26px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "999px"
+              }
+            },
+            {
+              "selector": "nav.tabs#7",
+              "tagName": "nav",
+              "bounds": {
+                "x": 0,
+                "y": 156,
+                "width": 375,
+                "height": 46
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px 20px",
+                "margin": "0px",
+                "gap": "30px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#8",
+              "tagName": "button",
+              "bounds": {
+                "x": 20,
+                "y": 156,
+                "width": 28,
+                "height": 46
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "600",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#9",
+              "tagName": "button",
+              "bounds": {
+                "x": 78,
+                "y": 156,
+                "width": 56,
+                "height": 46
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#10",
+              "tagName": "button",
+              "bounds": {
+                "x": 164,
+                "y": 156,
+                "width": 56,
+                "height": 46
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#11",
+              "tagName": "button",
+              "bounds": {
+                "x": 250,
+                "y": 156,
+                "width": 42,
+                "height": 46
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main#12",
+              "tagName": "main",
+              "bounds": {
+                "x": 0,
+                "y": 202,
+                "width": 375,
+                "height": 958.78125
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px 0px 76px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section#13",
+              "tagName": "section",
+              "bounds": {
+                "x": 0,
+                "y": 202,
+                "width": 375,
+                "height": 576.1875
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h2#14",
+              "tagName": "h2",
+              "bounds": {
+                "x": 61.96875,
+                "y": 220,
+                "width": 64,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#15",
+              "tagName": "h3",
+              "bounds": {
+                "x": 32,
+                "y": 391,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#16",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 443.59375,
+                "width": 76.546875,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#17",
+              "tagName": "button",
+              "bounds": {
+                "x": 116.5,
+                "y": 439.59375,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#18",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 480.59375,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#19",
+              "tagName": "h3",
+              "bounds": {
+                "x": 206.5,
+                "y": 391,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#20",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 443.59375,
+                "width": 76.546875,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#21",
+              "tagName": "button",
+              "bounds": {
+                "x": 291,
+                "y": 439.59375,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#22",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 480.59375,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#23",
+              "tagName": "h3",
+              "bounds": {
+                "x": 32,
+                "y": 660.59375,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#24",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 713.1875,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#25",
+              "tagName": "button",
+              "bounds": {
+                "x": 116.5,
+                "y": 709.1875,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#26",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 750.1875,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#27",
+              "tagName": "h3",
+              "bounds": {
+                "x": 206.5,
+                "y": 660.59375,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#28",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 713.1875,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#29",
+              "tagName": "button",
+              "bounds": {
+                "x": 291,
+                "y": 709.1875,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#30",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 750.1875,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section#31",
+              "tagName": "section",
+              "bounds": {
+                "x": 0,
+                "y": 778.1875,
+                "width": 375,
+                "height": 306.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h2#32",
+              "tagName": "h2",
+              "bounds": {
+                "x": 61.96875,
+                "y": 796.1875,
+                "width": 64,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#33",
+              "tagName": "h3",
+              "bounds": {
+                "x": 32,
+                "y": 967.1875,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#34",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 1019.78125,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#35",
+              "tagName": "button",
+              "bounds": {
+                "x": 116.5,
+                "y": 1015.78125,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#36",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 1056.78125,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#37",
+              "tagName": "h3",
+              "bounds": {
+                "x": 206.5,
+                "y": 967.1875,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#38",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 1019.78125,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#39",
+              "tagName": "button",
+              "bounds": {
+                "x": 291,
+                "y": 1015.78125,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#40",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 1056.78125,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.bottom-nav#41",
+              "tagName": "nav",
+              "bounds": {
+                "x": 0,
+                "y": 1177,
+                "width": 375,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#42",
+              "tagName": "button",
+              "bounds": {
+                "x": 0,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#43",
+              "tagName": "button",
+              "bounds": {
+                "x": 93.75,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#44",
+              "tagName": "button",
+              "bounds": {
+                "x": 187.5,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#45",
+              "tagName": "button",
+              "bounds": {
+                "x": 281.25,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": false,
+        "regions": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 4290,
+            "diffPercentage": 42.9,
+            "type": "header"
+          },
+          {
+            "x": 100,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1836,
+            "diffPercentage": 18.36,
+            "type": "header"
+          },
+          {
+            "x": 200,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1863,
+            "diffPercentage": 18.63,
+            "type": "header"
+          },
+          {
+            "x": 300,
+            "y": 0,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 1700,
+            "diffPercentage": 22.67,
+            "type": "header"
+          },
+          {
+            "x": 0,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 3755,
+            "diffPercentage": 37.55,
+            "type": "header"
+          },
+          {
+            "x": 100,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 2635,
+            "diffPercentage": 26.35,
+            "type": "header"
+          },
+          {
+            "x": 200,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 3506,
+            "diffPercentage": 35.06,
+            "type": "header"
+          },
+          {
+            "x": 300,
+            "y": 100,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 2681,
+            "diffPercentage": 35.75,
+            "type": "header"
+          },
+          {
+            "x": 0,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1002,
+            "diffPercentage": 10.02,
+            "type": "sidebar"
+          },
+          {
+            "x": 200,
+            "y": 300,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1954,
+            "diffPercentage": 19.54,
+            "type": "main"
+          },
+          {
+            "x": 0,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1304,
+            "diffPercentage": 13.04,
+            "type": "sidebar"
+          },
+          {
+            "x": 100,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1908,
+            "diffPercentage": 19.08,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1655,
+            "diffPercentage": 16.55,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 400,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 1440,
+            "diffPercentage": 19.2,
+            "type": "main"
+          },
+          {
+            "x": 100,
+            "y": 500,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1670,
+            "diffPercentage": 16.7,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 500,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1593,
+            "diffPercentage": 15.93,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 500,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 931,
+            "diffPercentage": 12.41,
+            "type": "main"
+          },
+          {
+            "x": 0,
+            "y": 600,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1345,
+            "diffPercentage": 13.45,
+            "type": "sidebar"
+          },
+          {
+            "x": 100,
+            "y": 600,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1424,
+            "diffPercentage": 14.24,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 600,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1987,
+            "diffPercentage": 19.87,
+            "type": "main"
+          },
+          {
+            "x": 100,
+            "y": 700,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1874,
+            "diffPercentage": 18.74,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 700,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1174,
+            "diffPercentage": 11.74,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 700,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 1538,
+            "diffPercentage": 20.51,
+            "type": "main"
+          },
+          {
+            "x": 0,
+            "y": 800,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1133,
+            "diffPercentage": 11.33,
+            "type": "sidebar"
+          },
+          {
+            "x": 100,
+            "y": 800,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1265,
+            "diffPercentage": 12.65,
+            "type": "main"
+          },
+          {
+            "x": 100,
+            "y": 900,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 2596,
+            "diffPercentage": 25.96,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 900,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 1977,
+            "diffPercentage": 26.36,
+            "type": "main"
+          },
+          {
+            "x": 0,
+            "y": 1000,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1041,
+            "diffPercentage": 10.41,
+            "type": "sidebar"
+          },
+          {
+            "x": 100,
+            "y": 1000,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 2539,
+            "diffPercentage": 25.39,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 1000,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1209,
+            "diffPercentage": 12.09,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 1000,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 1648,
+            "diffPercentage": 21.97,
+            "type": "main"
+          },
+          {
+            "x": 100,
+            "y": 1100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1770,
+            "diffPercentage": 17.7,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 1100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1320,
+            "diffPercentage": 13.2,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 1100,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 1216,
+            "diffPercentage": 16.21,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "检查 Header 区域高度、背景色和边框是否一致",
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ],
+        "textCoverage": 77.42,
+        "missingTexts": [
+          "2,580 分",
+          "1,280 积分",
+          "2,500 积分",
+          "680 积分",
+          "300 积分",
+          "150 积分",
+          "200 积分"
+        ]
+      },
+      "score": 48.95,
+      "adopted": true,
+      "improved": true
+    },
+    {
+      "iteration": 1,
+      "validation": {
+        "similarity": 92.28,
+        "quality": {
+          "overallSimilarity": 86.35,
+          "contentSimilarity": 86.42,
+          "edgeSimilarity": 40.55,
+          "contentRatio": 1,
+          "qualityScore": 74.92,
+          "textCoverage": 77.42
+        },
+        "dimensions": {
+          "original": {
+            "width": 375,
+            "height": 1235
+          },
+          "generated": {
+            "width": 375,
+            "height": 1276
+          },
+          "widthDifference": 0,
+          "heightDifference": -41
+        },
+        "layout": {
+          "viewport": {
+            "width": 375,
+            "height": 1235
+          },
+          "document": {
+            "width": 375,
+            "height": 1276
+          },
+          "elements": [
+            {
+              "selector": "header.header#0",
+              "tagName": "header",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 375,
+                "height": 180
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h1#1",
+              "tagName": "h1",
+              "bounds": {
+                "x": 16,
+                "y": 20,
+                "width": 76,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "18px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button#2",
+              "tagName": "button",
+              "bounds": {
+                "x": 287.5625,
+                "y": 21,
+                "width": 28.71875,
+                "height": 22
+              },
+              "styles": {
+                "color": "rgb(0, 0, 0)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "18px",
+                "fontWeight": "400",
+                "padding": "2px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button#3",
+              "tagName": "button",
+              "bounds": {
+                "x": 330.28125,
+                "y": 21,
+                "width": 28.71875,
+                "height": 22
+              },
+              "styles": {
+                "color": "rgb(0, 0, 0)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "18px",
+                "fontWeight": "400",
+                "padding": "2px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.points-label#4",
+              "tagName": "p",
+              "bounds": {
+                "x": 20,
+                "y": 88,
+                "width": 114.09375,
+                "height": 17
+              },
+              "styles": {
+                "color": "rgba(255, 255, 255, 0.92)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.points-value#5",
+              "tagName": "p",
+              "bounds": {
+                "x": 20,
+                "y": 111,
+                "width": 114.09375,
+                "height": 45
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.signin-btn#6",
+              "tagName": "button",
+              "bounds": {
+                "x": 233,
+                "y": 100.5,
+                "width": 122,
+                "height": 43
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "600",
+                "padding": "12px 26px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "999px"
+              }
+            },
+            {
+              "selector": "nav.tabs#7",
+              "tagName": "nav",
+              "bounds": {
+                "x": 0,
+                "y": 180,
+                "width": 375,
+                "height": 56
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px 20px",
+                "margin": "0px",
+                "gap": "30px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#8",
+              "tagName": "button",
+              "bounds": {
+                "x": 20,
+                "y": 180,
+                "width": 28,
+                "height": 56
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "600",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#9",
+              "tagName": "button",
+              "bounds": {
+                "x": 78,
+                "y": 180,
+                "width": 56,
+                "height": 56
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#10",
+              "tagName": "button",
+              "bounds": {
+                "x": 164,
+                "y": 180,
+                "width": 56,
+                "height": 56
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.tab#11",
+              "tagName": "button",
+              "bounds": {
+                "x": 250,
+                "y": 180,
+                "width": 42,
+                "height": 56
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "4px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main#12",
+              "tagName": "main",
+              "bounds": {
+                "x": 0,
+                "y": 236,
+                "width": 375,
+                "height": 1039.78125
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px 0px 76px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section#13",
+              "tagName": "section",
+              "bounds": {
+                "x": 0,
+                "y": 236,
+                "width": 375,
+                "height": 630.1875
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h2#14",
+              "tagName": "h2",
+              "bounds": {
+                "x": 61.96875,
+                "y": 254,
+                "width": 64,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#15",
+              "tagName": "h3",
+              "bounds": {
+                "x": 32,
+                "y": 452,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#16",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 504.59375,
+                "width": 76.546875,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#17",
+              "tagName": "button",
+              "bounds": {
+                "x": 116.5,
+                "y": 500.59375,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#18",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 541.59375,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#19",
+              "tagName": "h3",
+              "bounds": {
+                "x": 206.5,
+                "y": 452,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#20",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 504.59375,
+                "width": 76.546875,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#21",
+              "tagName": "button",
+              "bounds": {
+                "x": 291,
+                "y": 500.59375,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#22",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 541.59375,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#23",
+              "tagName": "h3",
+              "bounds": {
+                "x": 32,
+                "y": 748.59375,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#24",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 801.1875,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#25",
+              "tagName": "button",
+              "bounds": {
+                "x": 116.5,
+                "y": 797.1875,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#26",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 838.1875,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#27",
+              "tagName": "h3",
+              "bounds": {
+                "x": 206.5,
+                "y": 748.59375,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#28",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 801.1875,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#29",
+              "tagName": "button",
+              "bounds": {
+                "x": 291,
+                "y": 797.1875,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#30",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 838.1875,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section#31",
+              "tagName": "section",
+              "bounds": {
+                "x": 0,
+                "y": 866.1875,
+                "width": 375,
+                "height": 333.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h2#32",
+              "tagName": "h2",
+              "bounds": {
+                "x": 61.96875,
+                "y": 884.1875,
+                "width": 64,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#33",
+              "tagName": "h3",
+              "bounds": {
+                "x": 32,
+                "y": 1082.1875,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#34",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 1134.78125,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#35",
+              "tagName": "button",
+              "bounds": {
+                "x": 116.5,
+                "y": 1130.78125,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#36",
+              "tagName": "p",
+              "bounds": {
+                "x": 32,
+                "y": 1171.78125,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.goods-name#37",
+              "tagName": "h3",
+              "bounds": {
+                "x": 206.5,
+                "y": 1082.1875,
+                "width": 136.5,
+                "height": 40.59375
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 8px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.goods-price#38",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 1134.78125,
+                "width": 60.3125,
+                "height": 24
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.redeem-btn#39",
+              "tagName": "button",
+              "bounds": {
+                "x": 291,
+                "y": 1130.78125,
+                "width": 52,
+                "height": 32
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(249, 115, 22)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "8px 14px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "p.goods-stock#40",
+              "tagName": "p",
+              "bounds": {
+                "x": 206.5,
+                "y": 1171.78125,
+                "width": 136.5,
+                "height": 16
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "9px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.bottom-nav#41",
+              "tagName": "nav",
+              "bounds": {
+                "x": 0,
+                "y": 1177,
+                "width": 375,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#42",
+              "tagName": "button",
+              "bounds": {
+                "x": 0,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(249, 115, 22)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#43",
+              "tagName": "button",
+              "bounds": {
+                "x": 93.75,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#44",
+              "tagName": "button",
+              "bounds": {
+                "x": 187.5,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.nav-item#45",
+              "tagName": "button",
+              "bounds": {
+                "x": 281.25,
+                "y": 1177,
+                "width": 93.75,
+                "height": 58
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "11px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "3px",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": false,
+        "regions": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1289,
+            "diffPercentage": 12.89,
+            "type": "header"
+          },
+          {
+            "x": 200,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1059,
+            "diffPercentage": 10.59,
+            "type": "header"
+          },
+          {
+            "x": 0,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1009,
+            "diffPercentage": 10.09,
+            "type": "sidebar"
+          },
+          {
+            "x": 200,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1126,
+            "diffPercentage": 11.26,
+            "type": "main"
+          },
+          {
+            "x": 100,
+            "y": 500,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1112,
+            "diffPercentage": 11.12,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 500,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 853,
+            "diffPercentage": 11.37,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 700,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1063,
+            "diffPercentage": 10.63,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 1000,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1002,
+            "diffPercentage": 10.02,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 1100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1920,
+            "diffPercentage": 19.2,
+            "type": "main"
+          },
+          {
+            "x": 0,
+            "y": 1100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1004,
+            "diffPercentage": 10.04,
+            "type": "sidebar"
+          },
+          {
+            "x": 100,
+            "y": 1100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 2867,
+            "diffPercentage": 28.67,
+            "type": "main"
+          },
+          {
+            "x": 300,
+            "y": 1100,
+            "width": 75,
+            "height": 100,
+            "diffPixels": 2110,
+            "diffPercentage": 28.13,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "检查 Header 区域高度、背景色和边框是否一致",
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ],
+        "textCoverage": 77.42,
+        "missingTexts": [
+          "2,580 分",
+          "1,280 积分",
+          "2,500 积分",
+          "680 积分",
+          "300 积分",
+          "150 积分",
+          "200 积分"
+        ]
+      },
+      "score": 74.92,
+      "adopted": true,
+      "improved": true
+    }
+  ],
+  "compileHistory": [],
+  "totalMs": 561497
+}

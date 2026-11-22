@@ -12,12 +12,12 @@ export async function createRepairImageContext(input: {
   regions: DiffRegion[];
 }): Promise<{ images: string[]; focusRegion?: DiffRegion }> {
   const focusRegion = [...input.regions].sort((a, b) => b.diffPixels - a.diffPixels)[0];
-  const sources = [input.originalBase64, input.renderedBase64, input.diffBase64]
+  // 差异数值和焦点坐标已在提示词中提供；不再重复发送完整差异图及其裁剪。
+  const sources = [input.originalBase64, input.renderedBase64]
     .filter((value): value is string => Boolean(value));
   if (!focusRegion) return { images: sources };
 
-  // Keep the full-page images in context so the model can correlate diffs
-  // across regions, and append focused crops of the worst region on top.
+  // 保留原图和渲染图的全局上下文，并追加最差区域的对应裁剪。
   const crops = await Promise.all(sources.map(async (source) => {
     const image = sharp(buffer(source));
     const metadata = await image.metadata();

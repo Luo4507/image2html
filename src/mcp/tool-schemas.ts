@@ -25,6 +25,15 @@ const validationSchema = {
     layout: { type: 'object' },
     textCoverage: { type: 'number' },
     missingTexts: { type: 'array', items: { type: 'string' } },
+    timings: {
+      type: 'object',
+      properties: {
+        renderMs: { type: 'number' },
+        compareMs: { type: 'number' },
+        additionalViewportsMs: { type: 'number' },
+        totalMs: { type: 'number' },
+      },
+    },
   },
 };
 
@@ -38,6 +47,7 @@ const metricsSchema = {
     totalMs: { type: 'number' },
     modelCalls: { type: 'number' },
     repairIterations: { type: 'number' },
+    modelRequests: { type: 'array', items: { type: 'object' } },
     cacheHit: { type: 'boolean' },
   },
 };
@@ -62,8 +72,8 @@ export const generateComponentTool: Tool = {
       responsive: { type: 'boolean', default: true },
       style_framework: { ...frameworkProperties.style_framework, default: 'tailwind' },
       pipeline: { type: 'string', enum: ['direct', 'structured'], default: 'direct' },
-      quality_mode: { type: 'string', enum: ['fast', 'balanced', 'precision'], default: 'balanced' },
-      layout_mode: { type: 'string', enum: ['single', 'segmented'], default: 'single' },
+      quality_mode: { type: 'string', enum: ['fast', 'balanced', 'precision'], default: 'precision' },
+      layout_mode: { type: 'string', enum: ['single', 'segmented', 'auto'], default: 'single' },
       asset_mode: { type: 'string', enum: ['none', 'extract'], default: 'none' },
     },
     required: ['image_path'],
@@ -123,7 +133,7 @@ export const toolDefinitions: Tool[] = [
           items: { type: 'object' },
         },
         ...frameworkProperties,
-        quality_mode: { type: 'string', enum: ['fast', 'balanced', 'precision'], default: 'balanced' },
+        quality_mode: { type: 'string', enum: ['fast', 'balanced', 'precision'], default: 'precision' },
         max_iterations: { type: 'number', minimum: 0, description: '可选修复轮次上限，仍受服务端 MAX_RETRY_COUNT 限制' },
         threshold: { type: 'number', default: 85 },
       },

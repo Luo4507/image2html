@@ -23,11 +23,11 @@ try {
     throw new Error('Every MCP tool must publish an outputSchema');
   }
 
-  const code = await readFile(process.argv[2] || 'examples/demo/login-design.html', 'utf8');
+  const code = await readFile(process.argv[2] || 'examples/login.html', 'utf8');
   const result = await client.callTool({
     name: 'validate_design',
     arguments: {
-      original_image: resolve('examples/demo/login-design.png'),
+      original_image: resolve('examples/login.png'),
       code,
       threshold: 85,
     },

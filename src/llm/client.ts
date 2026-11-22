@@ -2,7 +2,7 @@
  * 内网大模型客户端
  */
 
-import type { ModelConfig } from '../types.js';
+import type { ModelConfig, ModelRequestTiming } from '../types.js';
 
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
@@ -14,6 +14,7 @@ export interface ChatCompletionOptions {
   maxTokens?: number;
   stream?: boolean;
   onChunk?: (fullText: string) => void;
+  onMetrics?: (timing: ModelRequestTiming) => void;
 }
 
 export interface ChatCompletionResponse {
@@ -39,46 +40,87 @@ export class InternalLLMClient {
   private baseUrl: string;
   private model: string;
   private apiKey: string;
+  private enableThinking?: boolean;
 
-  constructor(config: { baseUrl: string; model: string; apiKey: string }) {
+  constructor(config: { baseUrl: string; model: string; apiKey: string; enableThinking?: boolean }) {
     this.baseUrl = config.baseUrl.replace(/\/$/, '');
     this.model = config.model;
     this.apiKey = config.apiKey;
+    this.enableThinking = config.enableThinking;
   }
 
   /**
    * 发送聊天完成请求
    */
+  private readUsage(raw: unknown): ModelRequestTiming['usage'] {
+    if (!raw || typeof raw !== 'object') return undefined;
+    const value = raw as Record<string, unknown>;
+    const promptTokens = Number(value.promptTokens ?? value.prompt_tokens ?? 0);
+    const completionTokens = Number(value.completionTokens ?? value.completion_tokens ?? 0);
+    const totalTokens = Number(value.totalTokens ?? value.total_tokens ?? promptTokens + completionTokens);
+    if (![promptTokens, completionTokens, totalTokens].every(Number.isFinite)) return undefined;
+    return { promptTokens, completionTokens, totalTokens };
+  }
+
   async chatCompletion(
     messages: ChatMessage[],
     options: ChatCompletionOptions = {}
   ): Promise<ChatCompletionResponse> {
-    const payload = {
-      model: this.model,
-      messages: messages.map((m) => ({
-        role: m.role,
-        content: m.content,
-      })),
-      temperature: options.temperature ?? 0.7,
-      max_tokens: options.maxTokens ?? 4096,
-      stream: false,
+    const startedAt = Date.now();
+    let timeToHeadersMs: number | undefined;
+    let outputChars = 0;
+    let usage: ModelRequestTiming['usage'];
+    let reported = false;
+    const report = (success: boolean) => {
+      if (reported) return;
+      reported = true;
+      options.onMetrics?.({
+        timeToHeadersMs,
+        totalMs: Date.now() - startedAt,
+        chunks: 0,
+        outputChars,
+        usage,
+        success,
+      });
     };
 
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.apiKey}`,
-      },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const payload = {
+        model: this.model,
+        messages: messages.map((m) => ({
+          role: m.role,
+          content: m.content,
+        })),
+        temperature: options.temperature ?? 0.7,
+        max_tokens: options.maxTokens ?? 4096,
+        ...(this.enableThinking === undefined ? {} : { enable_thinking: this.enableThinking }),
+        stream: false,
+      };
 
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`LLM API error: ${response.status} - ${error}`);
+      const response = await fetch(`${this.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.apiKey}`,
+        },
+        body: JSON.stringify(payload),
+      });
+      timeToHeadersMs = Date.now() - startedAt;
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`LLM API error: ${response.status} - ${error}`);
+      }
+
+      const result = await response.json() as ChatCompletionResponse;
+      outputChars = result.choices.reduce((total, choice) => total + (choice.message?.content?.length || 0), 0);
+      usage = this.readUsage(result.usage);
+      report(true);
+      return result;
+    } catch (error) {
+      report(false);
+      throw error;
     }
-
-    return response.json();
   }
 
   /**
@@ -143,60 +185,90 @@ export class InternalLLMClient {
     messages: ChatMessage[],
     options: ChatCompletionOptions
   ): Promise<string> {
-
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${this.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: this.model,
-        messages,
-        temperature: options.temperature ?? 0.3,
-        max_tokens: options.maxTokens ?? 4096,
-        stream: true,
-      }),
-    });
-
-    if (!response.ok) {
-      const error = await response.text();
-      throw new Error(`LLM API error: ${response.status} - ${error}`);
-    }
-    if (!response.body) {
-      throw new Error('LLM API returned an empty stream');
-    }
-
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
+    const startedAt = Date.now();
+    let timeToHeadersMs: number | undefined;
+    let timeToFirstContentMs: number | undefined;
+    let chunks = 0;
     let result = '';
+    let usage: ModelRequestTiming['usage'];
+    let reported = false;
+    const report = (success: boolean) => {
+      if (reported) return;
+      reported = true;
+      options.onMetrics?.({
+        timeToHeadersMs,
+        timeToFirstContentMs,
+        totalMs: Date.now() - startedAt,
+        chunks,
+        outputChars: result.length,
+        usage,
+        success,
+      });
+    };
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+    try {
+      const response = await fetch(`${this.baseUrl}/chat/completions`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: this.model,
+          messages,
+          temperature: options.temperature ?? 0.3,
+          max_tokens: options.maxTokens ?? 4096,
+          ...(this.enableThinking === undefined ? {} : { enable_thinking: this.enableThinking }),
+          stream: true,
+        }),
+      });
+      timeToHeadersMs = Date.now() - startedAt;
 
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`LLM API error: ${response.status} - ${error}`);
+      }
+      if (!response.body) {
+        throw new Error('LLM API returned an empty stream');
+      }
 
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed.startsWith('data:')) continue;
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
 
-        const data = trimmed.slice(5).trim();
-        if (!data || data === '[DONE]') continue;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-        const chunk = JSON.parse(data);
-        const content = chunk.choices?.[0]?.delta?.content || '';
-        if (content) {
-          result += content;
-          options.onChunk?.(result);
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || '';
+
+        for (const line of lines) {
+          const trimmed = line.trim();
+          if (!trimmed.startsWith('data:')) continue;
+
+          const data = trimmed.slice(5).trim();
+          if (!data || data === '[DONE]') continue;
+
+          const chunk = JSON.parse(data);
+          usage = this.readUsage(chunk.usage) || usage;
+          const content = chunk.choices?.[0]?.delta?.content || '';
+          if (content) {
+            if (timeToFirstContentMs === undefined) timeToFirstContentMs = Date.now() - startedAt;
+            chunks += 1;
+            result += content;
+            options.onChunk?.(result);
+          }
         }
       }
-    }
 
-    return result;
+      report(true);
+      return result;
+    } catch (error) {
+      report(false);
+      throw error;
+    }
   }
 }
 

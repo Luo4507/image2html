@@ -14,7 +14,7 @@
 
 默认使用 `direct` 快速路径：Qwen VL 直接从图片流式生成代码，不再先生成庞大的结构 JSON。需要审计页面结构时，可设置 `pipeline: "structured"` 使用专家路径。
 
-质量模式：
+质量模式（默认 `precision`，最多 4 轮视觉修复，并默认启用文字完整性检查）：
 
 - `fast`：生成和校验，不自动修复；
 - `balanced`：校验失败时进行有界自动修复，并保留最高相似度版本；
@@ -37,11 +37,11 @@
 使用 `--project` 可导出完整 Vite 工程，包含 `package.json`、入口文件、Vite/TypeScript 配置和对应样式配置：
 
 ```bash
-node dist/cli.js convert examples/demo/login-design.png \
+node dist/cli.js convert examples/login.png \
   --framework react --style tailwind --component-library antd \
   --project --output output/react-project
 
-node dist/cli.js convert examples/demo/login-design.png \
+node dist/cli.js convert examples/login.png \
   --framework vue --style inline --component-library element \
   --project --output output/vue-project
 ```
@@ -53,7 +53,7 @@ node dist/cli.js convert examples/demo/login-design.png \
 默认 `assetMode: "none"` 不增加模型调用。需要自动识别并裁剪 Logo、图标或图片时，使用 `--extract-assets`（Node API 设置 `assetMode: "extract"`）。生成提示词只能引用实际提取的 `/assets/<filename>` 清单，完整工程将资源写入 `public/assets`，资源识别计一次额外模型调用。HTML 校验使用同一字节的临时内联资源，React/Vue 通过 Vite public 目录加载。
 
 ```bash
-node dist/cli.js convert examples/demo/login-design.png \
+node dist/cli.js convert examples/login.png \
   --framework react --style tailwind --component-library antd \
   --project --extract-assets --output output/react-with-assets
 ```
@@ -95,7 +95,10 @@ LLM_API_KEY=replace-me
 LLM_MODEL=qwen-flash
 
 VISUAL_SIMILARITY_THRESHOLD=85.0
-MAX_RETRY_COUNT=1
+MAX_RETRY_COUNT=4
+QUALITY_MODE=precision
+CHECK_TEXT_COVERAGE=true
+MIN_TEXT_COVERAGE=80.0
 DEFAULT_FRAMEWORK=html
 DEFAULT_STYLE_FRAMEWORK=inline
 DEFAULT_COMPONENT_LIBRARY=none
@@ -121,7 +124,7 @@ pnpm build
 
 ```bash
 # 单个设计稿
-node dist/cli.js convert examples/demo/points-mall-design.png \
+node dist/cli.js convert examples/jifen.png \
   --framework html --style inline --component-library none --output output
 
 # 批量处理目录
@@ -155,7 +158,7 @@ import { DesignToCode } from 'image2html';
 
 const converter = new DesignToCode();
 const result = await converter.convert({
-  image: { source: 'examples/demo/login-design.png', type: 'path' },
+  image: { source: 'examples/login.png', type: 'path' },
   options: {
     framework: 'html',
     styleFramework: 'inline',
@@ -212,7 +215,7 @@ docker compose up -d --build
 三框架真实图片回测：
 
 ```bash
-pnpm verify:frameworks -- examples/demo/login.png output/framework-verification
+pnpm verify:frameworks -- examples/login.png output/framework-verification
 # 也可只回测指定框架：在末尾追加 react 或 vue，多个目标用逗号分隔
 ```
 
@@ -230,7 +233,7 @@ pnpm verify:frameworks -- examples/demo/login.png output/framework-verification
 
 ```bash
 # 完整模型生成与视觉校验
-pnpm verify -- examples/demo/login-design.png output
+pnpm verify -- examples/login.png output
 
 # 通过真实 MCP 客户端调用视觉校验
 pnpm verify:mcp
@@ -239,7 +242,7 @@ pnpm verify:mcp
 pnpm verify:server
 ```
 
-验证脚本位于 `scripts/`；测试设计稿位于 `examples/demo/`。
+验证脚本位于 `scripts/`；测试设计稿位于 `examples/`。
 
 ## 项目结构
 
@@ -271,7 +274,7 @@ image2html/
 
 - [使用及 AI 工具接入指导](docs/usage-and-ai-integration.md)
 - [完整技术方案](docs/design-to-code-solution.md)
-- [MCP 使用示例](examples/mcp-usage.md)
+- [示例设计稿](examples/README.md)
 - [screenshot-to-code 提速研究](docs/research/screenshot-to-code-optimization.md)
 - [高保真与自动校正方案](docs/research/quality-auto-correction.md)
 - [标准项目结构实施计划](docs/superpowers/plans/2026-11-10-standard-project-structure.md)

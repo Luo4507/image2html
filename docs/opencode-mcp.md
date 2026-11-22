@@ -1,6 +1,6 @@
 # OpenCode MCP 配置
 
-> 第一次使用或需要完整故障排查时，推荐阅读[配置与使用指导手册](configuration-and-usage-guide.md)。
+> 第一次使用请先看[快速上手指南](configuration-and-usage-guide.md)；完整故障排查见[使用及 AI 工具接入指导](usage-and-ai-integration.md)。
 
 ## 当前运行方式
 

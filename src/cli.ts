@@ -10,6 +10,20 @@ import { existsSync } from 'fs';
 import { join, basename, extname } from 'path';
 import { DesignToCode, exportFrameworkProject } from './index.js';
 import { getDefaultCodegenOptions } from './config.js';
+import { LocalConversionCache, withLocalConversionCache } from './cache/local-conversion-cache.js';
+import type { DesignToCodeRequest, DesignToCodeResult } from './types.js';
+
+async function convertWithOptionalCache(
+  d2c: DesignToCode,
+  request: DesignToCodeRequest,
+  enabled: boolean
+): Promise<DesignToCodeResult> {
+  if (!enabled) return d2c.convert(request);
+  const cache = new LocalConversionCache(
+    process.env.CONVERSION_CACHE_DIR || '.cache/image2html-conversions'
+  );
+  return withLocalConversionCache(request, cache, () => d2c.convert(request));
+}
 
 const program = new Command();
 
@@ -31,8 +45,9 @@ program
   .option('--project', '导出完整 Vite 工程而非单个源码文件')
   .option('--extract-assets', '生成前提取并引用可复用图片资源')
   .option('--pipeline <pipeline>', '生成流程 (direct/structured)', 'direct')
-  .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'balanced')
-  .option('--layout <layout>', '布局生成方式 (single/segmented)', 'single')
+  .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'precision')
+  .option('--layout <layout>', '布局生成方式 (single/segmented/auto)', 'single')
+  .option('--cache', '复用本地已通过的转换结果', process.env.CONVERSION_CACHE === 'true')
   .action(async (image: string, options: any) => {
     try {
       const componentLibrary = options.componentLibrary || (options.framework === 'vue' ? 'element' : options.framework === 'html' ? 'none' : 'antd');
@@ -56,7 +71,7 @@ program
       const d2c = new DesignToCode();
 
       // 执行转换
-      const result = await d2c.convert({
+      const request: DesignToCodeRequest = {
         image: {
           source: image,
           type: 'path',
@@ -78,7 +93,8 @@ program
         validationConfig: options.validate
           ? (await import('./config.js')).getDefaultValidationConfig()
           : undefined,
-      });
+      };
+      const result = await convertWithOptionalCache(d2c, request, options.cache);
 
       // 保存结果
       if (result.success) {
@@ -150,12 +166,16 @@ program
   .option('-c, --component-library <library>', '组件库 (antd/element/none，默认随框架)')
   .option('-o, --output <dir>', '输出目录', './generated')
   .option('--no-validate', '跳过视觉校验')
+  .option('--extract-assets', '生成前提取并引用可复用图片资源')
   .option('--pipeline <pipeline>', '生成流程 (direct/structured)', 'direct')
-  .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'balanced')
-  .option('--layout <layout>', '布局生成方式 (single/segmented)', 'single')
+  .option('--quality <quality>', '质量模式 (fast/balanced/precision)', 'precision')
+  .option('--layout <layout>', '布局生成方式 (single/segmented/auto)', 'single')
+  .option('--concurrency <number>', '并行转换数量，默认串行', '1')
+  .option('--cache', '复用本地已通过的转换结果', process.env.CONVERSION_CACHE === 'true')
   .action(async (dir: string, options: any) => {
     try {
       const { readdir } = await import('fs/promises');
+      const { mapWithConcurrency } = await import('./runtime/concurrency.js');
       const files = await readdir(dir);
       const imageFiles = files.filter((f) => /\.(png|jpg|jpeg)$/i.test(f));
 
@@ -166,21 +186,15 @@ program
 
       const componentLibrary = options.componentLibrary || (options.framework === 'vue' ? 'element' : options.framework === 'html' ? 'none' : 'antd');
       console.log(`Found ${imageFiles.length} design files`);
+      await mkdir(options.output, { recursive: true });
 
-      const results: Array<{
-        file: string;
-        success: boolean;
-        similarity?: number;
-        passed?: boolean;
-      }> = [];
-
-      for (const file of imageFiles) {
+      const results = await mapWithConcurrency(imageFiles, Number(options.concurrency), async (file) => {
         const imagePath = join(dir, file);
         console.log(`\nProcessing: ${file}`);
+        const d2c = new DesignToCode();
 
         try {
-          const d2c = new DesignToCode();
-          const result = await d2c.convert({
+          const request: DesignToCodeRequest = {
             image: {
               source: imagePath,
               type: 'path',
@@ -193,51 +207,45 @@ program
               typescript: true,
               responsive: true,
               accessibility: true,
-          assetMode: options.extractAssets ? 'extract' : 'none',
-          pipeline: options.pipeline,
-          qualityMode: options.quality,
-          layoutMode: options.layout,
+              assetMode: options.extractAssets ? 'extract' : 'none',
+              pipeline: options.pipeline,
+              qualityMode: options.quality,
+              layoutMode: options.layout,
             },
             modelConfig: (await import('./config.js')).getDefaultModelConfig(),
             validationConfig: options.validate
               ? (await import('./config.js')).getDefaultValidationConfig()
               : undefined,
-          });
+          };
+          const result = await convertWithOptionalCache(d2c, request, options.cache);
 
-          if (result.success) {
-            const outputPath = join(options.output, result.code.filename);
-            await writeFile(outputPath, result.code.code, 'utf-8');
-
-            results.push({
-              file,
-              success: true,
-              similarity: result.validation?.similarity,
-              passed: result.validation?.passed,
-            });
-
-            console.log(`  ✅ Generated: ${result.code.filename}`);
-            if (result.validation) {
-              console.log(
-                `  📊 Similarity: ${result.validation.similarity}% (${result.validation.passed ? 'PASSED' : 'FAILED'})`
-              );
-            }
-          } else {
-            results.push({
-              file,
-              success: false,
-            });
+          if (!result.success) {
             console.log(`  ❌ Failed: ${result.error}`);
+            return { file, success: false, similarity: undefined, passed: undefined };
           }
 
-          await d2c.close();
-        } catch (error) {
-          results.push({
+          // 批量输出按图片名隔离，避免并行写入同名 GeneratedPage 文件。
+          const outputName = `${basename(file, extname(file))}-${result.code.filename}`;
+          await writeFile(join(options.output, outputName), result.code.code, 'utf-8');
+          console.log(`  ✅ Generated: ${outputName}`);
+          if (result.validation) {
+            console.log(
+              `  📊 Similarity: ${result.validation.similarity}% (${result.validation.passed ? 'PASSED' : 'FAILED'})`
+            );
+          }
+          return {
             file,
-            success: false,
-          });
+            success: true,
+            similarity: result.validation?.similarity,
+            passed: result.validation?.passed,
+          };
+        } catch (error) {
           console.log(`  ❌ Error: ${error instanceof Error ? error.message : error}`);
+          return { file, success: false, similarity: undefined, passed: undefined };
+        } finally {
+          await d2c.close();
         }
-      }
+      });
 
       // 生成汇总报告
       console.log('\n' + '='.repeat(50));
@@ -266,4 +274,5 @@ program
     }
   });
 
-program.parse();
+// Explicit Node semantics also work when launched by an Electron-based runtime.
+program.parse(process.argv, { from: 'node' });

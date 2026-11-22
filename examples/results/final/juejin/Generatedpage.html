@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GeneratedPage</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    img { max-width: 100%; }
+  </style>
+</head>
+<body>
+<style>
+  .jj-header, .jj-header * { box-sizing: border-box; margin: 0; padding: 0; }
+  .jj-header { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif; }
+  .jj-header .nav-item { transition: color .15s; }
+  .jj-header .nav-item:hover { color: #1e80ff !important; }
+  .jj-header .search-input::placeholder { color: #c3c7ce; }
+  .jj-header .search-btn:hover { background: #e4e6e9 !important; }
+  .jj-header .creator-btn:hover { background: #0f71e5 !important; }
+  @media (max-width: 1600px) {
+    .jj-header .header-inner { padding: 0 32px !important; }
+  }
+  @media (max-width: 1360px) {
+    .jj-header .search-box { width: 300px !important; }
+    .jj-header .nav-item { margin-right: 20px !important; }
+  }
+  @media (max-width: 1120px) {
+    .jj-header .main-nav { display: none !important; }
+    .jj-header .search-box { width: 260px !important; }
+  }
+  @media (max-width: 860px) {
+    .jj-header .header-inner { padding: 0 16px !important; }
+    .jj-header .search-box { width: 200px !important; }
+    .jj-header .bell-wrap { margin-left: 16px !important; }
+    .jj-header .user-avatar { margin-left: 20px !important; width: 38px !important; height: 38px !important; }
+  }
+  @media (max-width: 600px) {
+    .jj-header .search-box { display: none !important; }
+    .jj-header .creator-btn { padding: 0 12px !important; font-size: 14px !important; }
+  }
+</style>
+<header class="jj-header" style="position:fixed;top:0;left:0;right:0;height:72px;background:#ffffff;z-index:1000;">
+  <div class="header-inner" style="display:flex;align-items:center;height:72px;padding:0 72px;">
+    <a class="logo-wrap" href="#" style="display:flex;align-items:center;text-decoration:none;margin-right:35px;flex-shrink:0;">
+      <svg class="logo-icon" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true" style="display:block;">
+        <path fill="#1e80ff" d="M4 7.5 L16 17 L28 7.5 L28 11.2 L16 20.7 L4 11.2 Z"></path>
+        <path fill="#1e80ff" d="M4 14.8 L16 24.3 L28 14.8 L28 18.5 L16 28 L4 18.5 Z"></path>
+      </svg>
+      <span class="logo-title" style="margin-left:8px;font-size:20px;font-weight:700;color:#000000;letter-spacing:0.5px;">稀土掘金</span>
+    </a>
+    <nav class="main-nav" style="display:flex;align-items:center;flex-shrink:0;">
+      <a href="#" class="nav-item active" style="font-size:16px;color:#1e80ff;text-decoration:none;margin-right:30px;">首页</a>
+      <a href="#" class="nav-item" style="font-size:16px;color:#333333;text-decoration:none;margin-right:30px;">沸点</a>
+      <a href="#" class="nav-item" style="font-size:16px;color:#333333;text-decoration:none;margin-right:30px;">课程</a>
+      <a href="#" class="nav-item" style="font-size:16px;color:#333333;text-decoration:none;margin-right:30px;">APP</a>
+      <a href="#" class="nav-item" style="font-size:16px;color:#333333;text-decoration:none;margin-right:30px;">AI用量</a>
+      <a href="#" class="nav-item" style="font-size:16px;color:#333333;text-decoration:none;margin-right:30px;">作品广场</a>
+      <a href="#" class="nav-item" style="font-size:16px;color:#333333;text-decoration:none;">专家标注</a>
+    </nav>
+    <div class="header-right" style="display:flex;align-items:center;margin-left:auto;">
+      <div class="search-box" style="display:flex;align-items:stretch;width:435px;height:40px;border:1px solid #d8d8d8;border-radius:4px;overflow:hidden;background:#ffffff;">
+        <input class="search-input" type="text" placeholder="探索稀土掘金" style="flex:1;min-width:0;border:none;outline:none;background:transparent;padding:0 14px;font-size:14px;color:#333333;" />
+        <button class="search-btn" type="button" aria-label="搜索" style="width:44px;border:none;background:#f1f2f3;cursor:pointer;display:flex;align-items:center;justify-content:center;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#333333" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="10.5" cy="10.5" r="6.8"></circle>
+            <line x1="15.8" y1="15.8" x2="21" y2="21"></line>
+          </svg>
+        </button>
+      </div>
+      <button class="creator-btn" type="button" style="margin-left:25px;height:40px;padding:0 16px;border:none;border-radius:4px;background:#1e80ff;color:#ffffff;font-size:16px;display:flex;align-items:center;cursor:pointer;flex-shrink:0;">
+        <span class="creator-text">创作者中心</span>
+        <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true" style="margin-left:9px;display:block;">
+          <path d="M0 0h10L5 6z" fill="#ffffff"></path>
+        </svg>
+      </button>
+      <a class="bell-wrap" href="#" style="position:relative;margin-left:22px;display:flex;align-items:center;flex-shrink:0;text-decoration:none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#8a8f99" aria-hidden="true" style="display:block;">
+          <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"></path>
+        </svg>
+        <i class="bell-badge" style="position:absolute;top:-7px;right:-9px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#f44336;color:#ffffff;font-size:11px;line-height:16px;text-align:center;font-style:normal;">5</i>
+      </a>
+      <a class="user-avatar" href="#" style="margin-left:38px;width:42px;height:42px;border-radius:50%;overflow:hidden;flex-shrink:0;display:block;text-decoration:none;">
+        <svg width="42" height="42" viewBox="0 0 42 42" aria-hidden="true" style="display:block;border-radius:50%;">
+          <circle cx="21" cy="21" r="21" fill="#8f8398"></circle>
+          <ellipse cx="21" cy="17" rx="6.5" ry="8" fill="#dcd6e4"></ellipse>
+          <path d="M12 33c1.5-6.5 5-9.5 9-9.5s7.5 3 9 9.5z" fill="#dcd6e4"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</header>
+<style>
+.main-area{background:#f5f6f7;padding:20px 24px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+.main-layout{max-width:1500px;margin:0 auto;display:flex;align-items:flex-start;gap:23px;}
+.side-rank{width:228px;flex-shrink:0;background:#fff;border-radius:4px;padding:16px 11px 28px;}
+.rank-header{display:flex;align-items:center;gap:10px;padding:0 16px 16px;font-size:16px;font-weight:600;color:#252931;}
+.rank-list{list-style:none;margin:0;padding:0;}
+.rank-item{display:flex;align-items:center;gap:12px;height:44px;margin-bottom:10px;padding:0 14px;border-radius:4px;font-size:15px;color:#515767;cursor:pointer;}
+.rank-item.active{background:#e8f3ff;color:#1e80ff;font-weight:500;}
+.rank-item svg{flex-shrink:0;}
+.feed{flex:1;min-width:0;background:#fff;border-radius:4px;}
+.feed-tabs{display:flex;gap:50px;padding:0 24px;border-bottom:1px solid #f2f3f5;}
+.feed-tab{position:relative;padding:24px 0 20px;font-size:16px;color:#515767;cursor:pointer;}
+.feed-tab.active{color:#252931;font-weight:600;}
+.feed-tab.active::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:24px;height:3px;border-radius:2px;background:#1e80ff;}
+.entry{display:flex;gap:20px;padding:20px 24px;border-bottom:1px solid #f2f3f5;}
+.entry-main{flex:1;min-width:0;}
+.entry-title{margin:0 0 8px;font-size:18px;font-weight:600;color:#252931;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.entry-summary{margin:0 0 12px;font-size:14px;color:#8a919f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.entry-meta{display:flex;align-items:center;font-size:13px;color:#8a919f;}
+.meta-item{display:inline-flex;align-items:center;gap:6px;margin-right:24px;}
+.meta-author{margin-right:24px;}
+.entry-tags{margin-left:auto;display:flex;gap:8px;}
+.entry-tag{background:#f2f3f5;color:#515767;font-size:12px;line-height:18px;padding:1px 8px;border-radius:2px;}
+.entry-thumb{width:140px;height:88px;flex-shrink:0;border-radius:4px;display:block;}
+.side-right{width:330px;flex-shrink:0;display:flex;flex-direction:column;gap:24px;}
+.activity-card{background:#fff;border-radius:4px;padding:16px 20px 20px;}
+.activity-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.activity-heading{display:flex;align-items:center;gap:8px;font-size:16px;font-weight:600;color:#252931;}
+.activity-pager{display:flex;align-items:center;gap:6px;font-size:13px;color:#8a919f;}
+.activity-item{display:flex;gap:12px;}
+.activity-icon{width:56px;height:56px;flex-shrink:0;border-radius:8px;display:block;}
+.activity-name{margin:0 0 6px;font-size:14px;color:#252931;line-height:22px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.activity-deadline{margin:0;font-size:12px;color:#8a919f;}
+.ai-card{display:flex;align-items:center;gap:12px;padding:26px 20px;border-radius:4px;background:linear-gradient(100deg,#eef3ff 0%,#f6efff 100%);cursor:pointer;}
+.ai-icon{width:44px;height:44px;flex-shrink:0;border-radius:10px;background:linear-gradient(135deg,#3d7bff 0%,#7c5bff 100%);color:#fff;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.ai-text{min-width:0;}
+.ai-text strong{display:block;font-size:18px;font-weight:600;color:#252931;margin-bottom:4px;}
+.ai-text span{font-size:13px;color:#8a919f;}
+.ai-arrow{margin-left:auto;color:#1e80ff;}
+.site-footer{font-size:13px;color:#8a919f;line-height:1;display:flex;flex-direction:column;gap:14px;padding:2px 0 0;}
+.footer-row{display:flex;gap:16px;flex-wrap:wrap;}
+.footer-row a{color:#8a919f;text-decoration:none;}
+.footer-line{display:flex;align-items:center;gap:6px;}
+@media (max-width:1200px){.side-right{display:none;}}
+@media (max-width:960px){.side-rank{display:none;}}
+@media (max-width:640px){.entry-thumb{display:none;}.feed-tabs{gap:28px;}}
+</style>
+<main class="main-area">
+  <div class="main-layout">
+    <aside class="side-rank">
+      <div class="rank-header">
+        <svg width="20" height="20" viewBox="0 0 20 20"><path d="M5 2h10a1 1 0 0 1 1 1v14l-6-4-6 4V3a1 1 0 0 1 1-1z" fill="#FFAB01"/></svg>
+        排行榜
+      </div>
+      <ul class="rank-list">
+        <li class="rank-item active"><svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="#1E80FF"/><path d="M13.5 6.5l-2 5-5 2 2-5z" fill="#fff"/></svg>综合</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#8A919F" stroke-width="1.5"><rect x="3" y="4" width="14" height="5" rx="1"/><rect x="3" y="11" width="14" height="5" rx="1"/><circle cx="6" cy="6.5" r="0.9" fill="#8A919F" stroke="none"/><circle cx="6" cy="13.5" r="0.9" fill="#8A919F" stroke="none"/></svg>后端</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#8A919F" stroke-width="1.5"><rect x="3" y="4" width="14" height="12" rx="1.5"/><line x1="3" y1="8" x2="17" y2="8"/><line x1="7" y1="8" x2="7" y2="16"/></svg>前端</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M6 9.5a4 4 0 0 1 8 0V15H6z" fill="#8A919F"/><circle cx="8.2" cy="9" r="0.8" fill="#fff"/><circle cx="11.8" cy="9" r="0.8" fill="#fff"/><line x1="7" y1="5" x2="6" y2="3.4" stroke="#8A919F" stroke-width="1.2"/><line x1="13" y1="5" x2="14" y2="3.4" stroke="#8A919F" stroke-width="1.2"/></svg>Android</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 6.2c1.5-1.6 4.1-1.1 4.9 1 .9 2.5-.8 6.6-2.4 7.6-.8.5-1.6.2-2.5.2s-1.7.3-2.5-.2C5.9 13.8 4.2 9.7 5.1 7.2c.8-2.1 3.4-2.6 4.9-1z" fill="#8A919F"/><path d="M10 5.2c0-1.6 1.1-2.7 2.6-2.7 0 1.6-1.1 2.7-2.6 2.7z" fill="#8A919F"/></svg>iOS</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#8A919F" stroke-width="1.5"><rect x="5" y="7" width="10" height="8" rx="2"/><line x1="10" y1="4.5" x2="10" y2="7"/><circle cx="10" cy="3.6" r="1.1" fill="#8A919F" stroke="none"/><circle cx="8" cy="11" r="1" fill="#8A919F" stroke="none"/><circle cx="12" cy="11" r="1" fill="#8A919F" stroke="none"/></svg>人工智能</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M14.6 3a3.6 3.6 0 0 0-3.5 4.5L4 14.6 5.4 16l7.1-7.1A3.6 3.6 0 0 0 17 5.4l-2.1 2.1-2.4-2.4L14.6 3z" fill="#8A919F"/></svg>开发工具</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#8A919F" stroke-width="1.5"><rect x="3" y="4" width="14" height="12" rx="1.5"/><path d="M8 8l-2 2 2 2M12 8l2 2-2 2"/></svg>代码人生</li>
+        <li class="rank-item"><svg width="20" height="20" viewBox="0 0 20 20"><path d="M4 4h4.5A1.5 1.5 0 0 1 10 5.5V16a1.5 1.5 0 0 0-1.5-1.5H4z" fill="#8A919F"/><path d="M16 4h-4.5A1.5 1.5 0 0 0 10 5.5V16a1.5 1.5 0 0 1 1.5-1.5H16z" fill="#8A919F"/></svg>阅读</li>
+      </ul>
+    </aside>
+    <section class="feed">
+      <nav class="feed-tabs">
+        <div class="feed-tab active">推荐</div>
+        <div class="feed-tab">最新</div>
+        <div class="feed-tab">关注</div>
+      </nav>
+      <div class="feed-list">
+        <article class="entry">
+          <div class="entry-main">
+            <h2 class="entry-title">黄仁勋被裁第一天，就收到了橄榄枝</h2>
+            <p class="entry-summary">假如马斯克写信给黄仁勋…… Jensen, Jensen: So. You're free. 你自由了。 No condolences — you're not dead.…</p>
+            <div class="entry-meta">
+              <span class="meta-author">码事漫谈</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg>16</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M5 7l3-4.5c.8 0 1.5.7 1.5 1.5V6H13c.8 0 1.3.7 1.1 1.4l-1 4.5c-.1.6-.7 1.1-1.3 1.1H5z"/><path d="M5 7v6H2.5V7z"/></svg>1</span>
+              <span class="entry-tags"><span class="entry-tag">后端</span></span>
+            </div>
+          </div>
+        </article>
+        <article class="entry">
+          <div class="entry-main">
+            <h2 class="entry-title">浪费时间！DeepSeek 4.1 Flash</h2>
+            <p class="entry-summary">我曾经因为 DS 的风格和梁文锋说的那句话，而对 DS 充满了好感。 但是，我对DeepSeek的…</p>
+            <div class="entry-meta">
+              <span class="meta-author">甲维斯</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg>13k</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M5 7l3-4.5c.8 0 1.5.7 1.5 1.5V6H13c.8 0 1.3.7 1.1 1.4l-1 4.5c-.1.6-.7 1.1-1.3 1.1H5z"/><path d="M5 7v6H2.5V7z"/></svg>72</span>
+              <span class="entry-tags"><span class="entry-tag">人工智能</span></span>
+            </div>
+          </div>
+          <svg class="entry-thumb" viewBox="0 0 140 88" preserveAspectRatio="xMidYMid slice"><rect width="140" height="88" fill="#f4f1ec"/><rect x="0" y="0" width="26" height="88" fill="#fbfaf8"/><rect x="4" y="8" width="16" height="2" fill="#d9d4cc"/><rect x="4" y="14" width="12" height="2" fill="#d9d4cc"/><rect x="78" y="28" width="26" height="34" rx="4" fill="#c93a2e"/><rect x="84" y="16" width="14" height="12" rx="2" fill="#c93a2e"/><path d="M82 18c0-6 5-10 9-10s9 4 9 10c-3-2-6-3-9-3s-6 1-9 3z" fill="#ec5f80"/><rect x="60" y="44" width="14" height="18" rx="3" fill="#2b3a55"/><circle cx="67" cy="40" r="5" fill="#2b3a55"/><rect x="54" y="62" width="56" height="6" rx="3" fill="#e3ded6"/></svg>
+        </article>
+        <article class="entry">
+          <div class="entry-main">
+            <h2 class="entry-title">从零搭建你的 AI 编程工作流</h2>
+            <p class="entry-summary">前面的文章分别介绍了需求拆分、代码生成、测试、优化和代码审查。 但在真实开发中，我…</p>
+            <div class="entry-meta">
+              <span class="meta-author">全栈弄潮儿</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg>2.1k</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M5 7l3-4.5c.8 0 1.5.7 1.5 1.5V6H13c.8 0 1.3.7 1.1 1.4l-1 4.5c-.1.6-.7 1.1-1.3 1.1H5z"/><path d="M5 7v6H2.5V7z"/></svg>17</span>
+              <span class="entry-tags"><span class="entry-tag">AI编程</span><span class="entry-tag">OpenAI</span><span class="entry-tag">AIGC</span></span>
+            </div>
+          </div>
+          <svg class="entry-thumb" viewBox="0 0 140 88" preserveAspectRatio="xMidYMid slice"><rect width="140" height="88" fill="#0d1420"/><g fill="none" stroke="#37b787" stroke-width="1.2"><path d="M70 16l13 7.5v15L70 46l-13-7.5v-15z"/><path d="M38 42l10 6v12l-10 6-10-6V48z"/><path d="M102 42l10 6v12l-10 6-10-6V48z"/><path d="M70 46v10M57 31l-9 8M83 31l9 8" stroke="#2a8f6f"/></g><circle cx="70" cy="31" r="3.5" fill="#f5a623"/><circle cx="38" cy="54" r="2.5" fill="#37b787"/><circle cx="102" cy="54" r="2.5" fill="#37b787"/><rect x="56" y="60" width="28" height="10" rx="2" fill="#16324a"/></svg>
+        </article>
+        <article class="entry">
+          <div class="entry-main">
+            <h2 class="entry-title">为什么不推荐走Agent开发?</h2>
+            <p class="entry-summary">大家好呀，我是飞鱼 最近有些读者在学 Agent 开发，问了我一些问题： 其实大家经常看到网上很多培训班都会说，…</p>
+            <div class="entry-meta">
+              <span class="meta-author">程序员飞鱼</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg>14k</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M5 7l3-4.5c.8 0 1.5.7 1.5 1.5V6H13c.8 0 1.3.7 1.1 1.4l-1 4.5c-.1.6-.7 1.1-1.3 1.1H5z"/><path d="M5 7v6H2.5V7z"/></svg>142</span>
+              <span class="entry-tags"><span class="entry-tag">后端</span><span class="entry-tag">面试</span><span class="entry-tag">Java</span></span>
+            </div>
+          </div>
+        </article>
+        <article class="entry">
+          <div class="entry-main">
+            <h2 class="entry-title">为什么全世界的 AI 都画不好一只骑自行车的鹈鹕</h2>
+            <p class="entry-summary">2024 年 10 月 25 日，Simon Willison 让 16 个大模型画一只骑自行车的鹈鹕。两年过去，…</p>
+            <div class="entry-meta">
+              <span class="meta-author">犀利豆</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M1.5 8s2.5-4.5 6.5-4.5S14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z"/><circle cx="8" cy="8" r="2"/></svg>6.4k</span>
+              <span class="meta-item"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#8A919F" stroke-width="1.3"><path d="M5 7l3-4.5c.8 0 1.5.7 1.5 1.5V6H13c.8 0 1.3.7 1.1 1.4l-1 4.5c-.1.6-.7 1.1-1.3 1.1H5z"/><path d="M5 7v6H2.5V7z"/></svg>34</span>
+              <span class="entry-tags"><span class="entry-tag">人工智能</span><span class="entry-tag">AIGC</span><span class="entry-tag">LLM</span></span>
+            </div>
+          </div>
+          <svg class="entry-thumb" viewBox="0 0 140 88" preserveAspectRatio="xMidYMid slice"><rect width="140" height="88" fill="#ece5d8"/><text x="10" y="17" font-size="9" font-weight="700" fill="#22201c" font-family="Georgia,'Times New Roman',serif">PELICAN ZOO</text><line x1="10" y1="23" x2="130" y2="23" stroke="#b9ae97" stroke-width="1"/><rect x="10" y="30" width="27" height="46" fill="#f7f3ea"/><rect x="41" y="30" width="27" height="46" fill="#f7f3ea"/><rect x="72" y="30" width="27" height="46" fill="#f7f3ea"/><rect x="103" y="30" width="27" height="46" fill="#f7f3ea"/><circle cx="23" cy="48" r="6" fill="#d8a13a"/><circle cx="54" cy="48" r="6" fill="#4a6fa5"/><circle cx="85" cy="48" r="6" fill="#c0563b"/><circle cx="116" cy="48" r="6" fill="#6a8c5b"/><rect x="16" y="60" width="14" height="3" fill="#c9bfa8"/><rect x="47" y="60" width="14" height="3" fill="#c9bfa8"/><rect x="78" y="60" width="14" height="3" fill="#c9bfa8"/><rect x="109" y="60" width="14" height="3" fill="#c9bfa8"/></svg>
+        </article>
+      </div>
+    </section>
+    <aside class="side-right">
+      <div class="activity-card">
+        <div class="activity-header">
+          <div class="activity-heading">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#515767" stroke-width="1.4"><rect x="2.5" y="3.5" width="13" height="12" rx="2"/><line x1="2.5" y1="7" x2="15.5" y2="7"/><line x1="6" y1="2" x2="6" y2="5"/><line x1="12" y1="2" x2="12" y2="5"/></svg>
+            进行中的活动
+          </div>
+          <div class="activity-pager">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#8A919F" stroke-width="1.4"><path d="M7.5 2.5L4 6l3.5 3.5"/></svg>
+            3 / 4
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="#8A919F" stroke-width="1.4"><path d="M4.5 2.5L8 6l-3.5 3.5"/></svg>
+          </div>
+        </div>
+        <div class="activity-item">
+          <svg class="activity-icon" width="56" height="56" viewBox="0 0 56 56"><defs><linearGradient id="actGrad" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4D8DFF"/><stop offset="1" stop-color="#2B6DE5"/></linearGradient></defs><rect width="56" height="56" rx="8" fill="url(#actGrad)"/><path d="M20 40l8-24h5l-8 24z" fill="#fff"/><path d="M31 40l8-24h5l-8 24z" fill="#fff" opacity=".85"/></svg>
+          <div>
+            <p class="activity-name">主会场观众报名｜稀土掘金 X-Lab 年度大会招募…</p>
+            <p class="activity-deadline">截止日期 2026/12/26 17:00</p>
+          </div>
+        </div>
+      </div>
+      <div class="ai-card">
+        <div class="ai-icon">AI</div>
+        <div class="ai-text">
+          <strong>AI Coding</strong>
+          <span>让每一次编码更高效</span>
+        </div>
+        <svg class="ai-arrow" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1E80FF" stroke-width="1.6"><path d="M4 12L12 4M6 4h6v6"/></svg>
+      </div>
+      <footer class="site-footer">
+        <div class="footer-row"><a>用户协议</a><a>营业执照</a><a>隐私政策</a><a>关于我们</a></div>
+        <div class="footer-row"><a>使用指南</a><a>友情链接</a><a>更多文章</a></div>
+        <div class="footer-line">举报邮箱： juejin@bytedance.com</div>
+        <div class="footer-line">座机电话： 010-83434395</div>
+        <div class="footer-line">京ICP备18012699号-3</div>
+        <div class="footer-line">京ICP证： 京B2-20191272</div>
+        <div class="footer-line"><svg width="16" height="16" viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#C22A18"/><circle cx="8" cy="8" r="3" fill="#F6C344"/></svg>京公网安备11010802026719号</div>
+        <div class="footer-line">©2026 稀土掘金</div>
+      </footer>
+    </aside>
+  </div>
+</main>
+<section class="feed-continue">
+  <div class="feed-main">
+    <div class="feed-card">
+      <div class="prev-tail" aria-hidden="true">
+        <span class="tail-tag" style="width:70px;"></span>
+        <span class="tail-tag" style="width:50px;"></span>
+        <span class="tail-tag" style="width:40px;margin-right:25px;"></span>
+        <span class="tail-btn"></span>
+      </div>
+
+      <article class="feed-item">
+        <h3 class="item-title">DeepSeek V4.1 Flash：一次把自家旗舰送走的发布</h3>
+        <p class="item-summary">9 月 8 日下午， DeepSeek 在官方用户群里丢了一条不到 100 字的通知。没有发布会，没有预热海报，官网文档都...</p>
+        <div class="item-meta">
+          <span class="meta-author">码事漫谈</span>
+          <span class="meta-stat">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.8-7 10-7 10 7 10 7-3.8 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+            7.0k
+          </span>
+          <span class="meta-stat">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 10v11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3z"/><path d="M7 10l4.5-7a2.4 2.4 0 0 1 2.3 3l-1 4h6.2a2 2 0 0 1 2 2.4l-1.4 7a2 2 0 0 1-2 1.6H7"/></svg>
+            47
+          </span>
+          <span class="meta-tag">后端</span>
+        </div>
+      </article>
+
+      <article class="feed-item feed-item-thumb">
+        <div class="item-body">
+          <h3 class="item-title">冷知识：国模又慢又贵，洋模又快又便宜！</h3>
+          <p class="item-summary">今天上午发了一篇《排名算法一变，国产模型全部滑铁卢了！》，国模现状让人唏嘘！ 我们...</p>
+          <div class="item-meta item-meta-cut">
+            <span class="meta-author">...</span>
+          </div>
+        </div>
+        <div class="item-thumb" aria-hidden="true">
+          <span class="thumb-line"></span>
+          <span class="thumb-bars"><i style="height:20px;background:#e06666;"></i><i style="height:30px;background:#7fb069;"></i><i style="height:24px;background:#e06666;"></i><i style="height:34px;background:#7fb069;"></i><i style="height:16px;background:#e06666;"></i></span>
+          <span class="thumb-dots"></span>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="float-actions">
+    <button class="float-btn feedback-btn" type="button" aria-label="反馈">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="#3370ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="17" height="13" rx="2.5"/><path d="M12 9.5v4.5"/><path d="M9.8 11.8 12 14l2.2-2.2"/></svg>
+    </button>
+    <button class="float-btn more-btn" type="button" aria-label="更多">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="#9ba1a6"><circle cx="6" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="18" cy="12" r="1.6"/></svg>
+    </button>
+  </div>
+</section>
+
+<style>
+  .feed-continue{position:relative;height:233px;overflow:hidden;background:#eceef1;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;}
+  .feed-main{max-width:904px;margin:0 auto;}
+  .feed-card{background:#fff;padding:0 26px;overflow:hidden;}
+  .prev-tail{display:flex;justify-content:flex-end;gap:10px;height:8px;overflow:hidden;margin-bottom:32px;}
+  .prev-tail .tail-tag{height:8px;background:#e7e9ec;border-radius:0 0 3px 3px;}
+  .prev-tail .tail-btn{width:135px;height:8px;box-sizing:border-box;background:#fef8e4;border:1px solid #f6e7b6;border-top:0;border-radius:0 0 4px 4px;}
+  .feed-item{padding:22px 0 18px;}
+  .feed-item + .feed-item{border-top:1px solid #f0f1f2;}
+  .feed-item:first-of-type{padding-top:0;}
+  .item-title{margin:0 0 14px;font-size:20px;line-height:20px;font-weight:700;color:#1d2129;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .item-summary{margin:0 0 16px;font-size:15px;line-height:17px;color:#8a919f;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .item-meta{display:flex;align-items:center;gap:28px;font-size:14px;color:#8a919f;}
+  .meta-stat{display:inline-flex;align-items:center;gap:6px;}
+  .meta-stat svg{display:block;}
+  .meta-tag{margin-left:auto;padding:4px 12px;font-size:13px;line-height:14px;color:#4e5969;background:#f2f3f5;border-radius:3px;}
+  .feed-item-thumb{display:flex;align-items:flex-start;gap:24px;}
+  .item-body{flex:1;min-width:0;}
+  .item-meta-cut{margin-top:16px;}
+  .item-thumb{position:relative;flex:0 0 135px;width:135px;height:80px;margin-top:-4px;background:#f7edd6;border-radius:4px;overflow:hidden;}
+  .thumb-line{position:absolute;left:12px;top:16px;width:58px;height:2px;background:#e06666;transform:rotate(-8deg);}
+  .thumb-bars{position:absolute;left:14px;bottom:10px;display:flex;align-items:flex-end;gap:4px;}
+  .thumb-bars i{display:block;width:7px;border-radius:1px;}
+  .thumb-dots{position:absolute;right:12px;top:20px;width:44px;height:34px;background:
+    radial-gradient(circle 2.5px at 20% 30%, #e06666 99%, transparent),
+    radial-gradient(circle 2px at 62% 62%, #7fb069 99%, transparent),
+    radial-gradient(circle 2px at 88% 22%, #f0ad4e 99%, transparent),
+    linear-gradient(#e3d3ab 1px, transparent 1px) 0 78%/100% 6px no-repeat;}
+  .float-actions{position:absolute;right:21px;top:90px;display:flex;flex-direction:column;gap:17px;}
+  .float-btn{width:45px;height:45px;border-radius:50%;border:none;background:#fff;box-shadow:0 3px 10px rgba(31,35,41,.12);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;}
+  @media (max-width:960px){
+    .feed-main{margin:0 12px;}
+    .float-actions{right:12px;}
+  }
+  @media (max-width:640px){
+    .feed-card{padding:0 16px;}
+    .item-title{font-size:18px;line-height:18px;}
+    .item-thumb{display:none;}
+    .item-meta{gap:16px;}
+  }
+</style>
+</body>
+</html>

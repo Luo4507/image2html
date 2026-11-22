@@ -1,0 +1,1539 @@
+{
+  "image": "examples\\dashboard.png",
+  "options": {
+    "framework": "html",
+    "styleFramework": "inline",
+    "componentLibrary": "none",
+    "typescript": true,
+    "responsive": true,
+    "accessibility": true,
+    "pipeline": "direct",
+    "qualityMode": "precision",
+    "assetMode": "none"
+  },
+  "success": true,
+  "code": {
+    "filename": "Generatedpage.html",
+    "imports": [],
+    "components": []
+  },
+  "validation": {
+    "similarity": 98.3,
+    "quality": {
+      "overallSimilarity": 95.99,
+      "contentSimilarity": 96.01,
+      "edgeSimilarity": 42.29,
+      "contentRatio": 1,
+      "qualityScore": 82.57,
+      "textCoverage": 98.15
+    },
+    "dimensions": {
+      "original": {
+        "width": 1440,
+        "height": 1127
+      },
+      "generated": {
+        "width": 1440,
+        "height": 1127
+      },
+      "widthDifference": 0,
+      "heightDifference": 0
+    },
+    "layout": {
+      "viewport": {
+        "width": 1440,
+        "height": 1127
+      },
+      "document": {
+        "width": 1440,
+        "height": 1127
+      },
+      "elements": [
+        {
+          "selector": "aside.sidebar#0",
+          "tagName": "aside",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 240,
+            "height": 1127
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(0, 21, 41)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "nav#1",
+          "tagName": "nav",
+          "bounds": {
+            "x": 0,
+            "y": 80,
+            "width": 240,
+            "height": 364
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "header.topbar#2",
+          "tagName": "header",
+          "bounds": {
+            "x": 240,
+            "y": 0,
+            "width": 1200,
+            "height": 64
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px 32px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "nav.breadcrumb#3",
+          "tagName": "nav",
+          "bounds": {
+            "x": 272,
+            "y": 22.5,
+            "width": 105.46875,
+            "height": 19
+          },
+          "styles": {
+            "color": "rgb(102, 102, 102)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "8px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.bell#4",
+          "tagName": "button",
+          "bounds": {
+            "x": 1316.53125,
+            "y": 18,
+            "width": 35.46875,
+            "height": 28
+          },
+          "styles": {
+            "color": "rgb(0, 0, 0)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "20px",
+            "fontWeight": "400",
+            "padding": "4px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "main.content#5",
+          "tagName": "main",
+          "bounds": {
+            "x": 240,
+            "y": 64,
+            "width": 1200,
+            "height": 1063
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px 32px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h1.page-title#6",
+          "tagName": "h1",
+          "bounds": {
+            "x": 272,
+            "y": 88,
+            "width": 1136,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(31, 31, 31)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "22px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 24px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section.stat-grid#7",
+          "tagName": "section",
+          "bounds": {
+            "x": 272,
+            "y": 142,
+            "width": 1136,
+            "height": 160
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px 0px 24px",
+            "gap": "24px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "article.card.stat#8",
+          "tagName": "article",
+          "bounds": {
+            "x": 272,
+            "y": 142,
+            "width": 266,
+            "height": 160
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(250, 250, 250)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "article.card.stat#9",
+          "tagName": "article",
+          "bounds": {
+            "x": 562,
+            "y": 142,
+            "width": 266,
+            "height": 160
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(250, 250, 250)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "article.card.stat#10",
+          "tagName": "article",
+          "bounds": {
+            "x": 852,
+            "y": 142,
+            "width": 266,
+            "height": 160
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(250, 250, 250)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "article.card.stat#11",
+          "tagName": "article",
+          "bounds": {
+            "x": 1142,
+            "y": 142,
+            "width": 266,
+            "height": 160
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(250, 250, 250)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "section.chart-grid#12",
+          "tagName": "section",
+          "bounds": {
+            "x": 272,
+            "y": 326,
+            "width": 1136,
+            "height": 385
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px 0px 24px",
+            "gap": "24px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "article.card.chart-card#13",
+          "tagName": "article",
+          "bounds": {
+            "x": 272,
+            "y": 326,
+            "width": 741.328125,
+            "height": 385
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(250, 250, 250)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "h2.card-title#14",
+          "tagName": "h2",
+          "bounds": {
+            "x": 296,
+            "y": 350,
+            "width": 693.328125,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(31, 31, 31)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 16px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "article.card.chart-card#15",
+          "tagName": "article",
+          "bounds": {
+            "x": 1037.328125,
+            "y": 326,
+            "width": 370.65625,
+            "height": 385
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(250, 250, 250)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "h2.card-title#16",
+          "tagName": "h2",
+          "bounds": {
+            "x": 1061.328125,
+            "y": 350,
+            "width": 322.65625,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(31, 31, 31)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 16px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section.card.table-card#17",
+          "tagName": "section",
+          "bounds": {
+            "x": 272,
+            "y": 735,
+            "width": 1136,
+            "height": 350
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(250, 250, 250)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "h2#orders-title.card-title#18",
+          "tagName": "h2",
+          "bounds": {
+            "x": 296,
+            "y": 759,
+            "width": 1088,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(31, 31, 31)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 16px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        }
+      ],
+      "pendingRequests": [],
+      "failedRequests": []
+    },
+    "passed": true,
+    "regions": [
+      {
+        "x": 0,
+        "y": 100,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1089,
+        "diffPercentage": 10.89,
+        "type": "header"
+      },
+      {
+        "x": 300,
+        "y": 200,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1139,
+        "diffPercentage": 11.39,
+        "type": "main"
+      },
+      {
+        "x": 600,
+        "y": 200,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1171,
+        "diffPercentage": 11.71,
+        "type": "main"
+      },
+      {
+        "x": 0,
+        "y": 200,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1075,
+        "diffPercentage": 10.75,
+        "type": "sidebar"
+      },
+      {
+        "x": 0,
+        "y": 300,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1093,
+        "diffPercentage": 10.93,
+        "type": "sidebar"
+      },
+      {
+        "x": 600,
+        "y": 500,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1089,
+        "diffPercentage": 10.89,
+        "type": "main"
+      }
+    ],
+    "suggestions": [
+      "检查 Header 区域高度、背景色和边框是否一致",
+      "验证 Sidebar 宽度、背景色和菜单项样式",
+      "检查主内容区 padding、margin 和布局结构",
+      "确认字体大小和字重是否匹配设计稿",
+      "检查颜色值是否使用了 Design Token",
+      "验证圆角、阴影等细节样式"
+    ],
+    "textCoverage": 98.15,
+    "missingTexts": [
+      "首页 / 数据概览"
+    ]
+  },
+  "metrics": {
+    "analysisMs": 0,
+    "generationMs": 224715,
+    "validationMs": 47534,
+    "repairMs": 236786,
+    "totalMs": 506155,
+    "modelCalls": 3,
+    "repairIterations": 1
+  },
+  "qualityHistory": [
+    {
+      "iteration": 0,
+      "validation": {
+        "similarity": 97.48,
+        "quality": {
+          "overallSimilarity": 93.59,
+          "contentSimilarity": 93.61,
+          "edgeSimilarity": 18.4,
+          "contentRatio": 1,
+          "qualityScore": 74.8,
+          "textCoverage": 98.15
+        },
+        "dimensions": {
+          "original": {
+            "width": 1440,
+            "height": 1127
+          },
+          "generated": {
+            "width": 1440,
+            "height": 1127
+          },
+          "widthDifference": 0,
+          "heightDifference": 0
+        },
+        "layout": {
+          "viewport": {
+            "width": 1440,
+            "height": 1127
+          },
+          "document": {
+            "width": 1440,
+            "height": 1127
+          },
+          "elements": [
+            {
+              "selector": "aside.sidebar#0",
+              "tagName": "aside",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 240,
+                "height": 1127
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(0, 21, 41)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav#1",
+              "tagName": "nav",
+              "bounds": {
+                "x": 0,
+                "y": 80,
+                "width": 240,
+                "height": 304
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "header.topbar#2",
+              "tagName": "header",
+              "bounds": {
+                "x": 240,
+                "y": 0,
+                "width": 1200,
+                "height": 64
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px 24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.breadcrumb#3",
+              "tagName": "nav",
+              "bounds": {
+                "x": 264,
+                "y": 22.5,
+                "width": 105.46875,
+                "height": 19
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.bell#4",
+              "tagName": "button",
+              "bounds": {
+                "x": 1324.53125,
+                "y": 18,
+                "width": 35.46875,
+                "height": 28
+              },
+              "styles": {
+                "color": "rgb(0, 0, 0)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "20px",
+                "fontWeight": "400",
+                "padding": "4px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main.content#5",
+              "tagName": "main",
+              "bounds": {
+                "x": 240,
+                "y": 64,
+                "width": 1200,
+                "height": 1063
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h1.page-title#6",
+              "tagName": "h1",
+              "bounds": {
+                "x": 264,
+                "y": 88,
+                "width": 1152,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "22px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 24px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.stat-grid#7",
+              "tagName": "section",
+              "bounds": {
+                "x": 264,
+                "y": 142,
+                "width": 1152,
+                "height": 140
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px 0px 24px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "article.card.stat#8",
+              "tagName": "article",
+              "bounds": {
+                "x": 264,
+                "y": 142,
+                "width": 270,
+                "height": 140
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "20px 24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "article.card.stat#9",
+              "tagName": "article",
+              "bounds": {
+                "x": 558,
+                "y": 142,
+                "width": 270,
+                "height": 140
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "20px 24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "article.card.stat#10",
+              "tagName": "article",
+              "bounds": {
+                "x": 852,
+                "y": 142,
+                "width": 270,
+                "height": 140
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "20px 24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "article.card.stat#11",
+              "tagName": "article",
+              "bounds": {
+                "x": 1146,
+                "y": 142,
+                "width": 270,
+                "height": 140
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "20px 24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "section.chart-grid#12",
+              "tagName": "section",
+              "bounds": {
+                "x": 264,
+                "y": 306,
+                "width": 1152,
+                "height": 385
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px 0px 24px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "article.card.chart-card#13",
+              "tagName": "article",
+              "bounds": {
+                "x": 264,
+                "y": 306,
+                "width": 752,
+                "height": 385
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2.card-title#14",
+              "tagName": "h2",
+              "bounds": {
+                "x": 288,
+                "y": 330,
+                "width": 704,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 16px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "article.card.chart-card#15",
+              "tagName": "article",
+              "bounds": {
+                "x": 1040,
+                "y": 306,
+                "width": 376,
+                "height": 385
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2.card-title#16",
+              "tagName": "h2",
+              "bounds": {
+                "x": 1064,
+                "y": 330,
+                "width": 328,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 16px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.table-card#17",
+              "tagName": "section",
+              "bounds": {
+                "x": 264,
+                "y": 715,
+                "width": 1152,
+                "height": 350
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#orders-title.card-title#18",
+              "tagName": "h2",
+              "bounds": {
+                "x": 288,
+                "y": 739,
+                "width": 1104,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 16px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": false,
+        "regions": [
+          {
+            "x": 0,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1761,
+            "diffPercentage": 17.61,
+            "type": "header"
+          },
+          {
+            "x": 100,
+            "y": 0,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1513,
+            "diffPercentage": 15.13,
+            "type": "header"
+          },
+          {
+            "x": 0,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 3080,
+            "diffPercentage": 30.8,
+            "type": "header"
+          },
+          {
+            "x": 100,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1906,
+            "diffPercentage": 19.06,
+            "type": "header"
+          },
+          {
+            "x": 0,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1429,
+            "diffPercentage": 14.29,
+            "type": "sidebar"
+          },
+          {
+            "x": 300,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1249,
+            "diffPercentage": 12.49,
+            "type": "main"
+          },
+          {
+            "x": 600,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1468,
+            "diffPercentage": 14.68,
+            "type": "main"
+          },
+          {
+            "x": 0,
+            "y": 300,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1310,
+            "diffPercentage": 13.1,
+            "type": "sidebar"
+          },
+          {
+            "x": 600,
+            "y": 500,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 2172,
+            "diffPercentage": 21.72,
+            "type": "main"
+          },
+          {
+            "x": 1200,
+            "y": 500,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 2336,
+            "diffPercentage": 23.36,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "检查 Header 区域高度、背景色和边框是否一致",
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ],
+        "textCoverage": 98.15,
+        "missingTexts": [
+          "首页 / 数据概览"
+        ]
+      },
+      "score": 74.8,
+      "adopted": true,
+      "improved": true
+    },
+    {
+      "iteration": 1,
+      "validation": {
+        "similarity": 98.3,
+        "quality": {
+          "overallSimilarity": 95.99,
+          "contentSimilarity": 96.01,
+          "edgeSimilarity": 42.29,
+          "contentRatio": 1,
+          "qualityScore": 82.57,
+          "textCoverage": 98.15
+        },
+        "dimensions": {
+          "original": {
+            "width": 1440,
+            "height": 1127
+          },
+          "generated": {
+            "width": 1440,
+            "height": 1127
+          },
+          "widthDifference": 0,
+          "heightDifference": 0
+        },
+        "layout": {
+          "viewport": {
+            "width": 1440,
+            "height": 1127
+          },
+          "document": {
+            "width": 1440,
+            "height": 1127
+          },
+          "elements": [
+            {
+              "selector": "aside.sidebar#0",
+              "tagName": "aside",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 240,
+                "height": 1127
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(0, 21, 41)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav#1",
+              "tagName": "nav",
+              "bounds": {
+                "x": 0,
+                "y": 80,
+                "width": 240,
+                "height": 364
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "header.topbar#2",
+              "tagName": "header",
+              "bounds": {
+                "x": 240,
+                "y": 0,
+                "width": 1200,
+                "height": 64
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px 32px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.breadcrumb#3",
+              "tagName": "nav",
+              "bounds": {
+                "x": 272,
+                "y": 22.5,
+                "width": 105.46875,
+                "height": 19
+              },
+              "styles": {
+                "color": "rgb(102, 102, 102)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.bell#4",
+              "tagName": "button",
+              "bounds": {
+                "x": 1316.53125,
+                "y": 18,
+                "width": 35.46875,
+                "height": 28
+              },
+              "styles": {
+                "color": "rgb(0, 0, 0)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "20px",
+                "fontWeight": "400",
+                "padding": "4px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main.content#5",
+              "tagName": "main",
+              "bounds": {
+                "x": 240,
+                "y": 64,
+                "width": 1200,
+                "height": 1063
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px 32px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h1.page-title#6",
+              "tagName": "h1",
+              "bounds": {
+                "x": 272,
+                "y": 88,
+                "width": 1136,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "22px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 24px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.stat-grid#7",
+              "tagName": "section",
+              "bounds": {
+                "x": 272,
+                "y": 142,
+                "width": 1136,
+                "height": 160
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px 0px 24px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "article.card.stat#8",
+              "tagName": "article",
+              "bounds": {
+                "x": 272,
+                "y": 142,
+                "width": 266,
+                "height": 160
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "article.card.stat#9",
+              "tagName": "article",
+              "bounds": {
+                "x": 562,
+                "y": 142,
+                "width": 266,
+                "height": 160
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "article.card.stat#10",
+              "tagName": "article",
+              "bounds": {
+                "x": 852,
+                "y": 142,
+                "width": 266,
+                "height": 160
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "article.card.stat#11",
+              "tagName": "article",
+              "bounds": {
+                "x": 1142,
+                "y": 142,
+                "width": 266,
+                "height": 160
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "section.chart-grid#12",
+              "tagName": "section",
+              "bounds": {
+                "x": 272,
+                "y": 326,
+                "width": 1136,
+                "height": 385
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px 0px 24px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "article.card.chart-card#13",
+              "tagName": "article",
+              "bounds": {
+                "x": 272,
+                "y": 326,
+                "width": 741.328125,
+                "height": 385
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2.card-title#14",
+              "tagName": "h2",
+              "bounds": {
+                "x": 296,
+                "y": 350,
+                "width": 693.328125,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 16px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "article.card.chart-card#15",
+              "tagName": "article",
+              "bounds": {
+                "x": 1037.328125,
+                "y": 326,
+                "width": 370.65625,
+                "height": 385
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2.card-title#16",
+              "tagName": "h2",
+              "bounds": {
+                "x": 1061.328125,
+                "y": 350,
+                "width": 322.65625,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 16px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.table-card#17",
+              "tagName": "section",
+              "bounds": {
+                "x": 272,
+                "y": 735,
+                "width": 1136,
+                "height": 350
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(250, 250, 250)",
+                "fontSize": "16px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#orders-title.card-title#18",
+              "tagName": "h2",
+              "bounds": {
+                "x": 296,
+                "y": 759,
+                "width": 1088,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(31, 31, 31)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "16px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 16px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": true,
+        "regions": [
+          {
+            "x": 0,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1089,
+            "diffPercentage": 10.89,
+            "type": "header"
+          },
+          {
+            "x": 300,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1139,
+            "diffPercentage": 11.39,
+            "type": "main"
+          },
+          {
+            "x": 600,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1171,
+            "diffPercentage": 11.71,
+            "type": "main"
+          },
+          {
+            "x": 0,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1075,
+            "diffPercentage": 10.75,
+            "type": "sidebar"
+          },
+          {
+            "x": 0,
+            "y": 300,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1093,
+            "diffPercentage": 10.93,
+            "type": "sidebar"
+          },
+          {
+            "x": 600,
+            "y": 500,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1089,
+            "diffPercentage": 10.89,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "检查 Header 区域高度、背景色和边框是否一致",
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ],
+        "textCoverage": 98.15,
+        "missingTexts": [
+          "首页 / 数据概览"
+        ]
+      },
+      "score": 82.57,
+      "adopted": true,
+      "improved": true
+    }
+  ],
+  "compileHistory": [],
+  "totalMs": 506155
+}

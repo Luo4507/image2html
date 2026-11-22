@@ -13,7 +13,7 @@ import { applyCodeEdits, parseCodeEdits } from './codegen/patch-applier.js';
 import { runAutoCorrection } from './validator/auto-corrector.js';
 import sharp from 'sharp';
 import { buildRegionPlanningPrompt, parseRegionPlan } from './prompts/region-planning.js';
-import { assembleHtmlDocument, assembleFrameworkRegionCode, buildRegionGenerationPrompt } from './segmented-generator.js';
+import { assembleHtmlDocument, assembleFrameworkRegionCode, buildRegionGenerationPrompt, normalizePlannedRegions, shouldUseSegmentedLayout } from './segmented-generator.js';
 import { buildTextExtractionPrompt, parseVisibleTexts } from './prompts/text-extraction.js';
 import { calculateTextCoverage } from './validator/text-coverage.js';
 import { passesQualityGate } from './validator/quality-gate.js';
@@ -24,6 +24,7 @@ import { getDefaultModelConfig, getDefaultValidationConfig, getDefaultCodegenOpt
 import { assertValidCodegenOptions } from './runtime/codegen-options.js';
 import { buildCompileRepairPrompt } from './prompts/compile-repair.js';
 import { normalizeGeneratedAssets } from './runtime/asset-files.js';
+import { mapWithConcurrency } from './runtime/concurrency.js';
 import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { basename, join } from 'node:path';
@@ -37,6 +38,9 @@ import type {
   CodegenOptions,
   GeneratedAsset,
   ConversionProgressEvent,
+  ModelRequestMetrics,
+  ModelRequestStage,
+  ModelRequestTiming,
 } from './types.js';
 
 // 导出所有模块
@@ -62,6 +66,8 @@ interface CompileRecoveryData {
   validationMs: number;
   history: NonNullable<DesignToCodeResult['compileHistory']>;
 }
+
+type ModelRequestListener = (metric: ModelRequestMetrics) => void;
 
 class CompileRecoveryError extends Error {
   constructor(
@@ -94,6 +100,16 @@ export class DesignToCode {
     request.onProgress?.({ ...event, timestamp: new Date().toISOString() });
   }
 
+  private trackModelRequest(
+    stage: ModelRequestStage,
+    model: ModelRequestMetrics['model'],
+    stream: boolean,
+    listener?: ModelRequestListener
+  ): ((timing: ModelRequestTiming) => void) | undefined {
+    if (!listener) return undefined;
+    return (timing) => listener({ stage, model, stream, ...timing });
+  }
+
   /**
    * 分析设计稿结构
    */
@@ -121,11 +137,18 @@ ${invalidContent}`,
     });
   }
 
-  private async extractVisibleTexts(imageBase64: string): Promise<string[]> {
+  private async extractVisibleTexts(
+    imageBase64: string,
+    onModelRequest?: ModelRequestListener
+  ): Promise<string[]> {
     const content = await createVisionClient(this.modelConfig).generateWithImages(
       buildTextExtractionPrompt(),
       [imageBase64],
-      { temperature: 0, maxTokens: 4096 }
+      {
+        temperature: 0,
+        maxTokens: 4096,
+        onMetrics: this.trackModelRequest('text-extraction', 'vision', true, onModelRequest),
+      }
     );
     return parseVisibleTexts(content);
   }
@@ -200,12 +223,24 @@ ${invalidContent}`,
     imageBase64: string,
     options: CodegenOptions,
     onProgress?: (event: ConversionProgressEvent) => void,
-    assets: GeneratedAsset[] = []
+    assets: GeneratedAsset[] = [],
+    onModelRequest?: ModelRequestListener
   ): Promise<GeneratedCode> {
     assertValidCodegenOptions(options);
-    if (options.layoutMode === 'segmented') {
+    let segmented = options.layoutMode === 'segmented';
+    if (options.layoutMode === 'auto') {
+      const imageBuffer = Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ''), 'base64');
+      const metadata = await sharp(imageBuffer).metadata();
+      segmented = shouldUseSegmentedLayout(metadata.width || 1440, metadata.height || 900);
+      onProgress?.({
+        stage: 'analyzing',
+        message: segmented ? '检测到大长图，采用分段生成' : '普通尺寸设计稿，采用单页生成',
+        timestamp: new Date().toISOString(),
+      });
+    }
+    if (segmented) {
       try {
-        return await this.generateSegmentedHtml(imageBase64, options, onProgress, assets);
+        return await this.generateSegmentedHtml(imageBase64, options, onProgress, assets, onModelRequest);
       } catch (error) {
         console.error('[design-to-code] Segmented generation failed; using single-page generation', error);
       }
@@ -220,6 +255,7 @@ ${invalidContent}`,
       {
         temperature: 0.2,
         maxTokens: 16384,
+        onMetrics: this.trackModelRequest('generation', 'vision', true, onModelRequest),
         onChunk: (fullText) => {
           const now = Date.now();
           if (fullText.length - lastSnapshotLength < 1000 && now - lastSnapshotAt < 1000) return;
@@ -253,7 +289,8 @@ ${invalidContent}`,
     imageBase64: string,
     options: CodegenOptions,
     onProgress?: (event: ConversionProgressEvent) => void,
-    assets: GeneratedAsset[] = []
+    assets: GeneratedAsset[] = [],
+    onModelRequest?: ModelRequestListener
   ): Promise<GeneratedCode> {
     const imageBuffer = Buffer.from(
       imageBase64.replace(/^data:image\/\w+;base64,/, ''),
@@ -277,16 +314,19 @@ ${invalidContent}`,
           { type: 'image_url', image_url: { url: imageBase64 } },
         ],
       },
-    ], { temperature: 0.1, maxTokens: 4096 });
-    const regions = parseRegionPlan(planning.choices[0]?.message?.content || '')
-      .map((region) => ({
-        ...region,
-        startY: Math.min(region.startY, height - 1),
-        endY: Math.min(region.endY, height),
-      }))
-      .filter((region) => region.endY > region.startY);
+    ], {
+      temperature: 0.1,
+      maxTokens: 4096,
+      onMetrics: this.trackModelRequest('region-planning', 'vision', false, onModelRequest),
+    });
+    const regions = normalizePlannedRegions(
+      parseRegionPlan(planning.choices[0]?.message?.content || ''),
+      height
+    );
+    if (regions.length === 0) throw new Error('Region plan contains no usable regions');
 
-    const fragments = await Promise.all(regions.map(async (region) => {
+    const regionConcurrency = Number.parseInt(process.env.REGION_CONCURRENCY || '3', 10);
+    const fragments = await mapWithConcurrency(regions, regionConcurrency, async (region) => {
       const crop = await sharp(imageBuffer)
         .extract({
           left: 0,
@@ -299,7 +339,11 @@ ${invalidContent}`,
       const code = await visionClient.generateWithImages(
         buildRegionGenerationPrompt(region, options, width, height, assets),
         [`data:image/png;base64,${crop.toString('base64')}`],
-        { temperature: 0.2, maxTokens: 8192 }
+        {
+          temperature: 0.2,
+          maxTokens: 8192,
+          onMetrics: this.trackModelRequest('region-generation', 'vision', true, onModelRequest),
+        }
       );
       onProgress?.({
         stage: 'generating',
@@ -307,7 +351,7 @@ ${invalidContent}`,
         timestamp: new Date().toISOString(),
       });
       return code.trim().replace(/^```\w*\n/, '').replace(/\n```$/, '');
-    }));
+    });
 
     const assembled = options.framework === 'html'
       ? assembleHtmlDocument('GeneratedPage', fragments)
@@ -363,14 +407,15 @@ ${invalidContent}`,
     originalImageBuffer: Buffer,
     generatedCode: GeneratedCode,
     targetOptions?: CodegenOptions,
-    validationOverrides?: Partial<ValidationConfig>
+    validationOverrides?: Partial<ValidationConfig>,
+    captureAllViewports = true
   ): Promise<ValidationResult> {
     const validator = validationOverrides
       ? new VisualValidator({ ...this.validationConfig, ...validationOverrides })
       : this.validator;
     try {
       return await validator.validate(originalImageBuffer, generatedCode, {
-        captureAllViewports: true,
+        captureAllViewports,
         codegenOptions: targetOptions,
       });
     } finally {
@@ -411,7 +456,7 @@ ${invalidContent}`,
     };
 
     const initialValidation = await validateCandidate(currentCode);
-    const requestedIterations = Math.max(0, Math.floor(repairOptions.maxIterations ?? 2));
+    const requestedIterations = Math.max(0, Math.floor(repairOptions.maxIterations ?? 4));
     const maxIterations = Math.min(
       requestedIterations,
       Math.max(0, this.validationConfig.maxRetryCount)
@@ -483,7 +528,8 @@ ${invalidContent}`,
     imageBase64: string,
     currentCode: string,
     validation: ValidationResult,
-    options?: CodegenOptions
+    options?: CodegenOptions,
+    onModelRequest?: ModelRequestListener
   ): Promise<{ code: string; modelCalls: number }> {
     const context = await createRepairImageContext({
       originalBase64: imageBase64,
@@ -497,6 +543,11 @@ ${invalidContent}`,
       suggestions: validation.suggestions,
       layout: validation.layout,
       focusRegion: context.focusRegion,
+      similarity: validation.similarity,
+      quality: validation.quality,
+      textCoverage: validation.textCoverage,
+      missingTexts: validation.missingTexts,
+      qualityConfig: this.validationConfig,
       regions: validation.regions.map((region) => ({
         type: region.type,
         diffPercentage: region.diffPercentage,
@@ -506,18 +557,37 @@ ${invalidContent}`,
     const repaired = await visionClient.generateWithImages(
       buildVisualPatchPrompt(promptInput),
       context.images,
-      { temperature: 0.1, maxTokens: 16384 }
+      {
+        temperature: 0.1,
+        maxTokens: 16384,
+        onMetrics: this.trackModelRequest('visual-patch', 'vision', true, onModelRequest),
+      }
     );
 
     try {
       const edits = parseCodeEdits(repaired);
       return { code: applyCodeEdits(currentCode, edits).code, modelCalls: 1 };
     } catch (error) {
+      const directCandidate = repaired.trim().replace(/^```\w*\r?\n/, '').replace(/\r?\n```$/, '');
+      const isFullCode = options?.framework === 'react'
+        ? /^(?:import\b|export\b|(?:async\s+)?function\s+[A-Z]|const\s+[A-Z])/.test(directCandidate)
+        : options?.framework === 'vue'
+          ? /^<template[\s>]/i.test(directCandidate)
+          : /^(?:<!doctype\s+html\b[^>]*>\s*)?(?:<html\b|<(?:main|div|section|header|body|style)\b)/i.test(directCandidate);
+      if (isFullCode) {
+        console.warn('[design-to-code] Patch response contained full code; reusing it without another model request');
+        return { code: directCandidate, modelCalls: 1 };
+      }
+
       console.error('[design-to-code] Invalid visual patch; trying a vision-guided full-code candidate', error);
       const candidate = await visionClient.generateWithImages(
         buildVisualRepairPrompt(promptInput),
         context.images,
-        { temperature: 0.1, maxTokens: 16384 }
+        {
+          temperature: 0.1,
+          maxTokens: 16384,
+          onMetrics: this.trackModelRequest('visual-repair', 'vision', true, onModelRequest),
+        }
       );
       const cleanCode = candidate.trim().replace(/^```\w*\n/, '').replace(/\n```$/, '');
       if (!cleanCode) throw new Error('Visual repair returned an empty candidate');
@@ -611,6 +681,10 @@ ${invalidContent}`,
     let repairMs = 0;
     let modelCalls = 0;
     let repairIterations = 0;
+    const modelRequests: ModelRequestMetrics[] = [];
+    const onModelRequest: ModelRequestListener = (metric) => {
+      modelRequests.push(metric);
+    };
     let qualityHistory: DesignToCodeResult['qualityHistory'];
     let compileHistory: DesignToCodeResult['compileHistory'];
     let originalTexts: string[] | undefined;
@@ -660,7 +734,13 @@ ${invalidContent}`,
         modelCalls += 1;
       } else {
         this.emitProgress(request, { stage: 'generating', message: '正在直接生成代码' });
-        code = await this.generateDirectCode(imageBase64, request.options, request.onProgress, assets);
+        code = await this.generateDirectCode(
+          imageBase64,
+          request.options,
+          request.onProgress,
+          assets,
+          onModelRequest
+        );
         modelCalls += code.modelCalls ?? 1;
       }
       code.assets = assets;
@@ -695,14 +775,14 @@ ${invalidContent}`,
         if (this.validationConfig.checkTextCoverage) {
           this.emitProgress(request, { stage: 'validating', message: '正在检查文字完整性' });
           const textStartedAt = Date.now();
-          originalTexts = await this.extractVisibleTexts(imageBase64);
+          originalTexts = await this.extractVisibleTexts(imageBase64, onModelRequest);
           modelCalls += 1;
           this.applyTextCoverage(validation, originalTexts, code.code);
           validationMs += Date.now() - textStartedAt;
         }
 
         const qualityBudget = { fast: 0, balanced: 2, precision: 4 };
-        const requestedBudget = qualityBudget[request.options.qualityMode || 'balanced'];
+        const requestedBudget = qualityBudget[request.options.qualityMode || 'precision'];
         const maxIterations = Math.min(
           requestedBudget,
           Math.max(0, this.validationConfig.maxRetryCount)
@@ -717,13 +797,25 @@ ${invalidContent}`,
             maxIterations,
             score: (result) => result.quality?.qualityScore ?? result.similarity,
             repair: async (currentCode, currentValidation) => {
-              const repaired = await this.repairWithVision(imageBase64, currentCode, currentValidation, request.options);
+              const repaired = await this.repairWithVision(
+                imageBase64,
+                currentCode,
+                currentValidation,
+                request.options,
+                onModelRequest
+              );
               modelCalls += repaired.modelCalls;
               return repaired.code;
             },
             validate: async (candidateCode) => {
               const candidateStartedAt = Date.now();
-              const result = await this.validate(imageBuffer, { ...(code as GeneratedCode), code: candidateCode }, request.options);
+              const result = await this.validate(
+                imageBuffer,
+                { ...(code as GeneratedCode), code: candidateCode },
+                request.options,
+                undefined,
+                false
+              );
               validationMs += Date.now() - candidateStartedAt;
               return result;
             },
@@ -733,6 +825,13 @@ ${invalidContent}`,
           repairIterations = corrected.iterations;
           qualityHistory = corrected.history;
           repairMs += Date.now() - repairStartedAt;
+        }
+
+        // 中间修复候选只校验主视口；最终采用候选后补齐多端截图。
+        if (!validation.screenshots.tablet || !validation.screenshots.mobile) {
+          const finalCaptureStartedAt = Date.now();
+          validation = await this.validate(imageBuffer, code, request.options);
+          validationMs += Date.now() - finalCaptureStartedAt;
         }
 
         if (originalTexts) this.applyTextCoverage(validation, originalTexts, code.code);
@@ -754,6 +853,7 @@ ${invalidContent}`,
           totalMs: Date.now() - startedAt,
           modelCalls,
           repairIterations,
+          modelRequests,
         },
         success: true,
       };
@@ -772,6 +872,7 @@ ${invalidContent}`,
           totalMs: Date.now() - startedAt,
           modelCalls,
           repairIterations,
+          modelRequests,
         },
         compileHistory,
         success: false,

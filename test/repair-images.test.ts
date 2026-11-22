@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { createRepairImageContext } from '../src/validator/repair-images.js';
 
 describe('repair image context', () => {
-  it('keeps full-page images and appends crops of the worst region', async () => {
+  it('keeps original and rendered pages with focused crops but omits redundant diff images', async () => {
     const source = await sharp({ create: { width: 200, height: 100, channels: 3, background: '#ffffff' } }).png().toBuffer();
     const regions = [
       { x: 0, y: 0, width: 20, height: 20, diffPercentage: 90, diffPixels: 100, type: 'header' as const },
@@ -14,13 +14,13 @@ describe('repair image context', () => {
       diffBase64: source.toString('base64'), regions,
     });
     expect(result.focusRegion).toEqual(regions[1]);
-    // 3 full-page sources followed by 3 focused crops
-    expect(result.images).toHaveLength(6);
-    for (const image of result.images.slice(0, 3)) {
+    // 原图、渲染图，以及它们在最差区域的裁剪。
+    expect(result.images).toHaveLength(4);
+    for (const image of result.images.slice(0, 2)) {
       const metadata = await sharp(Buffer.from(image, 'base64')).metadata();
       expect({ width: metadata.width, height: metadata.height }).toEqual({ width: 200, height: 100 });
     }
-    for (const image of result.images.slice(3)) {
+    for (const image of result.images.slice(2)) {
       const metadata = await sharp(Buffer.from(image, 'base64')).metadata();
       expect({ width: metadata.width, height: metadata.height }).toEqual({ width: 50, height: 50 });
     }

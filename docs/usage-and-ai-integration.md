@@ -70,13 +70,15 @@ LLM_MODEL=your-code-model-name
 VISUAL_SIMILARITY_THRESHOLD=85.0
 MIN_CONTENT_SIMILARITY=60.0
 MIN_EDGE_SIMILARITY=40.0
-MAX_RETRY_COUNT=3
+CHECK_TEXT_COVERAGE=true
+MIN_TEXT_COVERAGE=80.0
+MAX_RETRY_COUNT=4
 
 DEFAULT_FRAMEWORK=react
 DEFAULT_STYLE_FRAMEWORK=tailwind
 DEFAULT_COMPONENT_LIBRARY=antd
 DEFAULT_PIPELINE=direct
-QUALITY_MODE=balanced
+QUALITY_MODE=precision
 ```
 
 | 变量 | 作用 |
@@ -87,6 +89,8 @@ QUALITY_MODE=balanced
 | `LLM_BASE_URL` | 通用语言模型的 OpenAI 兼容 API 根地址 |
 | `LLM_API_KEY` | 通用语言模型密钥 |
 | `LLM_MODEL` | 通用语言模型在服务端注册的实际模型名 |
+| `LLM_VL_ENABLE_THINKING` | 可选：显式开关视觉模型思考；不设置则保持服务端默认 |
+| `LLM_ENABLE_THINKING` | 可选：显式开关通用模型思考；不设置则保持服务端默认 |
 
 变量名不绑定具体模型供应商，但必须确认所用模型具备相应能力。旧变量 `QWEN_VL_*`、`VISION_MODEL`、`GLM_*`、`CODE_MODEL` 仍作为兼容回退；新部署建议仅使用上表中的通用命名，新旧同时设置时优先使用 `LLM` 和 `LLM_VL` 变量。不要将 `.env` 或真实密钥提交到 Git，也不要把真实密钥粘贴到公开 Issue、聊天记录或示例配置中。
 
@@ -110,19 +114,19 @@ pnpm verify:mcp
 HTML 示例：
 
 ```bash
-node dist/cli.js convert examples/demo/login-design.png --framework html --style inline --component-library none --output output/html
+node dist/cli.js convert examples/login.png --framework html --style inline --component-library none --output output/html
 ```
 
 React + TypeScript + Ant Design 示例：
 
 ```bash
-node dist/cli.js convert examples/demo/login-design.png --framework react --style tailwind --component-library antd --quality balanced --output output/react
+node dist/cli.js convert examples/login.png --framework react --style tailwind --component-library antd --quality balanced --output output/react
 ```
 
 Vue 示例：
 
 ```bash
-node dist/cli.js convert examples/demo/login-design.png --framework vue --style inline --component-library element --output output/vue
+node dist/cli.js convert examples/login.png --framework vue --style inline --component-library element --output output/vue
 ```
 
 常用选项：
@@ -135,8 +139,9 @@ node dist/cli.js convert examples/demo/login-design.png --framework vue --style 
 | `--no-typescript` | 不使用 TypeScript | 默认使用 TypeScript |
 | `--no-validate` | 跳过视觉校验；不等于校验通过 | 默认校验 |
 | `--pipeline` | `direct` 直接生成，`structured` 先生成结构 JSON | `direct` |
-| `--quality` | `fast`、`balanced`、`precision` | `balanced` |
-| `--layout` | `single`、`segmented` | `single` |
+| `--quality` | `fast`、`balanced`、`precision` | `precision` |
+| `--layout` | `single`、`segmented`、`auto`；`auto` 只对大长图分段 | `single` |
+| `--cache` | 复用本地已通过的结果；失败和视觉未通过不缓存 | 默认关闭 |
 | `--extract-assets` | 先提取图片资源并在生成代码中引用 | 默认不提取 |
 | `--project` | 导出完整 Vite 工程 | 默认只写源码文件 |
 | `--output` | 输出目录 | `./generated` |
@@ -144,7 +149,7 @@ node dist/cli.js convert examples/demo/login-design.png --framework vue --style 
 ### 3.2 导出完整可运行工程
 
 ```bash
-node dist/cli.js convert examples/demo/login-design.png --framework react --style tailwind --component-library antd --project --output output/react-project
+node dist/cli.js convert examples/login.png --framework react --style tailwind --component-library antd --project --output output/react-project
 ```
 
 然后进入导出目录：
@@ -164,7 +169,13 @@ pnpm dev
 node dist/cli.js batch examples/fixtures --framework html --style inline --component-library none --output output/batch
 ```
 
-`batch` 处理输入目录顶层的 PNG、JPG、JPEG 文件，不递归扫描子目录。汇总写入 `<输出目录>/conversion-report.json`。批量命令当前没有 `--project` 和 `--extract-assets` 选项。
+需要并行时追加 `--concurrency 2`，需要复用相同转换时追加 `--cache`：
+
+```bash
+node dist/cli.js batch examples/fixtures --framework html --style inline --component-library none --concurrency 2 --cache --output output/batch
+```
+
+`batch` 处理输入目录顶层的 PNG、JPG、JPEG 文件，不递归扫描子目录。汇总写入 `<输出目录>/conversion-report.json`。输出源码带图片名前缀，避免同名文件覆盖。批量命令支持 `--extract-assets`，但没有 `--project`。并行越高不一定越快，遇到模型限流时调低并发。
 
 ## 4. MCP 配置的通用原则
 
@@ -391,7 +402,7 @@ env_vars = [
 - `component_library`：`antd`、`element`、`none`。省略时根据框架选择默认值。
 - `pipeline`：`direct` 或 `structured`。
 - `quality_mode`：`fast`、`balanced`、`precision`。
-- `layout_mode`：`single` 或 `segmented`。
+- `layout_mode`：`single`、`segmented` 或 `auto`；`auto` 只对大长图分段，普通页面仍走单页生成。
 - `asset_mode`：`none` 或 `extract`。
 
 常用合法组合为 React + Ant Design、Vue + Element Plus、HTML + `none`。React/Vue 的样式方案使用 `tailwind` 或 `inline`；HTML 可使用四种样式方案。
@@ -470,7 +481,7 @@ tool_timeout_sec = 600
 ```text
 请调用 design-to-code MCP 的 generate_component 工具。
 图片绝对路径：F:\designs\dashboard.png
-参数：framework=react，style_framework=tailwind，component_library=antd，typescript=true，quality_mode=balanced，layout_mode=single。
+参数：framework=react，style_framework=tailwind，component_library=antd，typescript=true，quality_mode=precision，layout_mode=single。
 拿到源码后，使用编辑工具将完整源码写入当前业务项目的 src/components/Dashboard.tsx，不要只在对话中展示代码。
 随后安装缺失依赖并执行项目构建。请区分“源码已返回”“文件已写入”“构建成功”“视觉门禁通过”这四个状态，不要混淆。
 ```
@@ -508,15 +519,23 @@ quality_mode=precision。工具会先校验，再修复、重新校验并择优�
 - `balanced`：校验失败时进行有界自动修复，并保留质量分数更高的版本。
 - `precision`：允许更多修复轮次，仍受 `MAX_RETRY_COUNT` 限制。
 
-`direct` 是默认生成路径；`structured` 会先产生结构化页面表示，适合需要结构审计的场景，但通常增加模型调用。
+默认使用 `precision`，`MAX_RETRY_COUNT=4`，并开启文字完整性检查。`direct` 是默认生成路径；`structured` 会先产生结构化页面表示，适合需要结构审计的场景，但通常增加模型调用。
 
-### 10.2 三道视觉门禁
+需要复用相同图片的已通过结果时，CLI 使用 `--cache`；本地 MCP 在环境变量中设置 `CONVERSION_CACHE=true`。默认缓存目录是 `.cache/image2html-conversions`，可用 `CONVERSION_CACHE_DIR` 修改。缓存键包含图片内容、模型和参数；执行失败或视觉未通过不会缓存。清理该目录即可清空本地缓存。
+
+结果中的 `metrics.modelRequests` 记录各次模型请求的首响应、首内容、总耗时、字符数和可用的 token 统计；`validation.timings` 记录主渲染、图片比较和额外视口耗时。`repairMs` 包含候选重新校验，因此与累计的 `validationMs` 有重叠，不能把各阶段数字直接相加当作总耗时。
+
+对于兼容 `enable_thinking` 的模型服务，可用 `LLM_VL_ENABLE_THINKING=false` 和 `LLM_ENABLE_THINKING=false` 显式关闭思考，以减少隐藏推理 token 和等待时间。默认不发送该字段，保持模型服务端原有行为；关闭思考可能降低生成或修复质量，应先对相同样本做质量与耗时对比，再决定是否用于生产。其他模型服务可能忽略或拒绝该字段，此时请保持变量未设置。
+
+### 10.2 质量门禁
 
 | 环境变量 | 默认值 | 含义 |
 | --- | ---: | --- |
 | `VISUAL_SIMILARITY_THRESHOLD` | `85.0` | 整图相似度门槛 |
 | `MIN_CONTENT_SIMILARITY` | `60.0` | 内容区域相似度门槛 |
 | `MIN_EDGE_SIMILARITY` | `40.0` | 边缘相似度门槛 |
+| `CHECK_TEXT_COVERAGE` | `true` | 生成流程默认检查文字完整性 |
+| `MIN_TEXT_COVERAGE` | `80.0` | 文字覆盖率门槛 |
 
 `validate_design` 的 `threshold` 参数只覆盖本次整图阈值，内容和边缘仍受默认校验配置约束。因此整图达到 85% 仍可能未通过，必须看最终 `passed` 结论。
 
@@ -593,4 +612,4 @@ pnpm verify:mcp
 - [OpenCode：Config](https://docs.opencode.ai/docs/config/)
 - [OpenAI Codex：Model Context Protocol](https://developers.openai.com/codex/mcp)
 - [OpenAI Codex：Config basics](https://developers.openai.com/codex/config-file/config-basic)
-- 本项目的[部署指南](deployment.md)与 [MCP 使用示例](../examples/mcp-usage.md)
+- 本项目的[部署指南](deployment.md)与[示例设计稿](../examples/README.md)

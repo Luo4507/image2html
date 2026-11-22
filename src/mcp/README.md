@@ -97,7 +97,7 @@ AI 客户端通常负责启动这个进程，不需要在终端长期运行。�
 
 - `diff_regions`：兼容旧调用；修复流程会重新校验并使用实时差异。
 - `framework`、`style_framework`、`component_library`、`typescript`：必须与目标代码一致。
-- `quality_mode`：`fast`（0 轮）、`balanced`（最多 2 轮）、`precision`（最多 4 轮）。
+- `quality_mode`：`fast`（0 轮）、`balanced`（最多 2 轮）、`precision`（最多 4 轮）；默认 `precision`。
 - `max_iterations`：显式轮次上限，仍受服务端 `MAX_RETRY_COUNT` 限制。
 - `threshold`：本次整图相似度阈值。
 

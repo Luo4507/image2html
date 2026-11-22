@@ -28,7 +28,7 @@ const optionSchema = z.object({
   accessibility: z.boolean().optional(),
   pipeline: z.enum(['direct', 'structured']).optional(),
   qualityMode: z.enum(['fast', 'balanced', 'precision']).optional(),
-  layoutMode: z.enum(['single', 'segmented']).optional(),
+  layoutMode: z.enum(['single', 'segmented', 'auto']).optional(),
   assetMode: z.enum(['none', 'extract']).optional(),
 });
 

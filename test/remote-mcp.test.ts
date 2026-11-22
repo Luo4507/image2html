@@ -9,7 +9,7 @@ import { getRemoteMCPConfig, RemoteMCPClient } from '../src/mcp/remote-client.js
 import { createServerApp } from '../src/server/app.js';
 import type { ServerConfig } from '../src/server/config.js';
 
-const imagePath = 'examples/demo/login.png';
+const imagePath = 'examples/login.png';
 const compactValidation = {
   similarity: 91,
   passed: true,

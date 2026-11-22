@@ -1,6 +1,12 @@
 import type { CodegenOptions, GeneratedAsset, ValidationResult, DiffRegion } from '../types.js';
 import { buildAssetManifestPrompt } from './asset-manifest.js';
 import { buildComponentLibraryContract } from './component-library-contract.js';
+import {
+  buildFocusedLayoutPrompt,
+  buildPatchCodeContext,
+  buildRepairObjectives,
+  type RepairQualityConfig,
+} from './repair-context.js';
 
 export function buildDirectGenerationPrompt(options: CodegenOptions, assets: GeneratedAsset[] = []): string {
   const frameworkContract = buildFrameworkContract(options);
@@ -66,40 +72,40 @@ ${buildComponentLibraryContract(options)}
 - 不使用 React、Vue、Ant Design 或 Element Plus 组件语法。
 - 页面加载后立即显示内容，不依赖外部脚本或异步接口。`;
 }
-function buildLayoutPrompt(layout: ValidationResult['layout']): string {
-  if (!layout) return '';
-  const snapshot = {
-    viewport: layout.viewport,
-    document: layout.document,
-    elements: layout.elements.slice(0, 80),
-  };
-  return `## 当前 DOM 布局与计算样式\n以下是浏览器真实边界框和样式，用于定位区域尺寸、位置和排版差异：\n${JSON.stringify(snapshot)}`;
-}
-export function buildVisualRepairPrompt(input: {
+export interface VisualRepairPromptInput {
   currentCode: string;
   suggestions: string[];
   regions: Array<{ type: string; diffPercentage: number }>;
   layout?: ValidationResult['layout'];
   focusRegion?: DiffRegion;
   options?: Pick<CodegenOptions, 'framework' | 'componentLibrary'>;
-}): string {
+  similarity?: number;
+  quality?: ValidationResult['quality'];
+  textCoverage?: number;
+  missingTexts?: string[];
+  qualityConfig?: RepairQualityConfig;
+}
+
+export function buildVisualRepairPrompt(input: VisualRepairPromptInput): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
     .join('\n');
 
-  return `请根据提供的原始设计图和当前渲染图，修复当前代码中的视觉差异。
+  return `请根据提供的原始设计图、当前渲染图和最差区域裁剪，修复当前代码中的视觉差异。
 
 ## 检测到的差异
 ${input.focusRegion ? `本轮优先修复区域：${JSON.stringify(input.focusRegion)}` : ''}
 ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
 
-${buildLayoutPrompt(input.layout)}
+${buildRepairObjectives(input, input.qualityConfig)}
+
+${buildFocusedLayoutPrompt(input.layout, input.focusRegion)}
 
 ## 组件库契约
 ${input.options ? buildComponentLibraryContract(input.options) : ''}
 
-## 当前代码
+## 当前完整代码
 ${input.currentCode}
 
 ## 修复要求
@@ -109,32 +115,28 @@ ${input.currentCode}
 - 返回修复后的完整代码，不要输出分析过程或 Markdown 标记。`;
 }
 
-export function buildVisualPatchPrompt(input: {
-  currentCode: string;
-  suggestions: string[];
-  regions: Array<{ type: string; diffPercentage: number }>;
-  layout?: ValidationResult['layout'];
-  focusRegion?: DiffRegion;
-  options?: Pick<CodegenOptions, 'framework' | 'componentLibrary'>;
-}): string {
+export function buildVisualPatchPrompt(input: VisualRepairPromptInput): string {
   const differences = input.regions
     .map((region) => `- ${region.type} 区域差异 ${region.diffPercentage}%`)
     .join('\n');
+  const codeContext = buildPatchCodeContext(input.currentCode, input.layout, input.focusRegion);
 
-  return `请根据原图、当前渲染图和差异图，为当前代码生成最小范围的精确补丁。
+  return `请根据原图、当前渲染图和最差区域裁剪，为当前代码生成最小范围的精确补丁。
 
 ## 检测到的差异
 ${input.focusRegion ? `本轮优先修复区域：${JSON.stringify(input.focusRegion)}` : ''}
 ${differences || '未提供区域信息'}
 ${input.suggestions.map((suggestion) => `- ${suggestion}`).join('\n')}
 
-${buildLayoutPrompt(input.layout)}
+${buildRepairObjectives(input, input.qualityConfig)}
+
+${buildFocusedLayoutPrompt(input.layout, input.focusRegion)}
 
 ## 组件库契约
 ${input.options ? buildComponentLibraryContract(input.options) : ''}
 
-## 当前代码
-${input.currentCode}
+## 当前代码或相关源码片段
+${codeContext}
 
 ## 输出格式
 只输出合法 JSON，不要 Markdown 或解释：
@@ -149,7 +151,7 @@ ${input.currentCode}
 }
 
 要求：
-- oldText 必须逐字来自当前代码，包括空格、标点和换行。
+- oldText 必须逐字来自当前代码，包括空格、标点和换行；不得包含省略标记。
 - 优先选择最小的唯一代码片段，不要输出整个文件。
 - 不修改无关区域，不改变已确认的业务逻辑。
 - 不把页面替换为图片，不添加外部依赖。`;

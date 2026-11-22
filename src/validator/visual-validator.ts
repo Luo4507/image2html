@@ -324,25 +324,24 @@ export class VisualValidator {
   }
 
   /**
-   * 捕获所有视口截图
+   * 捕获额外的平板和移动端截图，复用主校验的桌面截图。
    */
-  private async captureAllViewports(target: RenderTarget): Promise<{
-    desktop: string;
+  private async captureAdditionalViewports(target: RenderTarget): Promise<{
     tablet: string;
     mobile: string;
   }> {
-    const [desktop, tablet, mobile] = await Promise.all([
-      this.renderHtml(target, this.config.viewports.desktop),
+    const [tablet, mobile] = await Promise.all([
       this.renderHtml(target, this.config.viewports.tablet),
       this.renderHtml(target, this.config.viewports.mobile),
     ]);
 
     return {
-      desktop: desktop.screenshot.toString('base64'),
       tablet: tablet.screenshot.toString('base64'),
       mobile: mobile.screenshot.toString('base64'),
     };
-  }  /**
+  }
+
+  /**
    * 执行视觉校验
    */
   async validate(
@@ -353,6 +352,7 @@ export class VisualValidator {
       codegenOptions?: CodegenOptions;
     } = {}
   ): Promise<ValidationResult> {
+    const validationStartedAt = Date.now();
     const generated: GeneratedCode = typeof generatedInput === 'string'
       ? { code: generatedInput, filename: '', imports: [], components: [] }
       : generatedInput;
@@ -375,27 +375,35 @@ export class VisualValidator {
         width: sourceMetadata.width || this.config.viewports.desktop.width,
         height: sourceMetadata.height || this.config.viewports.desktop.height,
       };
+      const renderStartedAt = Date.now();
       const renderedPage = await this.renderHtml(target, sourceViewport);
+      const renderMs = Date.now() - renderStartedAt;
       const generatedScreenshot = renderedPage.screenshot;
 
       // 2. 对比图片
+      const compareStartedAt = Date.now();
       const { similarity, diffImage, regions, quality, dimensions } = await this.compareImages(
         originalImageBuffer,
         generatedScreenshot
       );
+      const compareMs = Date.now() - compareStartedAt;
 
       // 3. 生成修复建议
       const suggestions = this.generateSuggestions(quality.qualityScore, regions);
 
-      // 4. 捕获多端截图（可选）
+      // 4. 最终需要多端截图时，只补拍平板和移动端
       let screenshots = {
         desktop: generatedScreenshot.toString('base64'),
         tablet: '',
         mobile: '',
       };
+      let additionalViewportsMs = 0;
 
       if (options.captureAllViewports) {
-        screenshots = await this.captureAllViewports(target);
+        const additionalStartedAt = Date.now();
+        const additional = await this.captureAdditionalViewports(target);
+        additionalViewportsMs = Date.now() - additionalStartedAt;
+        screenshots = { ...screenshots, ...additional };
       }
 
       return {
@@ -408,6 +416,12 @@ export class VisualValidator {
         regions,
         suggestions,
         screenshots,
+        timings: {
+          renderMs,
+          compareMs,
+          additionalViewportsMs,
+          totalMs: Date.now() - validationStartedAt,
+        },
       };
     } finally {
       await running?.close();

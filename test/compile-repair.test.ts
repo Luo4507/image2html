@@ -23,7 +23,8 @@ function validVisualResult(): ValidationResult {
 }
 
 function setup(qualityMode: 'fast' | 'balanced' = 'balanced') {
-  const converter = new DesignToCode();
+  const validationConfig = { ...getDefaultValidationConfig(), checkTextCoverage: false };
+  const converter = new DesignToCode({ validationConfig });
   (converter as any).generateDirectCode = async () => generated('export default function Broken() { return <main>; }');
   const repair = vi.fn().mockImplementation(async (current: GeneratedCode) => ({
     ...current, code: 'export default function Fixed() { return <main>Fixed</main>; }',
@@ -37,7 +38,7 @@ function setup(qualityMode: 'fast' | 'balanced' = 'balanced') {
       typescript: true, qualityMode,
     },
     modelConfig: getDefaultModelConfig(),
-    validationConfig: getDefaultValidationConfig(),
+    validationConfig: { ...getDefaultValidationConfig(), checkTextCoverage: false },
   };
   return { converter, repair, request };
 }

@@ -20,6 +20,8 @@ import type {
 } from '../types.js';
 import { toolDefinitions } from './tool-schemas.js';
 import { toolError, type MCPToolResult } from './results.js';
+import { LocalConversionCache, withLocalConversionCache } from '../cache/local-conversion-cache.js';
+import type { DesignToCodeRequest } from '../types.js';
 
 export { toolError } from './results.js';
 export type { MCPToolResult } from './results.js';
@@ -129,7 +131,7 @@ export async function handleGenerateComponent(
     responsive = true,
     style_framework = 'tailwind',
     pipeline = 'direct',
-    quality_mode = 'balanced',
+    quality_mode = 'precision',
     layout_mode = 'single',
     asset_mode = 'none',
   } = args;
@@ -142,7 +144,7 @@ export async function handleGenerateComponent(
   console.error(`[MCP] Generating component from: ${image_path}`);
   console.error(`[MCP] Framework: ${framework}, Library: ${componentLibrary}`);
 
-  const result = await d2c.convert({
+  const conversionRequest: DesignToCodeRequest = {
     image: {
       source: image_path,
       type: 'path',
@@ -163,7 +165,14 @@ export async function handleGenerateComponent(
     modelConfig: getDefaultModelConfig(),
     validationConfig: getDefaultValidationConfig(),
     onProgress,
-  });
+  };
+  const result = process.env.CONVERSION_CACHE === 'true'
+    ? await withLocalConversionCache(
+      conversionRequest,
+      new LocalConversionCache(process.env.CONVERSION_CACHE_DIR || '.cache/image2html-conversions'),
+      () => d2c.convert(conversionRequest),
+    )
+    : await d2c.convert(conversionRequest);
 
   if (!result.success) {
     return toolError('GENERATION_FAILED', result.error || '代码生成失败');
@@ -261,7 +270,7 @@ export async function handleRepairComponent(
     style_framework = 'inline',
     component_library = 'none',
     typescript = false,
-    quality_mode = 'balanced',
+    quality_mode = 'precision',
     max_iterations,
     threshold = getDefaultValidationConfig().threshold,
   } = args;

@@ -1,6 +1,44 @@
 import type { CodegenOptions, PlannedRegion, GeneratedAsset } from './types.js';
 import { buildAssetManifestPrompt } from './prompts/asset-manifest.js';
 
+/** Auto mode is conservative: ordinary desktop and mobile screenshots stay single-pass. */
+export function shouldUseSegmentedLayout(width: number, height: number): boolean {
+  return height >= 1_600 && (height / Math.max(1, width) >= 1.25 || height >= 2_400);
+}
+
+/** Clamp model coordinates, fill gaps, and merge slices too small for vision APIs. */
+export function normalizePlannedRegions(regions: PlannedRegion[], pageHeight: number): PlannedRegion[] {
+  const normalized: PlannedRegion[] = [];
+  const sorted = regions
+    .map((region) => ({
+      ...region,
+      startY: Math.max(0, Math.min(region.startY, pageHeight - 1)),
+      endY: Math.max(0, Math.min(region.endY, pageHeight)),
+    }))
+    .filter((region) => region.endY > region.startY)
+    .sort((a, b) => a.startY - b.startY);
+
+  for (const region of sorted) {
+    const previous = normalized[normalized.length - 1];
+    if (!previous) {
+      normalized.push({ ...region, startY: 0 });
+      continue;
+    }
+    if (region.endY <= previous.endY) continue;
+    if (region.startY > previous.endY) previous.endY = region.startY;
+    const current = { ...region, startY: previous.endY };
+    if (current.endY - current.startY < 16 || previous.endY - previous.startY < 16) {
+      previous.endY = current.endY;
+      previous.description = `${previous.description}; ${current.description}`;
+    } else {
+      normalized.push(current);
+    }
+  }
+
+  if (normalized.length > 0) normalized[normalized.length - 1].endY = pageHeight;
+  return normalized.filter((region) => region.endY > region.startY);
+}
+
 export function buildRegionGenerationPrompt(
   region: PlannedRegion,
   options: CodegenOptions,

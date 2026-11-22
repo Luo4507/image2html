@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>管理后台 - 数据概览</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;color:#262626;background:#f0f2f5}
+a{text-decoration:none;color:inherit}
+.layout{display:flex;min-height:100vh}
+.sidebar{width:240px;flex-shrink:0;background:#001529;display:flex;flex-direction:column;position:sticky;top:0;min-height:100vh;overflow-y:auto}
+.logo{height:80px;display:flex;align-items:center;gap:10px;padding:0 24px;color:#fff;font-size:18px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.08)}
+.logo .ico{font-size:20px}
+.menu{list-style:none;padding:20px 0}
+.menu a{display:flex;align-items:center;gap:12px;height:54px;padding:0 24px;color:rgba(255,255,255,.65);font-size:14px;transition:background .2s,color .2s}
+.menu a:hover{color:#fff;background:rgba(255,255,255,.06)}
+.menu a.active{background:#1890ff;color:#fff}
+.menu .ico{width:20px;text-align:center;font-size:16px}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:64px;background:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 32px;box-shadow:0 1px 4px rgba(0,21,41,.08);position:sticky;top:0;z-index:10}
+.breadcrumb{font-size:14px;color:#666;display:flex;align-items:center;gap:8px}
+.breadcrumb .sep{color:#bbb}
+.topbar-right{display:flex;align-items:center;gap:20px}
+.bell{position:relative;background:none;border:none;font-size:20px;cursor:pointer;line-height:1;padding:4px}
+.bell .badge{position:absolute;top:-6px;right:-8px;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:#f5222d;color:#fff;font-size:10px;line-height:16px;text-align:center;font-style:normal}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px}
+.content{padding:24px 32px;flex:1}
+.page-title{font-size:22px;font-weight:700;margin-bottom:24px;color:#1f1f1f}
+.card{background:#fafafa;border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.03),0 1px 6px rgba(0,0,0,.04)}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-bottom:24px}
+.stat{padding:24px}
+.stat-head{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:#666}
+.stat-head .ico{font-size:20px}
+.stat-value{font-size:28px;font-weight:700;color:#1f1f1f;margin:16px 0}
+.stat-delta{font-size:12px}
+.up{color:#52c41a}
+.down{color:#f5222d}
+.chart-grid{display:grid;grid-template-columns:2fr 1fr;gap:24px;margin-bottom:24px}
+.chart-card{padding:24px}
+.card-title{font-size:16px;font-weight:700;color:#1f1f1f;margin-bottom:16px}
+.chart-placeholder{height:300px;background:#e9edf2;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.table-card{padding:24px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}
+thead th{background:#f5f7f9;text-align:left;font-weight:500;color:#333;padding:12px 16px;border-top:1px solid #eef0f2;border-bottom:1px solid #eef0f2;white-space:nowrap}
+tbody td{padding:16px;border-bottom:1px solid #f0f0f0;color:#595959;white-space:nowrap}
+.tag{display:inline-block;padding:3px 10px;border-radius:4px;font-size:12px}
+.tag-green{color:#52c41a;background:#f6ffed}
+.tag-orange{color:#fa8c16;background:#fff7e6}
+.tag-red{color:#f5222d;background:#fff1f0}
+:focus-visible{outline:2px solid #1890ff;outline-offset:2px}
+@media (max-width:1100px){.stat-grid{grid-template-columns:repeat(2,1fr)}.chart-grid{grid-template-columns:1fr}}
+@media (max-width:768px){.sidebar{width:64px}.logo .txt,.menu .txt{display:none}.logo{justify-content:center;padding:0}.menu a{justify-content:center;padding:0}.stat-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" aria-label="侧边导航">
+    <div class="logo"><span class="ico" aria-hidden="true">🚀</span><span class="txt">管理后台</span></div>
+    <nav aria-label="主导航">
+      <ul class="menu">
+        <li><a href="#" class="active" aria-current="page"><span class="ico" aria-hidden="true">📊</span><span class="txt">数据概览</span></a></li>
+        <li><a href="#"><span class="ico" aria-hidden="true">📦</span><span class="txt">订单管理</span></a></li>
+        <li><a href="#"><span class="ico" aria-hidden="true">👥</span><span class="txt">用户管理</span></a></li>
+        <li><a href="#"><span class="ico" aria-hidden="true">🛍️</span><span class="txt">商品管理</span></a></li>
+        <li><a href="#"><span class="ico" aria-hidden="true">📈</span><span class="txt">数据分析</span></a></li>
+        <li><a href="#"><span class="ico" aria-hidden="true">⚙️</span><span class="txt">系统设置</span></a></li>
+      </ul>
+    </nav>
+  </aside>
+  <div class="main">
+    <header class="topbar">
+      <nav class="breadcrumb" aria-label="面包屑">
+        <a href="#">首页</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">数据概览</span>
+      </nav>
+      <div class="topbar-right">
+        <button class="bell" type="button" aria-label="通知，5 条未读">🔔<span class="badge" aria-hidden="true">5</span></button>
+        <span class="avatar" role="img" aria-label="管理员头像">管</span>
+      </div>
+    </header>
+    <main class="content">
+      <h1 class="page-title">数据概览</h1>
+      <section class="stat-grid" aria-label="核心指标">
+        <article class="card stat">
+          <div class="stat-head"><span>今日订单</span><span class="ico" aria-hidden="true">📦</span></div>
+          <div class="stat-value">1,284</div>
+          <div class="stat-delta up">↑ 12.5% 较昨日</div>
+        </article>
+        <article class="card stat">
+          <div class="stat-head"><span>今日销售额</span><span class="ico" aria-hidden="true">💰</span></div>
+          <div class="stat-value">¥86,432</div>
+          <div class="stat-delta up">↑ 8.3% 较昨日</div>
+        </article>
+        <article class="card stat">
+          <div class="stat-head"><span>新增用户</span><span class="ico" aria-hidden="true">👥</span></div>
+          <div class="stat-value">342</div>
+          <div class="stat-delta down">↓ 3.2% 较昨日</div>
+        </article>
+        <article class="card stat">
+          <div class="stat-head"><span>转化率</span><span class="ico" aria-hidden="true">📈</span></div>
+          <div class="stat-value">3.24%</div>
+          <div class="stat-delta up">↑ 0.5% 较昨日</div>
+        </article>
+      </section>
+      <section class="chart-grid" aria-label="图表区域">
+        <article class="card chart-card">
+          <h2 class="card-title">销售趋势</h2>
+          <div class="chart-placeholder" role="img" aria-label="销售趋势图表占位"><span aria-hidden="true">📈</span></div>
+        </article>
+        <article class="card chart-card">
+          <h2 class="card-title">商品分类占比</h2>
+          <div class="chart-placeholder" role="img" aria-label="商品分类占比图表占位"><span aria-hidden="true">🥧</span></div>
+        </article>
+      </section>
+      <section class="card table-card" aria-labelledby="orders-title">
+        <h2 class="card-title" id="orders-title">最新订单</h2>
+        <div class="table-wrap" role="region" aria-label="最新订单表格" tabindex="0">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col" style="width:21%">订单号</th>
+                <th scope="col" style="width:9%">用户</th>
+                <th scope="col" style="width:19%">商品</th>
+                <th scope="col" style="width:9%">金额</th>
+                <th scope="col" style="width:19%">状态</th>
+                <th scope="col" style="width:23%">时间</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>#ORD-2024-001</td>
+                <td>张三</td>
+                <td>无线蓝牙耳机</td>
+                <td>¥299.00</td>
+                <td><span class="tag tag-green">已完成</span></td>
+                <td>2024-01-15 14:32</td>
+              </tr>
+              <tr>
+                <td>#ORD-2024-002</td>
+                <td>李四</td>
+                <td>智能手表</td>
+                <td>¥599.00</td>
+                <td><span class="tag tag-orange">待发货</span></td>
+                <td>2024-01-15 14:28</td>
+              </tr>
+              <tr>
+                <td>#ORD-2024-003</td>
+                <td>王五</td>
+                <td>时尚背包</td>
+                <td>¥159.00</td>
+                <td><span class="tag tag-green">已完成</span></td>
+                <td>2024-01-15 14:15</td>
+              </tr>
+              <tr>
+                <td>#ORD-2024-004</td>
+                <td>赵六</td>
+                <td>快充充电器</td>
+                <td>¥89.00</td>
+                <td><span class="tag tag-red">已取消</span></td>
+                <td>2024-01-15 14:02</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+</body>
+</html>

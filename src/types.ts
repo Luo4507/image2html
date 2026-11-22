@@ -118,7 +118,8 @@ export interface CodegenOptions {
   /** direct: single multimodal generation; structured: JSON expert pipeline */
   pipeline?: 'direct' | 'structured';
   qualityMode?: 'fast' | 'balanced' | 'precision';
-  layoutMode?: 'single' | 'segmented';
+  /** auto segments only tall screenshots; the default remains single. */
+  layoutMode?: 'single' | 'segmented' | 'auto';
   /** Extract reusable image assets before generation. */
   assetMode?: 'none' | 'extract';
 }
@@ -211,6 +212,13 @@ export interface ValidationResult {
   quality?: VisualQualityMetrics;
   textCoverage?: number;
   missingTexts?: string[];
+  /** 单次校验内部耗时；totalMs 还包含框架启动等准备工作。 */
+  timings?: {
+    renderMs: number;
+    compareMs: number;
+    additionalViewportsMs: number;
+    totalMs: number;
+  };
 }
 
 export interface VisualQualityMetrics {
@@ -261,11 +269,15 @@ export interface ModelConfig {
     baseUrl: string;
     model: string;
     apiKey: string;
+    /** Optional provider override; omitted by default to preserve model behavior. */
+    enableThinking?: boolean;
   };
   codeModel: {
     baseUrl: string;
     model: string;
     apiKey: string;
+    /** Optional provider override; omitted by default to preserve model behavior. */
+    enableThinking?: boolean;
   };
 }
 
@@ -316,6 +328,38 @@ export interface DesignToCodeResult {
   error?: string;
 }
 
+export type ModelRequestStage =
+  | 'structure-analysis'
+  | 'structure-repair'
+  | 'asset-detection'
+  | 'generation'
+  | 'region-planning'
+  | 'region-generation'
+  | 'text-extraction'
+  | 'visual-patch'
+  | 'visual-repair'
+  | 'compile-repair';
+
+export interface ModelRequestTiming {
+  timeToHeadersMs?: number;
+  timeToFirstContentMs?: number;
+  totalMs: number;
+  chunks: number;
+  outputChars: number;
+  usage?: {
+    promptTokens: number;
+    completionTokens: number;
+    totalTokens: number;
+  };
+  success: boolean;
+}
+
+export interface ModelRequestMetrics extends ModelRequestTiming {
+  stage: ModelRequestStage;
+  model: 'vision' | 'code';
+  stream: boolean;
+}
+
 export interface ConversionMetrics {
   analysisMs: number;
   generationMs: number;
@@ -324,5 +368,6 @@ export interface ConversionMetrics {
   totalMs: number;
   modelCalls: number;
   repairIterations: number;
+  modelRequests?: ModelRequestMetrics[];
   cacheHit?: boolean;
 }

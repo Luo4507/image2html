@@ -46,7 +46,7 @@ describe('JobService progress events', () => {
     try {
       const job = service.submit({
         userId: 'alice',
-        imagePath: 'examples/demo/login-design.png',
+        imagePath: 'examples/login.png',
         options: {
           framework: 'html',
           styleFramework: 'inline',

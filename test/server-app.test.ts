@@ -96,9 +96,9 @@ describe('multi-user HTTP server', () => {
       .field('framework', 'html')
       .field('pipeline', 'structured')
       .field('qualityMode', 'precision')
-      .field('layoutMode', 'single')
+      .field('layoutMode', 'auto')
       .field('assetMode', 'extract')
-      .attach('image', 'examples/demo/login.png')
+      .attach('image', 'examples/login.png')
       .expect(202);
 
     const jobId = created.body.job.id;
@@ -110,7 +110,7 @@ describe('multi-user HTTP server', () => {
       .expect(200);
 
     expect(completed.body.job.status).toBe('succeeded');
-    expect(receivedOptions).toMatchObject({ pipeline: 'structured', qualityMode: 'precision', layoutMode: 'single', assetMode: 'extract' });
+    expect(receivedOptions).toMatchObject({ pipeline: 'structured', qualityMode: 'precision', layoutMode: 'auto', assetMode: 'extract' });
     expect(completed.body.job.result.similarity).toBe(92);
 
     await request(app)
@@ -150,7 +150,7 @@ describe('multi-user HTTP server', () => {
       .set('Authorization', 'Bearer alice-key')
       .field('framework', 'react')
       .field('componentLibrary', 'element')
-      .attach('image', 'examples/demo/login.png')
+      .attach('image', 'examples/login.png')
       .expect(400);
   });
 });

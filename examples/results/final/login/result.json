@@ -1,0 +1,237 @@
+{
+  "image": "examples\\login.png",
+  "options": {
+    "framework": "html",
+    "styleFramework": "inline",
+    "componentLibrary": "none",
+    "typescript": true,
+    "responsive": true,
+    "accessibility": true,
+    "pipeline": "direct",
+    "qualityMode": "precision",
+    "assetMode": "none"
+  },
+  "success": true,
+  "code": {
+    "filename": "Generatedpage.html",
+    "imports": [],
+    "components": []
+  },
+  "validation": {
+    "similarity": 99.32,
+    "quality": {
+      "overallSimilarity": 99.14,
+      "contentSimilarity": 65.17,
+      "edgeSimilarity": 67.81,
+      "contentRatio": 0.01,
+      "qualityScore": 79.42,
+      "textCoverage": 100
+    },
+    "dimensions": {
+      "original": {
+        "width": 1440,
+        "height": 900
+      },
+      "generated": {
+        "width": 1440,
+        "height": 900
+      },
+      "widthDifference": 0,
+      "heightDifference": 0
+    },
+    "layout": {
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "document": {
+        "width": 1440,
+        "height": 900
+      },
+      "elements": [
+        {
+          "selector": "main.page#0",
+          "tagName": "main",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 900
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section.login-card#1",
+          "tagName": "section",
+          "bounds": {
+            "x": 520,
+            "y": 270.09375,
+            "width": 400,
+            "height": 359.796875
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(247, 248, 249)",
+            "fontSize": "16px",
+            "fontWeight": "400",
+            "padding": "34px 32px 28px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "h1#login-title.login-title#2",
+          "tagName": "h1",
+          "bounds": {
+            "x": 552,
+            "y": 304.09375,
+            "width": 336,
+            "height": 28.796875
+          },
+          "styles": {
+            "color": "rgb(28, 30, 33)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "24px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 12px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.login-subtitle#3",
+          "tagName": "p",
+          "bounds": {
+            "x": 552,
+            "y": 344.890625,
+            "width": 336,
+            "height": 17
+          },
+          "styles": {
+            "color": "rgb(95, 99, 104)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px 0px 26px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "input#username.form-input#4",
+          "tagName": "input",
+          "bounds": {
+            "x": 552,
+            "y": 414.890625,
+            "width": 336,
+            "height": 38
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(250, 251, 252)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px 12px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "input#password.form-input#5",
+          "tagName": "input",
+          "bounds": {
+            "x": 552,
+            "y": 501.890625,
+            "width": 336,
+            "height": 38
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(250, 251, 252)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px 12px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "button.login-btn#6",
+          "tagName": "button",
+          "bounds": {
+            "x": 552,
+            "y": 563.890625,
+            "width": 336,
+            "height": 38
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(24, 144, 255)",
+            "fontSize": "15px",
+            "fontWeight": "400",
+            "padding": "1px 6px",
+            "margin": "24px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        }
+      ],
+      "pendingRequests": [],
+      "failedRequests": []
+    },
+    "passed": true,
+    "regions": [
+      {
+        "x": 600,
+        "y": 500,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1327,
+        "diffPercentage": 13.27,
+        "type": "main"
+      },
+      {
+        "x": 700,
+        "y": 500,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1345,
+        "diffPercentage": 13.45,
+        "type": "main"
+      }
+    ],
+    "suggestions": [
+      "检查主内容区 padding、margin 和布局结构",
+      "确认字体大小和字重是否匹配设计稿",
+      "检查颜色值是否使用了 Design Token",
+      "验证圆角、阴影等细节样式"
+    ],
+    "textCoverage": 100,
+    "missingTexts": []
+  },
+  "metrics": {
+    "analysisMs": 0,
+    "generationMs": 85506,
+    "validationMs": 6007,
+    "repairMs": 0,
+    "totalMs": 91517,
+    "modelCalls": 2,
+    "repairIterations": 0
+  },
+  "compileHistory": [],
+  "totalMs": 91517
+}

@@ -1,0 +1,3783 @@
+{
+  "image": "examples\\content-platform.png",
+  "options": {
+    "framework": "html",
+    "styleFramework": "inline",
+    "componentLibrary": "none",
+    "typescript": true,
+    "responsive": true,
+    "accessibility": true,
+    "pipeline": "direct",
+    "qualityMode": "precision",
+    "assetMode": "none"
+  },
+  "success": true,
+  "code": {
+    "filename": "Generatedpage.html",
+    "imports": [],
+    "components": []
+  },
+  "validation": {
+    "similarity": 97.41,
+    "quality": {
+      "overallSimilarity": 95.82,
+      "contentSimilarity": 19.71,
+      "edgeSimilarity": 55.39,
+      "contentRatio": 0.03,
+      "qualityScore": 59.07,
+      "textCoverage": 100
+    },
+    "dimensions": {
+      "original": {
+        "width": 1440,
+        "height": 960
+      },
+      "generated": {
+        "width": 1440,
+        "height": 966
+      },
+      "widthDifference": 0,
+      "heightDifference": -6
+    },
+    "layout": {
+      "viewport": {
+        "width": 1440,
+        "height": 960
+      },
+      "document": {
+        "width": 1440,
+        "height": 966
+      },
+      "elements": [
+        {
+          "selector": "header.topbar#0",
+          "tagName": "header",
+          "bounds": {
+            "x": 0,
+            "y": 0,
+            "width": 1440,
+            "height": 64
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px 40px",
+            "margin": "0px",
+            "gap": "24px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "nav.main-nav#1",
+          "tagName": "nav",
+          "bounds": {
+            "x": 560,
+            "y": 15,
+            "width": 320,
+            "height": 33
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "36px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "main.layout#2",
+          "tagName": "main",
+          "bounds": {
+            "x": 129,
+            "y": 64,
+            "width": 1182,
+            "height": 902
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "24px 16px 48px",
+            "margin": "0px 129px",
+            "gap": "25px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section.card.editor-card#3",
+          "tagName": "section",
+          "bounds": {
+            "x": 145,
+            "y": 88,
+            "width": 805,
+            "height": 830
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "24px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "h1#editor-title#4",
+          "tagName": "h1",
+          "bounds": {
+            "x": 169,
+            "y": 115,
+            "width": 100,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(34, 34, 34)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "20px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "button.btn-primary#5",
+          "tagName": "button",
+          "bounds": {
+            "x": 826,
+            "y": 112,
+            "width": 100,
+            "height": 36
+          },
+          "styles": {
+            "color": "rgb(255, 255, 255)",
+            "backgroundColor": "rgb(24, 144, 255)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px 22px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "input#article-title.text-input#6",
+          "tagName": "input",
+          "bounds": {
+            "x": 169,
+            "y": 224,
+            "width": 757,
+            "height": 40
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px 12px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "6px"
+          }
+        },
+        {
+          "selector": "button.tag#7",
+          "tagName": "button",
+          "bounds": {
+            "x": 169,
+            "y": 319,
+            "width": 90,
+            "height": 34
+          },
+          "styles": {
+            "color": "rgb(24, 144, 255)",
+            "backgroundColor": "rgb(230, 244, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 18px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "17px"
+          }
+        },
+        {
+          "selector": "button.tag#8",
+          "tagName": "button",
+          "bounds": {
+            "x": 271,
+            "y": 319,
+            "width": 90,
+            "height": 34
+          },
+          "styles": {
+            "color": "rgb(68, 68, 68)",
+            "backgroundColor": "rgb(233, 233, 233)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 18px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "17px"
+          }
+        },
+        {
+          "selector": "button.tag#9",
+          "tagName": "button",
+          "bounds": {
+            "x": 373,
+            "y": 319,
+            "width": 90,
+            "height": 34
+          },
+          "styles": {
+            "color": "rgb(68, 68, 68)",
+            "backgroundColor": "rgb(233, 233, 233)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 18px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "17px"
+          }
+        },
+        {
+          "selector": "button.tag#10",
+          "tagName": "button",
+          "bounds": {
+            "x": 475,
+            "y": 319,
+            "width": 90,
+            "height": 34
+          },
+          "styles": {
+            "color": "rgb(68, 68, 68)",
+            "backgroundColor": "rgb(233, 233, 233)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 18px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "17px"
+          }
+        },
+        {
+          "selector": "button.tag#11",
+          "tagName": "button",
+          "bounds": {
+            "x": 577,
+            "y": 319,
+            "width": 90,
+            "height": 34
+          },
+          "styles": {
+            "color": "rgb(68, 68, 68)",
+            "backgroundColor": "rgb(233, 233, 233)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 18px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "17px"
+          }
+        },
+        {
+          "selector": "button.tool-btn#12",
+          "tagName": "button",
+          "bounds": {
+            "x": 180,
+            "y": 418,
+            "width": 32,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 9px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "button.tool-btn#13",
+          "tagName": "button",
+          "bounds": {
+            "x": 220,
+            "y": 418,
+            "width": 32,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 9px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "button.tool-btn#14",
+          "tagName": "button",
+          "bounds": {
+            "x": 260,
+            "y": 418,
+            "width": 32,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 9px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "button.tool-btn#15",
+          "tagName": "button",
+          "bounds": {
+            "x": 300,
+            "y": 418,
+            "width": 37.859375,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 9px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "button.tool-btn#16",
+          "tagName": "button",
+          "bounds": {
+            "x": 345.859375,
+            "y": 418,
+            "width": 37.859375,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 9px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "button.tool-btn#17",
+          "tagName": "button",
+          "bounds": {
+            "x": 391.71875,
+            "y": 418,
+            "width": 37.859375,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 9px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "button.tool-btn#18",
+          "tagName": "button",
+          "bounds": {
+            "x": 437.578125,
+            "y": 418,
+            "width": 37.859375,
+            "height": 30
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "13px",
+            "fontWeight": "400",
+            "padding": "0px 9px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "4px"
+          }
+        },
+        {
+          "selector": "input#cover-input.visually-hidden#19",
+          "tagName": "input",
+          "bounds": {
+            "x": 546.5,
+            "y": 849,
+            "width": 1,
+            "height": 1
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "13.3333px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "-1px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "aside.sidebar#20",
+          "tagName": "aside",
+          "bounds": {
+            "x": 975,
+            "y": 88,
+            "width": 320,
+            "height": 588
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "24px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section.card.side-card#21",
+          "tagName": "section",
+          "bounds": {
+            "x": 975,
+            "y": 88,
+            "width": 320,
+            "height": 258.5
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "20px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "h2#stats-title.side-title#22",
+          "tagName": "h2",
+          "bounds": {
+            "x": 995,
+            "y": 108,
+            "width": 280,
+            "height": 22.5
+          },
+          "styles": {
+            "color": "rgb(34, 34, 34)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "15px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 6px",
+            "gap": "8px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "section.card.side-card#23",
+          "tagName": "section",
+          "bounds": {
+            "x": 975,
+            "y": 370.5,
+            "width": 320,
+            "height": 305.5
+          },
+          "styles": {
+            "color": "rgb(38, 38, 38)",
+            "backgroundColor": "rgb(255, 255, 255)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "20px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "8px"
+          }
+        },
+        {
+          "selector": "h2#drafts-title.side-title#24",
+          "tagName": "h2",
+          "bounds": {
+            "x": 995,
+            "y": 390.5,
+            "width": 280,
+            "height": 22.5
+          },
+          "styles": {
+            "color": "rgb(34, 34, 34)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "15px",
+            "fontWeight": "700",
+            "padding": "0px",
+            "margin": "0px 0px 6px",
+            "gap": "8px",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.draft-title#25",
+          "tagName": "h3",
+          "bounds": {
+            "x": 1009,
+            "y": 437,
+            "width": 252,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.draft-time#26",
+          "tagName": "p",
+          "bounds": {
+            "x": 1009,
+            "y": 464,
+            "width": 252,
+            "height": 18
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "6px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.draft-title#27",
+          "tagName": "h3",
+          "bounds": {
+            "x": 1009,
+            "y": 518,
+            "width": 252,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.draft-time#28",
+          "tagName": "p",
+          "bounds": {
+            "x": 1009,
+            "y": 545,
+            "width": 252,
+            "height": 18
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "6px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "h3.draft-title#29",
+          "tagName": "h3",
+          "bounds": {
+            "x": 1009,
+            "y": 599,
+            "width": 252,
+            "height": 21
+          },
+          "styles": {
+            "color": "rgb(51, 51, 51)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "14px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        },
+        {
+          "selector": "p.draft-time#30",
+          "tagName": "p",
+          "bounds": {
+            "x": 1009,
+            "y": 626,
+            "width": 252,
+            "height": 18
+          },
+          "styles": {
+            "color": "rgb(153, 153, 153)",
+            "backgroundColor": "rgba(0, 0, 0, 0)",
+            "fontSize": "12px",
+            "fontWeight": "400",
+            "padding": "0px",
+            "margin": "6px 0px 0px",
+            "gap": "normal",
+            "borderRadius": "0px"
+          }
+        }
+      ],
+      "pendingRequests": [],
+      "failedRequests": []
+    },
+    "passed": false,
+    "regions": [
+      {
+        "x": 1000,
+        "y": 100,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1142,
+        "diffPercentage": 11.42,
+        "type": "main"
+      },
+      {
+        "x": 800,
+        "y": 100,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1303,
+        "diffPercentage": 13.03,
+        "type": "main"
+      },
+      {
+        "x": 200,
+        "y": 200,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1358,
+        "diffPercentage": 13.58,
+        "type": "sidebar"
+      },
+      {
+        "x": 200,
+        "y": 400,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1438,
+        "diffPercentage": 14.38,
+        "type": "sidebar"
+      },
+      {
+        "x": 300,
+        "y": 400,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1448,
+        "diffPercentage": 14.48,
+        "type": "main"
+      },
+      {
+        "x": 400,
+        "y": 400,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1187,
+        "diffPercentage": 11.87,
+        "type": "main"
+      },
+      {
+        "x": 1000,
+        "y": 400,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1208,
+        "diffPercentage": 12.08,
+        "type": "main"
+      },
+      {
+        "x": 500,
+        "y": 800,
+        "width": 100,
+        "height": 100,
+        "diffPixels": 1318,
+        "diffPercentage": 13.18,
+        "type": "main"
+      }
+    ],
+    "suggestions": [
+      "验证 Sidebar 宽度、背景色和菜单项样式",
+      "检查主内容区 padding、margin 和布局结构",
+      "确认字体大小和字重是否匹配设计稿",
+      "检查颜色值是否使用了 Design Token",
+      "验证圆角、阴影等细节样式"
+    ],
+    "textCoverage": 100,
+    "missingTexts": []
+  },
+  "metrics": {
+    "analysisMs": 0,
+    "generationMs": 235597,
+    "validationMs": 70595,
+    "repairMs": 654992,
+    "totalMs": 952185,
+    "modelCalls": 5,
+    "repairIterations": 3
+  },
+  "qualityHistory": [
+    {
+      "iteration": 0,
+      "validation": {
+        "similarity": 97.2,
+        "quality": {
+          "overallSimilarity": 95.52,
+          "contentSimilarity": 14.35,
+          "edgeSimilarity": 40.32,
+          "contentRatio": 0.03,
+          "qualityScore": 53.31,
+          "textCoverage": 100
+        },
+        "dimensions": {
+          "original": {
+            "width": 1440,
+            "height": 960
+          },
+          "generated": {
+            "width": 1440,
+            "height": 960
+          },
+          "widthDifference": 0,
+          "heightDifference": 0
+        },
+        "layout": {
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "document": {
+            "width": 1440,
+            "height": 960
+          },
+          "elements": [
+            {
+              "selector": "header.topbar#0",
+              "tagName": "header",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1440,
+                "height": 64
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 40px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.main-nav#1",
+              "tagName": "nav",
+              "bounds": {
+                "x": 560,
+                "y": 15,
+                "width": 320,
+                "height": 33
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "36px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main.layout#2",
+              "tagName": "main",
+              "bounds": {
+                "x": 145,
+                "y": 64,
+                "width": 1150,
+                "height": 884
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px 16px 48px",
+                "margin": "0px 145px",
+                "gap": "25px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.editor-card#3",
+              "tagName": "section",
+              "bounds": {
+                "x": 161,
+                "y": 88,
+                "width": 773,
+                "height": 812
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h1#editor-title#4",
+              "tagName": "h1",
+              "bounds": {
+                "x": 185,
+                "y": 116.5,
+                "width": 90,
+                "height": 27
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "18px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.btn-primary#5",
+              "tagName": "button",
+              "bounds": {
+                "x": 810,
+                "y": 112,
+                "width": 100,
+                "height": 36
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(24, 144, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 22px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "input#article-title.text-input#6",
+              "tagName": "input",
+              "bounds": {
+                "x": 185,
+                "y": 224,
+                "width": 725,
+                "height": 40
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 12px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "button.tag#7",
+              "tagName": "button",
+              "bounds": {
+                "x": 185,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(24, 144, 255)",
+                "backgroundColor": "rgb(230, 244, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#8",
+              "tagName": "button",
+              "bounds": {
+                "x": 287,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#9",
+              "tagName": "button",
+              "bounds": {
+                "x": 389,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#10",
+              "tagName": "button",
+              "bounds": {
+                "x": 491,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#11",
+              "tagName": "button",
+              "bounds": {
+                "x": 593,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#12",
+              "tagName": "button",
+              "bounds": {
+                "x": 196,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#13",
+              "tagName": "button",
+              "bounds": {
+                "x": 236,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#14",
+              "tagName": "button",
+              "bounds": {
+                "x": 276,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#15",
+              "tagName": "button",
+              "bounds": {
+                "x": 316,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#16",
+              "tagName": "button",
+              "bounds": {
+                "x": 361.859375,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#17",
+              "tagName": "button",
+              "bounds": {
+                "x": 407.71875,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#18",
+              "tagName": "button",
+              "bounds": {
+                "x": 453.578125,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "input#cover-input.visually-hidden#19",
+              "tagName": "input",
+              "bounds": {
+                "x": 546.5,
+                "y": 831,
+                "width": 1,
+                "height": 1
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "13.3333px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "-1px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "aside.sidebar#20",
+              "tagName": "aside",
+              "bounds": {
+                "x": 959,
+                "y": 88,
+                "width": 320,
+                "height": 588
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#21",
+              "tagName": "section",
+              "bounds": {
+                "x": 959,
+                "y": 88,
+                "width": 320,
+                "height": 258.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#stats-title.side-title#22",
+              "tagName": "h2",
+              "bounds": {
+                "x": 979,
+                "y": 108,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#23",
+              "tagName": "section",
+              "bounds": {
+                "x": 959,
+                "y": 370.5,
+                "width": 320,
+                "height": 305.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#drafts-title.side-title#24",
+              "tagName": "h2",
+              "bounds": {
+                "x": 979,
+                "y": 390.5,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#25",
+              "tagName": "h3",
+              "bounds": {
+                "x": 993,
+                "y": 437,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#26",
+              "tagName": "p",
+              "bounds": {
+                "x": 993,
+                "y": 464,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#27",
+              "tagName": "h3",
+              "bounds": {
+                "x": 993,
+                "y": 518,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#28",
+              "tagName": "p",
+              "bounds": {
+                "x": 993,
+                "y": 545,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#29",
+              "tagName": "h3",
+              "bounds": {
+                "x": 993,
+                "y": 599,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#30",
+              "tagName": "p",
+              "bounds": {
+                "x": 993,
+                "y": 626,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": false,
+        "regions": [
+          {
+            "x": 900,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1106,
+            "diffPercentage": 11.06,
+            "type": "main"
+          },
+          {
+            "x": 800,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1773,
+            "diffPercentage": 17.73,
+            "type": "main"
+          },
+          {
+            "x": 1000,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1142,
+            "diffPercentage": 11.42,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1572,
+            "diffPercentage": 15.72,
+            "type": "sidebar"
+          },
+          {
+            "x": 200,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1464,
+            "diffPercentage": 14.64,
+            "type": "sidebar"
+          },
+          {
+            "x": 300,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1442,
+            "diffPercentage": 14.42,
+            "type": "main"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1217,
+            "diffPercentage": 12.17,
+            "type": "main"
+          },
+          {
+            "x": 1000,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1342,
+            "diffPercentage": 13.42,
+            "type": "main"
+          },
+          {
+            "x": 500,
+            "y": 700,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1686,
+            "diffPercentage": 16.86,
+            "type": "main"
+          },
+          {
+            "x": 500,
+            "y": 800,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1213,
+            "diffPercentage": 12.13,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ],
+        "textCoverage": 100,
+        "missingTexts": []
+      },
+      "score": 53.31,
+      "adopted": true,
+      "improved": true
+    },
+    {
+      "iteration": 1,
+      "validation": {
+        "similarity": 97.31,
+        "quality": {
+          "overallSimilarity": 95.68,
+          "contentSimilarity": 16.39,
+          "edgeSimilarity": 49.6,
+          "contentRatio": 0.03,
+          "qualityScore": 56.41
+        },
+        "dimensions": {
+          "original": {
+            "width": 1440,
+            "height": 960
+          },
+          "generated": {
+            "width": 1440,
+            "height": 960
+          },
+          "widthDifference": 0,
+          "heightDifference": 0
+        },
+        "layout": {
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "document": {
+            "width": 1440,
+            "height": 960
+          },
+          "elements": [
+            {
+              "selector": "header.topbar#0",
+              "tagName": "header",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1440,
+                "height": 64
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 40px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.main-nav#1",
+              "tagName": "nav",
+              "bounds": {
+                "x": 560,
+                "y": 15,
+                "width": 320,
+                "height": 33
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "36px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main.layout#2",
+              "tagName": "main",
+              "bounds": {
+                "x": 129,
+                "y": 64,
+                "width": 1182,
+                "height": 884
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px 16px 48px",
+                "margin": "0px 129px",
+                "gap": "25px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.editor-card#3",
+              "tagName": "section",
+              "bounds": {
+                "x": 145,
+                "y": 88,
+                "width": 805,
+                "height": 812
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h1#editor-title#4",
+              "tagName": "h1",
+              "bounds": {
+                "x": 169,
+                "y": 115,
+                "width": 100,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "20px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.btn-primary#5",
+              "tagName": "button",
+              "bounds": {
+                "x": 826,
+                "y": 112,
+                "width": 100,
+                "height": 36
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(24, 144, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 22px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "input#article-title.text-input#6",
+              "tagName": "input",
+              "bounds": {
+                "x": 169,
+                "y": 224,
+                "width": 757,
+                "height": 40
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 12px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "button.tag#7",
+              "tagName": "button",
+              "bounds": {
+                "x": 169,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(24, 144, 255)",
+                "backgroundColor": "rgb(230, 244, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#8",
+              "tagName": "button",
+              "bounds": {
+                "x": 271,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#9",
+              "tagName": "button",
+              "bounds": {
+                "x": 373,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#10",
+              "tagName": "button",
+              "bounds": {
+                "x": 475,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#11",
+              "tagName": "button",
+              "bounds": {
+                "x": 577,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#12",
+              "tagName": "button",
+              "bounds": {
+                "x": 180,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#13",
+              "tagName": "button",
+              "bounds": {
+                "x": 220,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#14",
+              "tagName": "button",
+              "bounds": {
+                "x": 260,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#15",
+              "tagName": "button",
+              "bounds": {
+                "x": 300,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#16",
+              "tagName": "button",
+              "bounds": {
+                "x": 345.859375,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#17",
+              "tagName": "button",
+              "bounds": {
+                "x": 391.71875,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#18",
+              "tagName": "button",
+              "bounds": {
+                "x": 437.578125,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "input#cover-input.visually-hidden#19",
+              "tagName": "input",
+              "bounds": {
+                "x": 546.5,
+                "y": 831,
+                "width": 1,
+                "height": 1
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "13.3333px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "-1px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "aside.sidebar#20",
+              "tagName": "aside",
+              "bounds": {
+                "x": 975,
+                "y": 88,
+                "width": 320,
+                "height": 588
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#21",
+              "tagName": "section",
+              "bounds": {
+                "x": 975,
+                "y": 88,
+                "width": 320,
+                "height": 258.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#stats-title.side-title#22",
+              "tagName": "h2",
+              "bounds": {
+                "x": 995,
+                "y": 108,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#23",
+              "tagName": "section",
+              "bounds": {
+                "x": 975,
+                "y": 370.5,
+                "width": 320,
+                "height": 305.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#drafts-title.side-title#24",
+              "tagName": "h2",
+              "bounds": {
+                "x": 995,
+                "y": 390.5,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#25",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 437,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#26",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 464,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#27",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 518,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#28",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 545,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#29",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 599,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#30",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 626,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": false,
+        "regions": [
+          {
+            "x": 1000,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1142,
+            "diffPercentage": 11.42,
+            "type": "main"
+          },
+          {
+            "x": 800,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1303,
+            "diffPercentage": 13.03,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1358,
+            "diffPercentage": 13.58,
+            "type": "sidebar"
+          },
+          {
+            "x": 200,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1438,
+            "diffPercentage": 14.38,
+            "type": "sidebar"
+          },
+          {
+            "x": 300,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1448,
+            "diffPercentage": 14.48,
+            "type": "main"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1187,
+            "diffPercentage": 11.87,
+            "type": "main"
+          },
+          {
+            "x": 1000,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1208,
+            "diffPercentage": 12.08,
+            "type": "main"
+          },
+          {
+            "x": 500,
+            "y": 700,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1686,
+            "diffPercentage": 16.86,
+            "type": "main"
+          },
+          {
+            "x": 500,
+            "y": 800,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1221,
+            "diffPercentage": 12.21,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ]
+      },
+      "score": 56.41,
+      "adopted": true,
+      "improved": true
+    },
+    {
+      "iteration": 2,
+      "validation": {
+        "similarity": 97.41,
+        "quality": {
+          "overallSimilarity": 95.82,
+          "contentSimilarity": 19.71,
+          "edgeSimilarity": 55.39,
+          "contentRatio": 0.03,
+          "qualityScore": 59.07,
+          "textCoverage": 100
+        },
+        "dimensions": {
+          "original": {
+            "width": 1440,
+            "height": 960
+          },
+          "generated": {
+            "width": 1440,
+            "height": 966
+          },
+          "widthDifference": 0,
+          "heightDifference": -6
+        },
+        "layout": {
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "document": {
+            "width": 1440,
+            "height": 966
+          },
+          "elements": [
+            {
+              "selector": "header.topbar#0",
+              "tagName": "header",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1440,
+                "height": 64
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 40px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.main-nav#1",
+              "tagName": "nav",
+              "bounds": {
+                "x": 560,
+                "y": 15,
+                "width": 320,
+                "height": 33
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "36px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main.layout#2",
+              "tagName": "main",
+              "bounds": {
+                "x": 129,
+                "y": 64,
+                "width": 1182,
+                "height": 902
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px 16px 48px",
+                "margin": "0px 129px",
+                "gap": "25px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.editor-card#3",
+              "tagName": "section",
+              "bounds": {
+                "x": 145,
+                "y": 88,
+                "width": 805,
+                "height": 830
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h1#editor-title#4",
+              "tagName": "h1",
+              "bounds": {
+                "x": 169,
+                "y": 115,
+                "width": 100,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "20px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.btn-primary#5",
+              "tagName": "button",
+              "bounds": {
+                "x": 826,
+                "y": 112,
+                "width": 100,
+                "height": 36
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(24, 144, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 22px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "input#article-title.text-input#6",
+              "tagName": "input",
+              "bounds": {
+                "x": 169,
+                "y": 224,
+                "width": 757,
+                "height": 40
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 12px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "button.tag#7",
+              "tagName": "button",
+              "bounds": {
+                "x": 169,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(24, 144, 255)",
+                "backgroundColor": "rgb(230, 244, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#8",
+              "tagName": "button",
+              "bounds": {
+                "x": 271,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#9",
+              "tagName": "button",
+              "bounds": {
+                "x": 373,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#10",
+              "tagName": "button",
+              "bounds": {
+                "x": 475,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#11",
+              "tagName": "button",
+              "bounds": {
+                "x": 577,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#12",
+              "tagName": "button",
+              "bounds": {
+                "x": 180,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#13",
+              "tagName": "button",
+              "bounds": {
+                "x": 220,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#14",
+              "tagName": "button",
+              "bounds": {
+                "x": 260,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#15",
+              "tagName": "button",
+              "bounds": {
+                "x": 300,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#16",
+              "tagName": "button",
+              "bounds": {
+                "x": 345.859375,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#17",
+              "tagName": "button",
+              "bounds": {
+                "x": 391.71875,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#18",
+              "tagName": "button",
+              "bounds": {
+                "x": 437.578125,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "input#cover-input.visually-hidden#19",
+              "tagName": "input",
+              "bounds": {
+                "x": 546.5,
+                "y": 849,
+                "width": 1,
+                "height": 1
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "13.3333px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "-1px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "aside.sidebar#20",
+              "tagName": "aside",
+              "bounds": {
+                "x": 975,
+                "y": 88,
+                "width": 320,
+                "height": 588
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#21",
+              "tagName": "section",
+              "bounds": {
+                "x": 975,
+                "y": 88,
+                "width": 320,
+                "height": 258.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#stats-title.side-title#22",
+              "tagName": "h2",
+              "bounds": {
+                "x": 995,
+                "y": 108,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#23",
+              "tagName": "section",
+              "bounds": {
+                "x": 975,
+                "y": 370.5,
+                "width": 320,
+                "height": 305.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#drafts-title.side-title#24",
+              "tagName": "h2",
+              "bounds": {
+                "x": 995,
+                "y": 390.5,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#25",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 437,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#26",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 464,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#27",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 518,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#28",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 545,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#29",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 599,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#30",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 626,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": false,
+        "regions": [
+          {
+            "x": 1000,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1142,
+            "diffPercentage": 11.42,
+            "type": "main"
+          },
+          {
+            "x": 800,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1303,
+            "diffPercentage": 13.03,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1358,
+            "diffPercentage": 13.58,
+            "type": "sidebar"
+          },
+          {
+            "x": 200,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1438,
+            "diffPercentage": 14.38,
+            "type": "sidebar"
+          },
+          {
+            "x": 300,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1448,
+            "diffPercentage": 14.48,
+            "type": "main"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1187,
+            "diffPercentage": 11.87,
+            "type": "main"
+          },
+          {
+            "x": 1000,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1208,
+            "diffPercentage": 12.08,
+            "type": "main"
+          },
+          {
+            "x": 500,
+            "y": 800,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1318,
+            "diffPercentage": 13.18,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ],
+        "textCoverage": 100,
+        "missingTexts": []
+      },
+      "score": 59.07,
+      "adopted": true,
+      "improved": true
+    },
+    {
+      "iteration": 3,
+      "validation": {
+        "similarity": 97.41,
+        "quality": {
+          "overallSimilarity": 95.82,
+          "contentSimilarity": 19.71,
+          "edgeSimilarity": 55.39,
+          "contentRatio": 0.03,
+          "qualityScore": 59.07
+        },
+        "dimensions": {
+          "original": {
+            "width": 1440,
+            "height": 960
+          },
+          "generated": {
+            "width": 1440,
+            "height": 966
+          },
+          "widthDifference": 0,
+          "heightDifference": -6
+        },
+        "layout": {
+          "viewport": {
+            "width": 1440,
+            "height": 960
+          },
+          "document": {
+            "width": 1440,
+            "height": 966
+          },
+          "elements": [
+            {
+              "selector": "header.topbar#0",
+              "tagName": "header",
+              "bounds": {
+                "x": 0,
+                "y": 0,
+                "width": 1440,
+                "height": 64
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 40px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "nav.main-nav#1",
+              "tagName": "nav",
+              "bounds": {
+                "x": 560,
+                "y": 15,
+                "width": 320,
+                "height": 33
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "36px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "main.layout#2",
+              "tagName": "main",
+              "bounds": {
+                "x": 129,
+                "y": 64,
+                "width": 1182,
+                "height": 902
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px 16px 48px",
+                "margin": "0px 129px",
+                "gap": "25px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.editor-card#3",
+              "tagName": "section",
+              "bounds": {
+                "x": 145,
+                "y": 88,
+                "width": 805,
+                "height": 830
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "24px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h1#editor-title#4",
+              "tagName": "h1",
+              "bounds": {
+                "x": 169,
+                "y": 115,
+                "width": 100,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "20px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "button.btn-primary#5",
+              "tagName": "button",
+              "bounds": {
+                "x": 826,
+                "y": 112,
+                "width": 100,
+                "height": 36
+              },
+              "styles": {
+                "color": "rgb(255, 255, 255)",
+                "backgroundColor": "rgb(24, 144, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 22px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "input#article-title.text-input#6",
+              "tagName": "input",
+              "bounds": {
+                "x": 169,
+                "y": 224,
+                "width": 757,
+                "height": 40
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px 12px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "6px"
+              }
+            },
+            {
+              "selector": "button.tag#7",
+              "tagName": "button",
+              "bounds": {
+                "x": 169,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(24, 144, 255)",
+                "backgroundColor": "rgb(230, 244, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#8",
+              "tagName": "button",
+              "bounds": {
+                "x": 271,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#9",
+              "tagName": "button",
+              "bounds": {
+                "x": 373,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#10",
+              "tagName": "button",
+              "bounds": {
+                "x": 475,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tag#11",
+              "tagName": "button",
+              "bounds": {
+                "x": 577,
+                "y": 319,
+                "width": 90,
+                "height": 34
+              },
+              "styles": {
+                "color": "rgb(68, 68, 68)",
+                "backgroundColor": "rgb(233, 233, 233)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 18px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "17px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#12",
+              "tagName": "button",
+              "bounds": {
+                "x": 180,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#13",
+              "tagName": "button",
+              "bounds": {
+                "x": 220,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#14",
+              "tagName": "button",
+              "bounds": {
+                "x": 260,
+                "y": 418,
+                "width": 32,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#15",
+              "tagName": "button",
+              "bounds": {
+                "x": 300,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#16",
+              "tagName": "button",
+              "bounds": {
+                "x": 345.859375,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#17",
+              "tagName": "button",
+              "bounds": {
+                "x": 391.71875,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "button.tool-btn#18",
+              "tagName": "button",
+              "bounds": {
+                "x": 437.578125,
+                "y": 418,
+                "width": 37.859375,
+                "height": 30
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "13px",
+                "fontWeight": "400",
+                "padding": "0px 9px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "4px"
+              }
+            },
+            {
+              "selector": "input#cover-input.visually-hidden#19",
+              "tagName": "input",
+              "bounds": {
+                "x": 546.5,
+                "y": 849,
+                "width": 1,
+                "height": 1
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "13.3333px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "-1px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "aside.sidebar#20",
+              "tagName": "aside",
+              "bounds": {
+                "x": 975,
+                "y": 88,
+                "width": 320,
+                "height": 588
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "24px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#21",
+              "tagName": "section",
+              "bounds": {
+                "x": 975,
+                "y": 88,
+                "width": 320,
+                "height": 258.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#stats-title.side-title#22",
+              "tagName": "h2",
+              "bounds": {
+                "x": 995,
+                "y": 108,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "section.card.side-card#23",
+              "tagName": "section",
+              "bounds": {
+                "x": 975,
+                "y": 370.5,
+                "width": 320,
+                "height": 305.5
+              },
+              "styles": {
+                "color": "rgb(38, 38, 38)",
+                "backgroundColor": "rgb(255, 255, 255)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "20px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "8px"
+              }
+            },
+            {
+              "selector": "h2#drafts-title.side-title#24",
+              "tagName": "h2",
+              "bounds": {
+                "x": 995,
+                "y": 390.5,
+                "width": 280,
+                "height": 22.5
+              },
+              "styles": {
+                "color": "rgb(34, 34, 34)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "15px",
+                "fontWeight": "700",
+                "padding": "0px",
+                "margin": "0px 0px 6px",
+                "gap": "8px",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#25",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 437,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#26",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 464,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#27",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 518,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#28",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 545,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "h3.draft-title#29",
+              "tagName": "h3",
+              "bounds": {
+                "x": 1009,
+                "y": 599,
+                "width": 252,
+                "height": 21
+              },
+              "styles": {
+                "color": "rgb(51, 51, 51)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "14px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            },
+            {
+              "selector": "p.draft-time#30",
+              "tagName": "p",
+              "bounds": {
+                "x": 1009,
+                "y": 626,
+                "width": 252,
+                "height": 18
+              },
+              "styles": {
+                "color": "rgb(153, 153, 153)",
+                "backgroundColor": "rgba(0, 0, 0, 0)",
+                "fontSize": "12px",
+                "fontWeight": "400",
+                "padding": "0px",
+                "margin": "6px 0px 0px",
+                "gap": "normal",
+                "borderRadius": "0px"
+              }
+            }
+          ],
+          "pendingRequests": [],
+          "failedRequests": []
+        },
+        "passed": false,
+        "regions": [
+          {
+            "x": 1000,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1142,
+            "diffPercentage": 11.42,
+            "type": "main"
+          },
+          {
+            "x": 800,
+            "y": 100,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1303,
+            "diffPercentage": 13.03,
+            "type": "main"
+          },
+          {
+            "x": 200,
+            "y": 200,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1358,
+            "diffPercentage": 13.58,
+            "type": "sidebar"
+          },
+          {
+            "x": 200,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1438,
+            "diffPercentage": 14.38,
+            "type": "sidebar"
+          },
+          {
+            "x": 300,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1421,
+            "diffPercentage": 14.21,
+            "type": "main"
+          },
+          {
+            "x": 400,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1187,
+            "diffPercentage": 11.87,
+            "type": "main"
+          },
+          {
+            "x": 1000,
+            "y": 400,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1208,
+            "diffPercentage": 12.08,
+            "type": "main"
+          },
+          {
+            "x": 500,
+            "y": 800,
+            "width": 100,
+            "height": 100,
+            "diffPixels": 1318,
+            "diffPercentage": 13.18,
+            "type": "main"
+          }
+        ],
+        "suggestions": [
+          "验证 Sidebar 宽度、背景色和菜单项样式",
+          "检查主内容区 padding、margin 和布局结构",
+          "确认字体大小和字重是否匹配设计稿",
+          "检查颜色值是否使用了 Design Token",
+          "验证圆角、阴影等细节样式"
+        ]
+      },
+      "score": 59.07,
+      "adopted": false,
+      "improved": false
+    }
+  ],
+  "compileHistory": [],
+  "totalMs": 952185
+}

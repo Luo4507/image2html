@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parseRegionPlan } from '../src/prompts/region-planning.js';
-import { assembleFrameworkRegionCode, assembleHtmlDocument } from '../src/segmented-generator.js';
+import { assembleFrameworkRegionCode, assembleHtmlDocument, normalizePlannedRegions } from '../src/segmented-generator.js';
 import type { CodegenOptions } from '../src/types.js';
 
 function options(framework: 'react' | 'vue'): CodegenOptions {
@@ -17,6 +17,23 @@ describe('segmented generation', () => {
       {"id":"header","type":"header","startY":0,"endY":200,"description":"header"}
     ]}`);
     expect(plan.map((region) => region.id)).toEqual(['header', 'main']);
+  });
+
+  it('merges tiny model regions and keeps complete non-overlapping coverage', () => {
+    const plan = parseRegionPlan(`{"regions":[
+      {"id":"header","type":"header","startY":0,"endY":1,"description":"header"},
+      {"id":"main","type":"main","startY":1,"endY":400,"description":"main"},
+      {"id":"section","type":"section","startY":400,"endY":800,"description":"section"},
+      {"id":"footer","type":"footer","startY":800,"endY":801,"description":"footer"}
+    ]}`);
+    const normalized = normalizePlannedRegions(plan, 981);
+
+    expect(normalized).toHaveLength(2);
+    expect(normalized.map(({ startY, endY }) => ({ startY, endY }))).toEqual([
+      { startY: 0, endY: 400 },
+      { startY: 400, endY: 981 },
+    ]);
+    expect(normalized.every((region) => region.endY - region.startY >= 16)).toBe(true);
   });
 
   it('assembles region fragments into a complete HTML document', () => {

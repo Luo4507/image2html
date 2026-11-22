@@ -12,7 +12,7 @@ import {
 } from '../src/mcp/server.js';
 import type { DesignToCodeResult, PageStructure, ValidationResult } from '../src/types.js';
 
-const imagePath = 'examples/demo/login.png';
+const imagePath = 'examples/login.png';
 const validation: ValidationResult = {
   similarity: 72,
   passed: false,

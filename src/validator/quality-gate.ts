@@ -18,6 +18,7 @@ export function passesQualityGate(
     quality.contentSimilarity >= config.minContentSimilarity &&
     quality.edgeSimilarity >= config.minEdgeSimilarity;
   const textPassed = !config.checkTextCoverage ||
-    (quality.textCoverage ?? 0) >= (config.minTextCoverage ?? 80);
+    quality.textCoverage === undefined ||
+    quality.textCoverage >= (config.minTextCoverage ?? 80);
   return visualPassed && textPassed;
 }

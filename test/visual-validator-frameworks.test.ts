@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import sharp from 'sharp';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { VisualValidator } from '../src/validator/visual-validator.js';
 import { getDefaultValidationConfig } from '../src/config.js';
 import type { CodegenOptions, GeneratedCode } from '../src/types.js';
@@ -34,6 +34,37 @@ async function originalImage() {
 }
 
 describe('VisualValidator framework rendering', () => {
+  it('renders only the primary viewport for candidates and reuses it for final desktop capture', async () => {
+    const instance = validator();
+    const renderSpy = vi.spyOn(instance as any, 'renderHtml');
+    const image = await originalImage();
+    const input = generated('<html><body><main>Viewport reuse</main></body></html>', 'Demo.html');
+    const codegenOptions = options({ framework: 'html', typescript: false });
+
+    const candidate = await instance.validate(image, input, {
+      captureAllViewports: false,
+      codegenOptions,
+    });
+    expect(renderSpy).toHaveBeenCalledTimes(1);
+    expect(candidate.screenshots.tablet).toBe('');
+    expect(candidate.screenshots.mobile).toBe('');
+    expect(candidate.timings?.additionalViewportsMs).toBe(0);
+    expect(candidate.timings?.renderMs).toBeGreaterThanOrEqual(0);
+    expect(candidate.timings?.compareMs).toBeGreaterThanOrEqual(0);
+
+    const final = await instance.validate(image, input, {
+      captureAllViewports: true,
+      codegenOptions,
+    });
+    expect(renderSpy).toHaveBeenCalledTimes(4);
+    const primaryRender = await renderSpy.mock.results[1].value;
+    expect(final.screenshots.desktop).toBe(primaryRender.screenshot.toString('base64'));
+    expect(final.screenshots.tablet?.length).toBeGreaterThan(100);
+    expect(final.screenshots.mobile?.length).toBeGreaterThan(100);
+    expect(final.timings?.additionalViewportsMs).toBeGreaterThan(0);
+    expect(final.timings?.totalMs).toBeGreaterThanOrEqual(final.timings?.renderMs || 0);
+  }, 60_000);
+
   it('captures all viewports from a built React component', async () => {
     const result = await validator().validate(
       await originalImage(),

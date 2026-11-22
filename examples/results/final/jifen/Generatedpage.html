@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>积分商城</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+    background: #ebebeb;
+    color: #333;
+  }
+  .app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background: #f5f5f5;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,0.08);
+  }
+  button { font-family: inherit; border: none; background: none; cursor: pointer; }
+  ul { list-style: none; }
+
+  /* ===== Header ===== */
+  .header {
+    background: linear-gradient(180deg, #f88b3d 0%, #f97316 100%);
+    color: #fff;
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 16px;
+  }
+  .header-top h1 { font-size: 18px; font-weight: 700; letter-spacing: 1px; }
+  .header-actions { display: flex; gap: 14px; }
+  .header-actions button { font-size: 18px; line-height: 1; padding: 2px; }
+  .points-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 20px 24px;
+  }
+  .points-label { font-size: 13px; color: rgba(255,255,255,0.92); margin-bottom: 6px; }
+  .points-value { display: flex; align-items: baseline; gap: 4px; }
+  .points-value strong { font-size: 34px; font-weight: 800; letter-spacing: 0.5px; }
+  .points-value span { font-size: 14px; font-weight: 500; }
+  .signin-btn {
+    background: #fff;
+    color: #f97316;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px 26px;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  }
+
+  /* ===== Category tabs ===== */
+  .tabs {
+    background: #fff;
+    display: flex;
+    gap: 30px;
+    padding: 0 20px;
+    height: 56px;
+    align-items: stretch;
+    overflow-x: auto;
+  }
+  .tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 14px;
+    color: #666;
+    white-space: nowrap;
+  }
+  .tab::after {
+    content: "";
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+    background: transparent;
+  }
+  .tab[aria-selected="true"] { color: #f97316; font-weight: 600; }
+  .tab[aria-selected="true"]::after { background: #f97316; }
+
+  /* ===== Sections ===== */
+  main { padding-bottom: 76px; }
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 18px 20px 12px;
+  }
+  .section-title .bar { width: 4px; height: 16px; background: #f97316; border-radius: 2px; }
+  .section-title .emoji { font-size: 16px; }
+  .section-title h2 { font-size: 16px; font-weight: 700; color: #333; }
+
+  .goods-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    padding: 0 20px;
+  }
+  .goods-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+  }
+  .goods-media {
+    height: 155px;
+    background: #e6e6e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 46px;
+  }
+  .goods-body { padding: 10px 12px 12px; }
+  .goods-name {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #333;
+    min-height: 40px;
+    margin-bottom: 8px;
+  }
+  .goods-price-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+  }
+  .goods-price { color: #f97316; display: flex; align-items: baseline; gap: 3px; min-width: 0; }
+  .goods-price .num { font-size: 18px; font-weight: 700; }
+  .goods-price .unit { font-size: 12px; }
+  .redeem-btn {
+    background: #f97316;
+    color: #fff;
+    font-size: 12px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .redeem-btn:active { opacity: 0.85; }
+  .goods-stock { margin-top: 9px; font-size: 12px; color: #999; }
+
+  /* ===== Bottom nav ===== */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    background: #fff;
+    display: flex;
+    height: 58px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+    z-index: 10;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    font-size: 11px;
+    color: #999;
+  }
+  .nav-item .icon { font-size: 20px; line-height: 1; }
+  .nav-item[aria-current="page"] { color: #f97316; }
+
+  @media (max-width: 360px) {
+    .tabs { gap: 20px; }
+    .goods-grid { gap: 10px; padding: 0 16px; }
+    .points-value strong { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="header">
+    <div class="header-top">
+      <h1>积分商城</h1>
+      <div class="header-actions">
+        <button type="button" aria-label="搜索">🔍</button>
+        <button type="button" aria-label="积分明细">🧾</button>
+      </div>
+    </div>
+    <div class="points-row">
+      <div>
+        <p class="points-label">我的积分</p>
+        <p class="points-value"><strong>2,580</strong><span>分</span></p>
+      </div>
+      <button type="button" class="signin-btn">签到赚积分</button>
+    </div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="商品分类">
+    <button class="tab" role="tab" aria-selected="true">精选</button>
+    <button class="tab" role="tab" aria-selected="false">数码家电</button>
+    <button class="tab" role="tab" aria-selected="false">生活用品</button>
+    <button class="tab" role="tab" aria-selected="false">美食券</button>
+  </nav>
+
+  <main>
+    <section aria-labelledby="hot-title">
+      <div class="section-title" id="hot-title">
+        <span class="bar" aria-hidden="true"></span>
+        <span class="emoji" aria-hidden="true">🔥</span>
+        <h2>热门兑换</h2>
+      </div>
+      <ul class="goods-grid">
+        <li class="goods-card">
+          <div class="goods-media" aria-hidden="true">🎧</div>
+          <div class="goods-body">
+            <h3 class="goods-name">无线蓝牙耳机 降噪运动耳机</h3>
+            <div class="goods-price-row">
+              <p class="goods-price"><span class="num">1,280</span><span class="unit">积分</span></p>
+              <button type="button" class="redeem-btn">兑换</button>
+            </div>
+            <p class="goods-stock">剩余 23 件</p>
+          </div>
+        </li>
+        <li class="goods-card">
+          <div class="goods-media" aria-hidden="true">⌚</div>
+          <div class="goods-body">
+            <h3 class="goods-name">智能手表 心率监测 运动手环</h3>
+            <div class="goods-price-row">
+              <p class="goods-price"><span class="num">2,500</span><span class="unit">积分</span></p>
+              <button type="button" class="redeem-btn">兑换</button>
+            </div>
+            <p class="goods-stock">剩余 8 件</p>
+          </div>
+        </li>
+        <li class="goods-card">
+          <div class="goods-media" aria-hidden="true">🎒</div>
+          <div class="goods-body">
+            <h3 class="goods-name">轻便双肩包 时尚旅行背包</h3>
+            <div class="goods-price-row">
+              <p class="goods-price"><span class="num">680</span><span class="unit">积分</span></p>
+              <button type="button" class="redeem-btn">兑换</button>
+            </div>
+            <p class="goods-stock">剩余 45 件</p>
+          </div>
+        </li>
+        <li class="goods-card">
+          <div class="goods-media" aria-hidden="true">☕</div>
+          <div class="goods-body">
+            <h3 class="goods-name">陶瓷马克杯 咖啡牛奶杯</h3>
+            <div class="goods-price-row">
+              <p class="goods-price"><span class="num">300</span><span class="unit">积分</span></p>
+              <button type="button" class="redeem-btn">兑换</button>
+            </div>
+            <p class="goods-stock">剩余 156 件</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <section aria-labelledby="pick-title">
+      <div class="section-title" id="pick-title">
+        <span class="bar" aria-hidden="true"></span>
+        <span class="emoji" aria-hidden="true">💎</span>
+        <h2>精品推荐</h2>
+      </div>
+      <ul class="goods-grid">
+        <li class="goods-card">
+          <div class="goods-media" aria-hidden="true">📱</div>
+          <div class="goods-body">
+            <h3 class="goods-name">手机支架 桌面懒人支架</h3>
+            <div class="goods-price-row">
+              <p class="goods-price"><span class="num">150</span><span class="unit">积分</span></p>
+              <button type="button" class="redeem-btn">兑换</button>
+            </div>
+            <p class="goods-stock">剩余 89 件</p>
+          </div>
+        </li>
+        <li class="goods-card">
+          <div class="goods-media" aria-hidden="true">🔌</div>
+          <div class="goods-body">
+            <h3 class="goods-name">快充数据线 Type-C 充电线</h3>
+            <div class="goods-price-row">
+              <p class="goods-price"><span class="num">200</span><span class="unit">积分</span></p>
+              <button type="button" class="redeem-btn">兑换</button>
+            </div>
+            <p class="goods-stock">剩余 67 件</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="底部导航">
+    <button class="nav-item" aria-current="page"><span class="icon" aria-hidden="true">🏠</span>首页</button>
+    <button class="nav-item"><span class="icon" aria-hidden="true">📋</span>订单</button>
+    <button class="nav-item"><span class="icon" aria-hidden="true">🎁</span>福利</button>
+    <button class="nav-item"><span class="icon" aria-hidden="true">👤</span>我的</button>
+  </nav>
+</div>
+
+<script>
+  (function () {
+    var tabs = document.querySelectorAll('.tabs .tab');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.setAttribute('aria-selected', t === tab ? 'true' : 'false'); });
+      });
+    });
+    var navItems = document.querySelectorAll('.bottom-nav .nav-item');
+    navItems.forEach(function (item) {
+      item.addEventListener('click', function () {
+        navItems.forEach(function (n) {
+          if (n === item) { n.setAttribute('aria-current', 'page'); }
+          else { n.removeAttribute('aria-current'); }
+        });
+      });
+    });
+  })();
+</script>
+</body>
+</html>

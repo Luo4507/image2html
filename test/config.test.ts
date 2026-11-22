@@ -8,6 +8,8 @@ const MODEL_ENV_VARS = [
   'LLM_BASE_URL',
   'LLM_API_KEY',
   'LLM_MODEL',
+  'LLM_VL_ENABLE_THINKING',
+  'LLM_ENABLE_THINKING',
   'QWEN_VL_BASE_URL',
   'QWEN_VL_API_KEY',
   'VISION_MODEL',
@@ -102,5 +104,16 @@ describe('model environment configuration', () => {
     expect(config.codeModel.baseUrl).toBe('https://text.example.com/v1');
     expect(config.codeModel.apiKey).toBe('text-key');
     expect(config.codeModel.model).toBe('text-model');
+  });
+
+  it('only overrides provider thinking behavior when explicitly configured', () => {
+    expect(getDefaultModelConfig().visionModel.enableThinking).toBeUndefined();
+    expect(getDefaultModelConfig().codeModel.enableThinking).toBeUndefined();
+
+    process.env.LLM_VL_ENABLE_THINKING = 'false';
+    process.env.LLM_ENABLE_THINKING = 'true';
+    const config = getDefaultModelConfig();
+    expect(config.visionModel.enableThinking).toBe(false);
+    expect(config.codeModel.enableThinking).toBe(true);
   });
 });
