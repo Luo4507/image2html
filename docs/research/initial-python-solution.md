@@ -1,4 +1,8 @@
-# 高保真设计稿转代码：内网工程化落地完整方案
+# 早期 Python 概念方案（已归档）
+
+> **归档说明：** 本文是 2026-11-08 的初期概念设计，采用 Python / FastAPI 和 `backend/*.py` 等设想结构，**不是当前项目实现，也不能作为安装或运行手册**。当前项目使用 Node.js / TypeScript；实际使用请查看[快速上手](../configuration-and-usage-guide.md)、[完整接入指导](../usage-and-ai-integration.md)和[部署指南](../deployment.md)。
+
+## 原始方案：高保真设计稿转代码——内网工程化落地完整方案
 
 > 版本：v1.0  
 > 日期：2026-11-08  
@@ -1708,7 +1712,7 @@ project/
 │   └── validate_all.py           # 批量校验
 ├── docker-compose.internal.yml   # 内网部署配置
 └── docs/
-    └── design-to-code-solution.md # 本文档
+    └── initial-python-solution.md   # 本文档（归档后的文件名）
 ```
 
 ### 10.3 常用命令

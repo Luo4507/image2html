@@ -109,7 +109,7 @@ curl -X POST http://localhost:3000/v1/jobs \
 }
 ```
 
-支持的图片类型：PNG、JPEG、WebP。生成选项：`framework=react|vue|html`、`styleFramework=tailwind|scss|css-modules|inline`、`componentLibrary=antd|element|none`、`typescript`、`responsive`、`accessibility`、`pipeline=direct|structured`、`qualityMode=fast|balanced|precision`、`layoutMode=single|segmented`、`assetMode=none|extract`。非法框架/组件库组合返回 HTTP 400；未显式指定组件库时，HTML 默认 none、Vue 默认 element、React 默认 antd。
+支持的图片类型：PNG、JPEG、WebP。生成选项：`framework=react|vue|html`、`styleFramework=tailwind|scss|css-modules|inline`、`componentLibrary=antd|element|none`、`typescript`、`responsive`、`accessibility`、`pipeline=direct|structured`、`qualityMode=fast|balanced|precision`、`layoutMode=single|segmented|auto`、`assetMode=none|extract`。非法框架/组件库组合返回 HTTP 400；未显式指定组件库时，HTML 默认 none、Vue 默认 element、React 默认 antd。
 
 ### 查询任务
 
@@ -175,11 +175,11 @@ pnpm verify:server
 - 模型生成可能需要数分钟；客户端应轮询任务，而不是保持长时间同步请求。
 - 4 核 8GB 可作为小规模部署起点，先将 `JOB_CONCURRENCY` 设置为 `1` 或 `2`。
 - 定期清理 `DATA_DIR/uploads` 中的异常残留文件及过期任务。
-- 服务重启不会恢复内存中的排队任务；不要在没有任务时以外的方式直接重启。
+- 重启前可等待活动任务完成，减少重复执行；持久化任务的恢复规则见上文。
 - 多实例、高可用和跨服务器执行需要 Redis 队列、共享存储及集中任务状态，当前版本不包含这些能力。
 
 ## 转换缓存
 
-HTTP 服务在单实例内存中按图片内容哈希、生成选项、模型配置和校验配置复用成功的转换结果，最多保留最近 32 项。缓存不会跨进程或重启保留；失败结果不会缓存。每个缓存命中任务仍会生成独立的事件、预览和产物目录，不会向其他用户暴露原任务。
+HTTP 服务在单实例内存中按图片内容哈希、生成选项、模型配置和校验配置复用成功的转换结果，最多保留最近 32 项。输入、源图和 `conversion.json` 完整的成功任务会在重启后重建缓存，因此缓存可以跨重启命中，但不能跨进程或多实例共享。失败结果不会缓存。每个缓存命中任务仍会生成独立的事件、预览和产物目录，不会向其他用户暴露原任务。
 
 命中结果的阶段耗时与模型调用数归零，并设置 `metrics.cacheHit: true`。多实例部署不会自动共享缓存，如需跨实例复用应改为外部缓存，并继续保持产物按用户和任务隔离。

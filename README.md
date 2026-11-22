@@ -272,12 +272,12 @@ image2html/
 
 ## 文档
 
-- [使用及 AI 工具接入指导](docs/usage-and-ai-integration.md)
-- [完整技术方案](docs/design-to-code-solution.md)
+- [文档导航](docs/README.md)
+- [OpenCode 快速上手](docs/configuration-and-usage-guide.md)
+- [完整使用及 AI 工具接入指导](docs/usage-and-ai-integration.md)
+- [多用户服务器部署指南](docs/deployment.md)
 - [示例设计稿](examples/README.md)
-- [screenshot-to-code 提速研究](docs/research/screenshot-to-code-optimization.md)
-- [高保真与自动校正方案](docs/research/quality-auto-correction.md)
-- [标准项目结构实施计划](docs/superpowers/plans/2026-11-10-standard-project-structure.md)
+- [最终转换结果](examples/results/summary.md)
 
 ## License
 
