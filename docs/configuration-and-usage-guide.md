@@ -1,49 +1,25 @@
-# image2html 快速上手：OpenCode 远程 MCP
+# image2html OpenCode 远程使用手册
 
-这份指南只做一件事：**让 OpenCode 通过 URL 调用远程 image2html MCP，不在本机启动 MCP 进程。**
+给 OpenCode 一张设计图，让它按照当前项目的规范生成网页。
 
-连接方式：
-
-```text
-OpenCode → HTTP / HTTPS → image2html /mcp → 服务端模型与 Chromium
-```
-
-OpenCode 机器只需要 OpenCode V2、MCP 地址和个人 API 密钥。不需要安装项目依赖、配置模型或安装 Chromium。
+远程模式下，OpenCode 通过 URL 调用 image2html，不在你的电脑上启动 MCP 进程，也不需要安装项目依赖、模型或 Chromium。
 
 ## 1. 准备连接信息
 
-向服务管理员确认两项信息：
+你只需要两项信息：
 
-- MCP 地址：本机 Docker 为 `http://localhost:3000/mcp`；公司服务类似 `https://image2html.example.com/mcp`。
-- 个人 API 密钥：对应服务端 `API_KEYS` 中分配给你的密钥。
+- **MCP 地址**：本机 Docker 是 `http://localhost:3000/mcp`；公司服务使用管理员分配的地址，例如 `https://image2html.example.com/mcp`。
+- **个人 API 密钥**：由服务管理员在服务端 `API_KEYS` 中分配。
 
-注意地址末尾必须包含 `/mcp`。`http://localhost:3000` 本身仍是 HTTP 任务服务地址，不是完整 MCP 端点。
+地址末尾必须包含 `/mcp`。
 
-## 2. 设置个人密钥
+## 2. 一次性配置
 
-在 Windows PowerShell 中执行，把示例值替换成真实个人密钥：
+### 2.1 添加远程 MCP
 
-```powershell
-[Environment]::SetEnvironmentVariable("IMAGE2HTML_API_KEY", "replace-with-your-personal-key", "User")
-```
+本项目根目录的 `opencode.json` 已配置好，可以跳过这一步。
 
-完全关闭并重新打开 PowerShell 和 OpenCode，让新环境变量生效。不要把真实密钥写入 `opencode.json`、源码或 Git。
-
-如果只在当前 PowerShell 窗口临时使用，可以执行：
-
-```powershell
-$env:IMAGE2HTML_API_KEY="replace-with-your-personal-key"
-```
-
-然后从同一个窗口启动 OpenCode。
-
-## 3. 配置 OpenCode V2
-
-项目根目录的 `opencode.json` 已提供相同配置。若要在任意业务项目中使用，将下面的 `mcp.servers.image2html` 合并到：
-
-```text
-%USERPROFILE%\.config\opencode\opencode.jsonc
-```
+如果要在其他业务项目中使用，请将下面的 `mcp.servers.image2html` 合并到项目配置，或全局配置 `%USERPROFILE%\.config\opencode\opencode.jsonc`：
 
 ```json
 {
@@ -67,79 +43,80 @@ $env:IMAGE2HTML_API_KEY="replace-with-your-personal-key"
 }
 ```
 
-使用公司服务时，只需要把 `url` 改成公司分配的地址。已有模型、插件或其他 MCP 配置必须保留，不要覆盖整个文件。
+使用公司服务时，只需替换 `url`。请保留文件中已有的模型、插件和其他 MCP 配置，不要覆盖整个文件。
 
-- `type: "remote"`：OpenCode 使用 Streamable HTTP，不启动本地 Node.js 进程。
-- `oauth: false`：服务使用个人 API 密钥，不走 OAuth 登录。
-- `headers`：从 OpenCode 所在机器的环境变量读取密钥。
-- `codemode: false`：让 `generate_component` 直接出现在原生工具列表中。
-- `timeout.execution`：远程生成最多等待 10 分钟。
+### 2.2 配置密钥
 
-## 4. 检查连接
+OpenCode V2 桌面版由后台服务连接 MCP。请在 PowerShell 中执行：
 
-完全重启 OpenCode，然后在 PowerShell 中执行：
+```powershell
+opencode service set env IMAGE2HTML_API_KEY "你的个人密钥"
+opencode service restart
+```
+
+这样密钥会提供给后台服务，不需要写进 `opencode.jsonc`。不要把真实密钥提交到 Git。
+
+如果终端提示找不到 `opencode`，请使用桌面版自带的 `opencode-cli.exe` 完整路径，或将其所在目录加入 `PATH`。
+
+## 3. 检查连接
 
 ```powershell
 opencode mcp list
 ```
 
-正常应显示：
+看到下面的结果即可开始使用：
 
 ```text
-image2html connected
+✓ image2html  connected
 ```
 
-也可以在 OpenCode 中输入 `/mcps` 查看。远程模式只开放 `generate_component`，这是当前预期行为；独立校验、修复、结构分析和资源提取仍属于本地五工具入口。
+如果修改配置后状态没有刷新，请完全重启 OpenCode 再检查。
 
-## 5. 生成自己的组件
+## 4. 一句话生成网页
 
-把图片路径和目标文件路径换成实际路径，然后在 OpenCode 中发送：
+把图片拖进 OpenCode，然后发送：
 
 ```text
-请调用 image2html 远程 MCP 的 generate_component 工具。
+把这张设计图生成网页，并接入当前项目。
 
-先将 F:\designs\dashboard.png 转为 Base64，并按下面参数调用：
-image_base64=data:image/png;base64,<图片的 Base64 内容>
-image_filename=dashboard.png
-framework=react
-style_framework=tailwind
-component_library=antd
-typescript=true
-responsive=true
-pipeline=direct
-quality_mode=precision
-layout_mode=single
-asset_mode=none
+请先识别项目的技术栈、目录结构和代码规范，再使用 image2html 完成转换，按照项目现有的开发方式编写并写入合适的位置。
 
-不要传 image_path，因为 OpenCode 本机路径在远程服务器或 Docker 容器中不存在。
-拿到完整源码后，请使用编辑工具将 code 写入当前项目的 src\components\Dashboard.tsx。
-请分别报告工具是否执行成功、文件是否实际写入、视觉校验是否通过。
+完成后检查页面效果并运行项目构建，有问题继续调整。
 ```
 
-JPEG 使用 `data:image/jpeg;base64,...`，WebP 使用 `data:image/webp;base64,...`。也可以只传纯 Base64 内容，但此时必须用 `image_filename` 提供正确扩展名。
+如果图片已经在项目中，例如 `designs/dashboard.png`，可以直接说：
 
-默认 `quality_mode=precision` 会在生成过程中进行视觉校验和最多 4 轮修复，不需要另外调用 `repair_component`。其他框架参数：
+```text
+根据 designs/dashboard.png 生成网页并接入当前项目。
+遵循项目现有的技术栈、目录结构和代码规范，使用 image2html 完成转换。
+完成后检查页面效果并运行构建，有问题继续调整。
+```
 
-- React：`react + tailwind + antd`
-- Vue：`vue + tailwind + element`
-- 纯 HTML：`html + inline + none + typescript=false`
+你不需要手写 Base64、模型名称或框架参数，这些由 OpenCode 根据图片、项目上下文和工具说明处理。
 
-`success=true` 只表示工具执行成功，`validation.passed=true` 才表示通过当前视觉质量检查。MCP 返回源码后，OpenCode 仍需将源码写入业务文件并运行项目构建。
+## 5. 确认生成结果
 
-## 6. 遇到问题怎么办
+生成完成后，检查三件事：
 
-| 看到的现象 | 直接这样处理 |
+1. **文件**：组件或页面已写入项目，而不只是显示在对话里。
+2. **构建**：项目构建或类型检查通过。
+3. **效果**：页面与设计稿一致；如有偏差，让 OpenCode 继续调整。
+
+工具返回 `success=true` 只表示生成完成，`validation.passed=true` 才表示通过当前视觉校验。
+
+## 6. 常见问题
+
+| 现象 | 处理方法 |
 | --- | --- |
-| `image2html failed` 或无法连接 | 检查服务是否运行、URL 是否以 `/mcp` 结尾，并完全重启 OpenCode |
-| HTTP 401 或提示未授权 | 检查 `IMAGE2HTML_API_KEY` 是否设置在 OpenCode 所在机器，以及密钥是否有效 |
-| 提示需要 OAuth 登录 | 确认该服务配置中包含 `oauth: false` |
-| 工具提示图片不存在 | 远程调用改用 `image_base64`，不要传 OpenCode 本机的 `image_path` |
-| 只看到 `generate_component` | 正常；其余四个工具目前只由本地 MCP 提供 |
-| `success=true` 但 `passed=false` | 连接和生成已成功，但视觉门禁未通过；查看差异建议并调整设计稿或重新生成 |
-| 对话中有源码，但项目里没有文件 | 明确要求 OpenCode 使用编辑工具写入目标文件，MCP 不会自行写入业务项目 |
+| `image2html failed` | 检查服务是否运行、URL 是否以 `/mcp` 结尾，再执行 `opencode service restart` |
+| HTTP 401 或未授权 | 重新执行第 2.2 节的两条密钥命令，并确认密钥有效 |
+| 提示需要 OAuth 登录 | 确认远程配置中包含 `oauth: false` |
+| 提示图片不存在 | 确认 OpenCode 能读取图片，并提醒它将本机图片转为 Base64 后上传 |
+| 只看到 `generate_component` | 正常，远程模式目前只开放在线生成工具 |
+| 对话中有代码，项目里没有文件 | 明确要求 OpenCode 将代码写入项目文件 |
 
-## 7. 进阶使用
+## 7. 进阶文档
 
-- [使用及 AI 工具接入指导](usage-and-ai-integration.md)：Codex、本地五工具、旧版 OpenCode 和兼容适配器。
-- [部署指南](deployment.md)：公司内网多人共享、API 密钥和服务部署。
-- [示例设计稿](../examples/README.md)：可用于测试转换的现有图片。
+- [使用及 AI 工具接入指导](usage-and-ai-integration.md)：Codex、本地 MCP、参数说明和其他 AI 工具。
+- [部署指南](deployment.md)：Docker、公司内网部署和多人密钥管理。
+- [示例设计稿](../examples/README.md)：用于测试转换的现有图片。

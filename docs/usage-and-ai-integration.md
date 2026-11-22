@@ -210,13 +210,22 @@ OpenCode 可读取项目根目录的 `opencode.json(c)` 或 `.opencode/opencode.
 
 ### 5.1 OpenCode V2：原生远程 MCP（推荐）
 
-远程方式不需要 OpenCode 机器安装项目、Node.js、模型密钥或 Chromium。先在 OpenCode 所在机器设置个人密钥：
+远程方式不需要 OpenCode 机器安装项目、Node.js、模型密钥或 Chromium。
+
+OpenCode V2 桌面版由后台服务连接 MCP，直接将个人密钥配置给后台服务：
+
+```powershell
+opencode service set env IMAGE2HTML_API_KEY "replace-with-your-personal-key"
+opencode service restart
+```
+
+独立 CLI 也可以从用户环境变量读取密钥：
 
 ```powershell
 [Environment]::SetEnvironmentVariable("IMAGE2HTML_API_KEY", "replace-with-your-personal-key", "User")
 ```
 
-完全重启终端和 OpenCode 后，将下面配置合并到项目或全局 `opencode.jsonc`：
+设置后重新打开终端和 OpenCode。不要把真实密钥写入 JSON 或提交到 Git。随后将下面配置合并到项目或全局 `opencode.jsonc`：
 
 ```json
 {
@@ -519,41 +528,41 @@ tool_timeout_sec = 600
 
 ## 9. 可直接使用的 AI 提示词
 
-### 9.1 生成并写入 React 组件
+### 9.1 按项目规范生成网页
+
+OpenCode 远程接入时，把图片拖进对话，或直接使用项目中的图片路径：
 
 ```text
-请调用 design-to-code MCP 的 generate_component 工具。
-图片绝对路径：F:\designs\dashboard.png
-参数：framework=react，style_framework=tailwind，component_library=antd，typescript=true，quality_mode=precision，layout_mode=single。
-拿到源码后，使用编辑工具将完整源码写入当前业务项目的 src/components/Dashboard.tsx，不要只在对话中展示代码。
-随后安装缺失依赖并执行项目构建。请区分“源码已返回”“文件已写入”“构建成功”“视觉门禁通过”这四个状态，不要混淆。
+根据 designs/dashboard.png 生成网页并接入当前项目。
+遵循项目现有的技术栈、目录结构和代码规范，使用 image2html 完成转换。
+完成后检查页面效果并运行构建，有问题继续调整。
 ```
 
-macOS/Linux 用户将图片路径换成实际绝对路径即可。原生远程 MCP 不要传 OpenCode 本机路径，应改为 `image_base64=data:image/png;base64,<图片内容>` 和 `image_filename=dashboard.png`；远程服务名按配置使用 `image2html`。
+不需要手写 Base64 或逐项填写工具参数。OpenCode 会处理本机图片上传，并根据项目上下文生成代码；远程服务名使用 `image2html`。
 
-下面 9.2 和 9.3 的独立校验、修复提示词用于本地五工具入口。远程 `generate_component` 使用 `quality_mode=precision` 时已在同一次生成中执行校验和视觉修复。
+本地五工具入口使用服务名 `design-to-code`，图片路径应改为 MCP 所在机器可读取的绝对路径。需要指定技术栈时，只需补一句“使用 Vue + Element Plus”或“使用 React + Ant Design”，具体参数见第 8 节。
 
 ### 9.2 校验当前文件
 
 ```text
-读取当前项目的 src/components/Dashboard.tsx，并调用 design-to-code 的 validate_design。
-original_image=F:\designs\dashboard.png，framework=react，style_framework=tailwind，component_library=antd，typescript=true，threshold=85。
-请报告整图相似度、内容和边缘门禁是否通过，以及差异区域；不要把工具成功返回等同于视觉校验通过。
+使用 design-to-code 校验 src/components/Dashboard.tsx 是否还原 F:\designs\dashboard.png。
+按照文件的实际技术栈检查，报告视觉校验是否通过和主要差异，先不要修改代码。
 ```
 
 ### 9.3 修复后重新校验
 
 ```text
-调用 repair_component，传入原始图片绝对路径、当前完整源码，以及与代码一致的 framework、style_framework、component_library 和 typescript。
-quality_mode=precision。工具会先校验，再修复、重新校验并择优；请读取最终 validation 和 qualityHistory。
-将采用的完整源码写回 src/components/Dashboard.tsx，再运行项目构建。不要只根据“修复完成”文本宣称质量通过。
+使用 design-to-code 修复 src/components/Dashboard.tsx 与 F:\designs\dashboard.png 之间的视觉差异。
+将修复后的代码写回文件，重新检查页面效果，最后运行项目构建。
 ```
+
+独立校验和修复提示词用于本地五工具入口，图片需使用绝对路径。远程 `generate_component` 已在一次生成中完成视觉校验和有界修复，不需要再调用独立修复工具。
 
 ### 9.4 只分析设计稿
 
 ```text
-调用 design-to-code 的 analyze_structure 分析 F:\designs\dashboard.png。
-总结页面区域、主要组件、布局方向和 Design Token；不要生成或修改业务代码。
+使用 design-to-code 分析 F:\designs\dashboard.png。
+总结页面结构、主要组件和设计风格，不要生成或修改业务代码。
 ```
 
 ## 10. 理解质量和产物
