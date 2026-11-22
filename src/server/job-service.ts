@@ -129,6 +129,16 @@ export class JobService {
     for (const listener of this.listeners.get(jobId) || []) listener(event);
   }
 
+  /** Run an isolated local tool with the same converter lifecycle as generation jobs. */
+  async runWithConverter<T>(operation: (converter: DesignToCode) => Promise<T>): Promise<T> {
+    const converter = this.converterFactory();
+    try {
+      return await operation(converter as unknown as DesignToCode);
+    } finally {
+      await converter.close();
+    }
+  }
+
   async waitForIdle(): Promise<void> {
     await this.queue.waitForIdle();
   }

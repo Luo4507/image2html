@@ -15,6 +15,7 @@ import { resolveJobOptions } from './job-options.js';
 import type { JobRecord } from './job-queue.js';
 import type { ConversionJobResult } from './job-service.js';
 import { createMcpHttpHandler } from './mcp-http.js';
+import { JobServiceMCPClient } from './mcp-generation.js';
 
 interface AuthenticatedRequest extends Request {
   userId?: string;
@@ -67,7 +68,7 @@ export async function createServerApp(options: {
   });
 
   const mcpBodyLimitMb = Math.ceil(config.maxUploadMb * 4 / 3 + 1);
-  app.use('/mcp', express.json({ limit: `${mcpBodyLimitMb}mb` }));
+  app.use(['/mcp', '/v1/tools'], express.json({ limit: `${mcpBodyLimitMb}mb` }));
   app.use(express.json({ limit: '1mb' }));
 
   app.get('/', (_req, res) => {
@@ -100,6 +101,27 @@ export async function createServerApp(options: {
   });
 
   app.all('/mcp', createMcpHttpHandler({ service, config }));
+
+  // Authenticated HTTP bridge used by the stdio remote adapter for non-generation tools.
+  app.post('/v1/tools/:tool', async (req: AuthenticatedRequest, res) => {
+    const client = new JobServiceMCPClient({ service, config, userId: req.userId! });
+    switch (req.params.tool) {
+      case 'validate':
+        res.json(await client.validateDesign(req.body));
+        return;
+      case 'repair':
+        res.json(await client.repairComponent(req.body));
+        return;
+      case 'analyze':
+        res.json(await client.analyzeStructure(req.body));
+        return;
+      case 'extract':
+        res.json(await client.extractAssets(req.body));
+        return;
+      default:
+        res.status(404).json({ error: 'NotFound', message: `Unknown tool endpoint: ${req.params.tool}` });
+    }
+  });
 
   const upload = multer({
     dest: join(config.dataDir, 'uploads'),

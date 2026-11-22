@@ -1,6 +1,6 @@
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { mkdtemp, readFile, rm } from 'node:fs/promises';
+import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import request from 'supertest';
@@ -21,6 +21,15 @@ function config(dataDir: string): ServerConfig {
   };
 }
 
+const validation = {
+  similarity: 96,
+  passed: true,
+  regions: [],
+  suggestions: [],
+  screenshots: { desktop: 'not-for-structured-results' },
+  diffImage: 'not-for-structured-results',
+};
+
 function converter(receivedImage: { current?: Buffer }) {
   return () => ({
     async convert(input: any) {
@@ -38,14 +47,32 @@ function converter(receivedImage: { current?: Buffer }) {
           imports: [],
           components: [],
         },
-        validation: {
-          similarity: 96,
-          passed: true,
-          regions: [],
-          suggestions: [],
-          screenshots: {},
-        },
+        validation,
       };
+    },
+    async validate() {
+      return { ...validation, similarity: 91, passed: false, suggestions: ['Adjust spacing'] };
+    },
+    async repair(_image: Buffer, code: any) {
+      return {
+        success: true,
+        code: { ...code, code: '<main>remotely repaired</main>', filename: 'component.html' },
+        validation,
+        qualityHistory: [{ iteration: 0, score: 96, adopted: true, improved: true, validation }],
+        metrics: { repairIterations: 1, modelCalls: 1 },
+      };
+    },
+    async analyzeStructure() {
+      return {
+        page: { title: 'Remote page', type: 'dashboard', layout: { type: 'flex', direction: 'column' } },
+        components: [],
+        regions: [],
+      };
+    },
+    async extractAssets(imageBase64: string, outputDir: string) {
+      const path = join(outputDir, 'logo.png');
+      await writeFile(path, Buffer.from(imageBase64.replace(/^data:image\/\w+;base64,/, ''), 'base64'));
+      return [path];
     },
     async close() {},
   });
@@ -69,7 +96,7 @@ describe('native Streamable HTTP MCP', () => {
     }
   });
 
-  it('lists tools and generates from a remote Base64 image without a local MCP process', async () => {
+  it('provides all five tools with remote Base64 images and structured results', async () => {
     const dataDir = await mkdtemp(join(tmpdir(), 'image2html-native-mcp-'));
     const receivedImage: { current?: Buffer } = {};
     const { app, service } = await createServerApp({
@@ -93,15 +120,24 @@ describe('native Streamable HTTP MCP', () => {
     try {
       await client.connect(transport);
       const tools = await client.listTools();
-      expect(tools.tools.map((tool) => tool.name)).toEqual(['generate_component']);
+      expect(tools.tools.map((tool) => tool.name)).toEqual([
+        'generate_component',
+        'validate_design',
+        'repair_component',
+        'analyze_structure',
+        'extract_assets',
+      ]);
+      expect(tools.tools.every((tool) => tool.outputSchema?.type === 'object')).toBe(true);
       expect(tools.tools[0]?.inputSchema.properties).toHaveProperty('image_base64');
       expect(tools.tools[0]?.inputSchema.required).toEqual([]);
+      expect(tools.tools[1]?.inputSchema.properties).toHaveProperty('original_image_base64');
 
       const original = await readFile('examples/login.png');
+      const imageBase64 = `data:image/png;base64,${original.toString('base64')}`;
       const generated = await client.callTool({
         name: 'generate_component',
         arguments: {
-          image_base64: `data:image/png;base64,${original.toString('base64')}`,
+          image_base64: imageBase64,
           image_filename: 'login.png',
           framework: 'html',
           style_framework: 'inline',
@@ -110,7 +146,6 @@ describe('native Streamable HTTP MCP', () => {
           quality_mode: 'precision',
         },
       });
-
       expect(generated.isError).not.toBe(true);
       expect(generated.structuredContent).toMatchObject({
         success: true,
@@ -119,6 +154,53 @@ describe('native Streamable HTTP MCP', () => {
         validation: { similarity: 96, passed: true },
       });
       expect(receivedImage.current?.equals(original)).toBe(true);
+
+      const checked = await client.callTool({
+        name: 'validate_design',
+        arguments: {
+          original_image_base64: imageBase64,
+          image_filename: 'login.png',
+          code: '<main>current</main>',
+        },
+      });
+      expect(checked.isError).not.toBe(true);
+      expect(checked.structuredContent).toMatchObject({ success: true, similarity: 91, passed: false });
+      expect(JSON.stringify(checked.structuredContent)).not.toContain('not-for-structured-results');
+
+      const repaired = await client.callTool({
+        name: 'repair_component',
+        arguments: {
+          original_image_base64: imageBase64,
+          image_filename: 'login.png',
+          code: '<main>current</main>',
+        },
+      });
+      expect(repaired.isError).not.toBe(true);
+      expect(repaired.structuredContent).toMatchObject({
+        success: true,
+        code: '<main>remotely repaired</main>',
+        repairIterations: 1,
+      });
+
+      const analyzed = await client.callTool({
+        name: 'analyze_structure',
+        arguments: { image_base64: imageBase64, image_filename: 'login.png' },
+      });
+      expect(analyzed.isError).not.toBe(true);
+      expect(analyzed.structuredContent).toMatchObject({
+        success: true,
+        structure: { page: { title: 'Remote page' } },
+      });
+
+      const extracted = await client.callTool({
+        name: 'extract_assets',
+        arguments: { image_base64: imageBase64, image_filename: 'login.png' },
+      });
+      expect(extracted.isError).not.toBe(true);
+      const assets = (extracted.structuredContent as any).assets;
+      expect(assets).toHaveLength(1);
+      expect(assets[0]).toMatchObject({ name: 'logo.png', mimeType: 'image/png' });
+      expect(Buffer.from(assets[0].data, 'base64').equals(original)).toBe(true);
     } finally {
       await client.close();
       await service.close();

@@ -66,7 +66,7 @@ function delay(milliseconds: number): Promise<void> {
     : Promise.resolve();
 }
 
-/** Local stdio adapter for the authenticated, queued company HTTP service. */
+/** Local stdio adapter for the authenticated company HTTP service. */
 export class RemoteMCPClient {
   readonly #baseUrl: string;
   readonly #apiKey: string;
@@ -104,9 +104,63 @@ export class RemoteMCPClient {
     throw new RemoteAPIError(response.status, this.safeMessage(message));
   }
 
-  private async json(path: string, init: RequestInit, signal: AbortSignal): Promise<JobResponse> {
+  private async json<T = JobResponse>(path: string, init: RequestInit, signal: AbortSignal): Promise<T> {
     const response = await this.request(path, init, signal);
-    return await response.json() as JobResponse;
+    return await response.json() as T;
+  }
+
+  private mapError(error: unknown, aborted: boolean, action: string): MCPToolResult {
+    if (aborted) {
+      return toolError('REMOTE_TIMEOUT', `${action}超过 ${this.#timeoutMs}ms，已停止等待`);
+    }
+    if (error instanceof RemoteAPIError) {
+      const code = error.status === 401 || error.status === 403
+        ? 'REMOTE_UNAUTHORIZED'
+        : error.status === 429
+          ? 'REMOTE_RATE_LIMITED'
+          : 'REMOTE_HTTP_ERROR';
+      return toolError(code, `集中服务请求失败（HTTP ${error.status}）: ${error.message}`);
+    }
+    return toolError('REMOTE_REQUEST_FAILED', this.safeMessage(error instanceof Error ? error.message : String(error)));
+  }
+
+  private async callTool(
+    path: string,
+    args: any,
+    pathField: 'image_path' | 'original_image',
+    base64Field: 'image_base64' | 'original_image_base64',
+  ): Promise<MCPToolResult> {
+    let image: Awaited<ReturnType<typeof resolveImageInput>>;
+    try {
+      image = await resolveImageInput({
+        image_path: args[pathField],
+        image_base64: args[base64Field],
+        image_filename: args.image_filename,
+      });
+    } catch (error) {
+      if (error instanceof ImageInputError) return toolError(error.code, error.message);
+      throw error;
+    }
+
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), this.#timeoutMs);
+    timer.unref();
+    try {
+      const payload = { ...args };
+      delete payload[pathField];
+      delete payload.output_dir;
+      payload[base64Field] = `data:${image.type};base64,${image.data.toString('base64')}`;
+      payload.image_filename = image.filename;
+      return await this.json<MCPToolResult>(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }, controller.signal);
+    } catch (error) {
+      return this.mapError(error, controller.signal.aborted, '远程工具调用');
+    } finally {
+      clearTimeout(timer);
+    }
   }
 
   async generateComponent(
@@ -114,7 +168,7 @@ export class RemoteMCPClient {
     onStatus?: (status: string) => void,
   ): Promise<MCPToolResult> {
     if (args.asset_mode === 'extract') {
-      return toolError('UNSUPPORTED_REMOTE_OPTION', '远程生成适配器暂不支持 asset_mode=extract，请使用本地 MCP 提取资源');
+      return toolError('UNSUPPORTED_REMOTE_OPTION', '生成任务暂不支持 asset_mode=extract，请调用 extract_assets');
     }
     let image: Awaited<ReturnType<typeof resolveImageInput>>;
     try {
@@ -199,21 +253,26 @@ export class RemoteMCPClient {
         structuredContent,
       };
     } catch (error) {
-      if (controller.signal.aborted) {
-        return toolError('REMOTE_TIMEOUT', `远程生成超过 ${this.#timeoutMs}ms，已停止等待`);
-      }
-      if (error instanceof RemoteAPIError) {
-        const code = error.status === 401 || error.status === 403
-          ? 'REMOTE_UNAUTHORIZED'
-          : error.status === 429
-            ? 'REMOTE_RATE_LIMITED'
-            : 'REMOTE_HTTP_ERROR';
-        return toolError(code, `集中服务请求失败（HTTP ${error.status}）: ${error.message}`);
-      }
-      return toolError('REMOTE_REQUEST_FAILED', this.safeMessage(error instanceof Error ? error.message : String(error)));
+      return this.mapError(error, controller.signal.aborted, '远程生成');
     } finally {
       clearTimeout(timer);
     }
+  }
+
+  async validateDesign(args: any = {}): Promise<MCPToolResult> {
+    return this.callTool('/v1/tools/validate', args, 'original_image', 'original_image_base64');
+  }
+
+  async repairComponent(args: any = {}): Promise<MCPToolResult> {
+    return this.callTool('/v1/tools/repair', args, 'original_image', 'original_image_base64');
+  }
+
+  async analyzeStructure(args: any = {}): Promise<MCPToolResult> {
+    return this.callTool('/v1/tools/analyze', args, 'image_path', 'image_base64');
+  }
+
+  async extractAssets(args: any = {}): Promise<MCPToolResult> {
+    return this.callTool('/v1/tools/extract', args, 'image_path', 'image_base64');
   }
 }
 

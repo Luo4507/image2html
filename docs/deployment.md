@@ -155,7 +155,7 @@ curl -fL -o component.html http://localhost:3000/v1/jobs/job-id/artifacts/code \
 }
 ```
 
-远程端点目前只开放 `generate_component`。OpenCode 本机图片通过 `image_base64` 上传，只有服务端可见路径才使用 `image_path`；不支持 `asset_mode=extract`。其余四个工具仍由本地 `dist/mcp/index.js` 提供。完整客户端配置见[使用及 AI 工具接入指导](usage-and-ai-integration.md)。
+远程端点开放全部五个工具。生成、结构分析和资源提取使用 `image_path` 或 `image_base64`，独立校验和修复使用 `original_image` 或 `original_image_base64`。OpenCode 本机图片应使用 Base64，只有服务端可见路径才使用路径参数。生成任务的 `asset_mode` 保持 `none`，分离资源通过 `extract_assets` 返回 Base64 图片。完整客户端配置见[使用及 AI 工具接入指导](usage-and-ai-integration.md)。
 
 ### Codex / 旧客户端 stdio 适配器
 

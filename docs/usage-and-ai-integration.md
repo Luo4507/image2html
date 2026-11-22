@@ -9,13 +9,13 @@
 | 使用方式 | 适用场景 | 主要产物 |
 | --- | --- | --- |
 | CLI | 命令行转换、脚本批处理、导出可运行工程 | 单个源码文件，或 `--project` 导出的完整 Vite 工程 |
-| 原生远程 MCP | OpenCode 通过 `/mcp` URL 调用集中服务，不启动本地 MCP 进程 | 远程生成源码、精简校验结果；目前仅生成工具 |
+| 原生远程 MCP | OpenCode 通过 `/mcp` URL 调用集中服务，不启动本地 MCP 进程 | 五个工具的远程源码、校验、结构及资源结果 |
 | 本地 MCP | OpenCode、Codex、Cursor 等 AI 工具调用生成、校验和修复能力 | 原文本及 `structuredContent` 结构化结果 |
-| stdio 远程适配器 | 需要兼容旧客户端的集中生成方式 | 远程生成源码、精简校验结果；目前仅生成工具 |
+| stdio 远程适配器 | 需要兼容旧客户端的集中调用方式 | 五个工具的远程源码、校验、结构及资源结果 |
 | Node.js API | 在自己的 Node.js 程序中集成 | 结构化转换结果 |
 | HTTP 服务 | 多用户、任务队列、权限隔离和产物下载 | `/mcp` 原生远程 MCP、`/v1/jobs` 异步任务及可下载产物 |
 
-OpenCode 远程接入推荐使用 **`http(s)://<服务地址>/mcp`**，传输方式为 Streamable HTTP，服务端复用 API 密钥、任务队列与用户隔离。本地五工具仍由 AI 客户端启动 `node .../dist/mcp/index.js`；兼容适配器使用 `node .../dist/mcp/remote-index.js` 连接集中 HTTP 服务。只有 `/mcp` 是原生远程 MCP 地址，不要把服务根 URL 或 `/v1/jobs` 填进远程 MCP 的 `url`。
+OpenCode 远程接入推荐使用 **`http(s)://<服务地址>/mcp`**，传输方式为 Streamable HTTP，服务端复用 API 密钥、任务队列与用户隔离。本地五工具由 AI 客户端启动 `node .../dist/mcp/index.js`；兼容适配器使用 `node .../dist/mcp/remote-index.js` 连接集中 HTTP 服务，同样提供五个工具。只有 `/mcp` 是原生远程 MCP 地址，不要把服务根 URL 或 `/v1/jobs` 填进远程 MCP 的 `url`。
 
 `generate_component` **不会自动在业务项目中创建文件，也不会导出完整 Vite 工程**。需要落盘时，让 AI 客户端把返回源码写入指定文件；需要完整工程时，使用 CLI `--project`。
 
@@ -249,7 +249,7 @@ opencode service restart
 }
 ```
 
-公司部署时将 `url` 换成 `https://<公司服务域名>/mcp`。`type: "remote"` 使用 Streamable HTTP；`oauth: false` 表示只用 API 密钥，不启动 OAuth 登录。远程工具目前只有 `generate_component`，图片使用 `image_base64` 上传，避免服务端无法访问 OpenCode 本机路径。
+公司部署时将 `url` 换成 `https://<公司服务域名>/mcp`。`type: "remote"` 使用 Streamable HTTP；`oauth: false` 表示只用 API 密钥，不启动 OAuth 登录。远程端点提供全部五个工具，本机图片使用 Base64 上传，避免服务端无法访问 OpenCode 本机路径。
 
 检查连接：
 
@@ -499,7 +499,7 @@ env_vars = [
 OpenCode → Streamable HTTP + 个人 Bearer API 密钥 → 公司 /mcp → 任务队列 → 内网模型与 Chromium
 ```
 
-配置见 5.1。原生端点只注册 `generate_component`，复用鉴权、限流、任务队列和按用户隔离的产物。OpenCode 本机图片通过 `image_base64` 上传；只有服务端可见的图片才使用 `image_path`。`asset_mode=extract` 不受支持，独立校验、修复、结构分析和资源提取仍由本地五工具入口提供。
+配置见 5.1。原生端点注册全部五个工具，复用鉴权、限流、生成任务队列和按用户隔离的产物。生成、结构分析和资源提取使用 `image_path` 或 `image_base64`；独立校验和修复使用 `original_image` 或 `original_image_base64`。OpenCode 本机图片应使用 Base64，路径只适用于服务端可见文件。生成任务的 `asset_mode` 保持 `none`，分离资源通过 `extract_assets` 返回 `assets` 数组，其中包含文件名、MIME 类型和纯 Base64 图片数据。
 
 ### 8.3 兼容旧客户端：stdio 远程适配器
 
@@ -524,7 +524,7 @@ startup_timeout_sec = 30
 tool_timeout_sec = 600
 ```
 
-适配器同样只注册 `generate_component`，支持本机 `image_path` 或 `image_base64`，执行任务上传、轮询和源码下载。它不是原生 Streamable HTTP 端点，`IMAGE2HTML_URL` 只能由适配器读取，不能直接填到远程 MCP 的 `url` 字段。个人密钥只通过环境变量传递，不要提交到 Git 或写入日志。
+适配器同样注册全部五个工具，支持本机路径或 Base64 图片。生成工具执行任务上传、轮询和源码下载，其余工具通过 `/v1/tools/*` 调用服务端实现。它不是原生 Streamable HTTP 端点，`IMAGE2HTML_URL` 只能由适配器读取，不能直接填到远程 MCP 的 `url` 字段。个人密钥只通过环境变量传递，不要提交到 Git 或写入日志。
 
 ## 9. 可直接使用的 AI 提示词
 
@@ -556,7 +556,7 @@ OpenCode 远程接入时，把图片拖进对话，或直接使用项目中的�
 将修复后的代码写回文件，重新检查页面效果，最后运行项目构建。
 ```
 
-独立校验和修复提示词用于本地五工具入口，图片需使用绝对路径。远程 `generate_component` 已在一次生成中完成视觉校验和有界修复，不需要再调用独立修复工具。
+本地和远程五工具入口都支持独立校验、修复与结构分析。本地入口服务名为 `design-to-code`，远程入口服务名为 `image2html`，提示词中的服务名按实际接入方式替换。本机图片使用绝对路径，由客户端或适配器完成读取和上传。`generate_component` 已包含视觉校验和有界修复；需要单独检查或修复已有代码时，再调用独立工具。
 
 ### 9.4 只分析设计稿
 

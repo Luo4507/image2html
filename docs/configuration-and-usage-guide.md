@@ -112,7 +112,7 @@ opencode mcp list
 | HTTP 401 或未授权 | 重新执行第 2.2 节的两条密钥命令，并确认密钥有效 |
 | 提示需要 OAuth 登录 | 确认远程配置中包含 `oauth: false` |
 | 提示图片不存在 | 确认 OpenCode 能读取图片，并提醒它将本机图片转为 Base64 后上传 |
-| 只看到 `generate_component` | 正常，远程模式目前只开放在线生成工具 |
+| 未看到 5 个工具 | 执行 `opencode mcp list` 检查连接；已连接但仍缺少工具时，重启 OpenCode 并确认服务已更新到最新版本 |
 | 对话中有代码，项目里没有文件 | 明确要求 OpenCode 将代码写入项目文件 |
 
 ## 7. 进阶文档

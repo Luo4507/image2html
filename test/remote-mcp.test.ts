@@ -113,6 +113,40 @@ describe('remote MCP generation adapter', () => {
     });
   });
 
+  it('sends all non-generation tools through authenticated HTTP with Base64 images', async () => {
+    const fetchMock = vi.fn().mockImplementation(async () => jsonResponse({
+      content: [{ type: 'text', text: 'ok' }],
+      structuredContent: { success: true },
+    }));
+    const client = new RemoteMCPClient({
+      baseUrl: 'http://image2html.internal:3000',
+      apiKey: 'user-secret',
+      fetchImpl: fetchMock,
+    });
+
+    await client.validateDesign({ original_image: imagePath, code: '<main>current</main>' });
+    await client.repairComponent({ original_image: imagePath, code: '<main>current</main>' });
+    await client.analyzeStructure({ image_path: imagePath });
+    await client.extractAssets({ image_path: imagePath, output_dir: 'client-assets' });
+
+    expect(fetchMock.mock.calls.map(([url]) => url)).toEqual([
+      'http://image2html.internal:3000/v1/tools/validate',
+      'http://image2html.internal:3000/v1/tools/repair',
+      'http://image2html.internal:3000/v1/tools/analyze',
+      'http://image2html.internal:3000/v1/tools/extract',
+    ]);
+    const payloads = fetchMock.mock.calls.map(([, init]) => JSON.parse(String(init.body)));
+    expect(payloads[0].original_image_base64).toMatch(/^data:image\/png;base64,/);
+    expect(payloads[0].original_image).toBeUndefined();
+    expect(payloads[0].code).toBe('<main>current</main>');
+    expect(payloads[1].original_image_base64).toMatch(/^data:image\/png;base64,/);
+    expect(payloads[2].image_base64).toMatch(/^data:image\/png;base64,/);
+    expect(payloads[3].image_base64).toMatch(/^data:image\/png;base64,/);
+    expect(payloads[3].output_dir).toBeUndefined();
+    expect(payloads.every((payload) => payload.image_filename === 'login.png')).toBe(true);
+    expect(fetchMock.mock.calls.every(([, init]) => init.headers.Authorization === 'Bearer user-secret')).toBe(true);
+  });
+
   it('maps authentication failures without exposing the API key', async () => {
     const client = new RemoteMCPClient({
       baseUrl: 'http://image2html.internal:3000',
@@ -129,12 +163,17 @@ describe('remote MCP generation adapter', () => {
     expect(JSON.stringify(result)).not.toContain('do-not-expose');
   });
 
-  it('publishes only generate_component through the remote MCP server', async () => {
+  it('publishes and dispatches all five tools through the remote MCP server', async () => {
+    const result = (structuredContent: Record<string, unknown>) => ({
+      content: [{ type: 'text', text: 'ok' }],
+      structuredContent: { success: true, ...structuredContent },
+    });
     const remote = {
-      generateComponent: vi.fn().mockResolvedValue({
-        content: [{ type: 'text', text: 'ok' }],
-        structuredContent: { success: true, code: '<main>remote</main>' },
-      }),
+      generateComponent: vi.fn().mockResolvedValue(result({ code: '<main>remote</main>' })),
+      validateDesign: vi.fn().mockResolvedValue(result({ similarity: 91 })),
+      repairComponent: vi.fn().mockResolvedValue(result({ code: '<main>repaired</main>' })),
+      analyzeStructure: vi.fn().mockResolvedValue(result({ structure: { page: { title: 'Demo' } } })),
+      extractAssets: vi.fn().mockResolvedValue(result({ assets: [] })),
     };
     const server = await createRemoteMCPServer({ client: remote });
     const client = new Client({ name: 'remote-protocol-test', version: '1.0.0' }, { capabilities: {} });
@@ -143,13 +182,29 @@ describe('remote MCP generation adapter', () => {
     try {
       await Promise.all([server.connect(serverTransport), client.connect(clientTransport)]);
       const tools = await client.listTools();
-      expect(tools.tools.map((tool) => tool.name)).toEqual(['generate_component']);
+      expect(tools.tools.map((tool) => tool.name)).toEqual([
+        'generate_component',
+        'validate_design',
+        'repair_component',
+        'analyze_structure',
+        'extract_assets',
+      ]);
       const generated = await client.callTool({
         name: 'generate_component',
         arguments: { image_path: imagePath },
       });
       expect(generated.structuredContent).toMatchObject({ success: true, code: '<main>remote</main>' });
-      const unknown = await client.callTool({ name: 'validate_design', arguments: {} });
+
+      for (const name of ['validate_design', 'repair_component', 'analyze_structure', 'extract_assets']) {
+        const called = await client.callTool({ name, arguments: {} });
+        expect(called.isError).not.toBe(true);
+      }
+      expect(remote.validateDesign).toHaveBeenCalledOnce();
+      expect(remote.repairComponent).toHaveBeenCalledOnce();
+      expect(remote.analyzeStructure).toHaveBeenCalledOnce();
+      expect(remote.extractAssets).toHaveBeenCalledOnce();
+
+      const unknown = await client.callTool({ name: 'unknown_tool', arguments: {} });
       expect(unknown).toMatchObject({ isError: true, structuredContent: { error: { code: 'UNKNOWN_TOOL' } } });
     } finally {
       await client.close();

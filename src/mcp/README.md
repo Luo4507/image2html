@@ -4,9 +4,9 @@
 
 | 入口 | 用途 | 可用工具 |
 | --- | --- | --- |
-| HTTP 服务 `/mcp` | OpenCode 通过 Streamable HTTP 原生远程调用 | 仅 `generate_component` |
+| HTTP 服务 `/mcp` | OpenCode 通过 Streamable HTTP 原生远程调用 | 全部五个工具 |
 | `dist/mcp/index.js` | 本地模型调用、浏览器校验与文件处理 | 全部五个工具 |
-| `dist/mcp/remote-index.js` | 本地 stdio 适配器连接公司集中 HTTP 服务 | 仅 `generate_component` |
+| `dist/mcp/remote-index.js` | 本地 stdio 适配器连接公司集中 HTTP 服务 | 全部五个工具 |
 
 两个 Node.js 入口使用 stdio；`/mcp` 是原生远程端点。远程适配器的 `IMAGE2HTML_URL` 使用服务根地址，OpenCode 远程配置的 `url` 则以 `/mcp` 结尾，两者不要混用。
 
@@ -17,15 +17,15 @@ pnpm install
 pnpm build
 ```
 
-本地五工具模式需要模型服务与 Playwright Chromium。远程生成模式只需要公司服务地址和个人 API 密钥，模型与 Chromium 运行在服务器侧。
+本地五工具模式需要模型服务与 Playwright Chromium。远程五工具模式只需要公司服务地址和个人 API 密钥，模型与 Chromium 运行在服务器侧。
 
-## 本地工具
+## 五个工具
 
 - `generate_component`：生成 HTML、React 或 Vue 代码，支持 direct/structured、质量模式、分段生成、校验和自动修复。
 - `validate_design`：真实渲染并比较设计稿，返回相似度、质量指标、差异区域和建议。
 - `repair_component`：先校验当前代码，再执行视觉修复、候选重新校验和质量择优。
 - `analyze_structure`：在 `structure` 字段返回页面结构对象。
-- `extract_assets`：识别并裁剪 PNG 资源，真实写入输出目录。
+- `extract_assets`：识别并裁剪 PNG 资源；本地模式写入输出目录，远程模式通过 Base64 返回图片。
 
 本地启动：
 
@@ -65,7 +65,7 @@ AI 客户端通常负责启动这个进程，不需要在终端长期运行。�
 }
 ```
 
-`validate_design` 将校验字段直接放在顶层，`regions` 可以直接作为 `repair_component.diff_regions` 传入。结构分析使用 `structure` 字段，资源提取使用 `outputDir` 和 `paths` 字段。
+`validate_design` 将校验字段直接放在顶层，`regions` 可以直接作为 `repair_component.diff_regions` 传入。结构分析使用 `structure` 字段。本地资源提取使用 `outputDir` 和 `paths` 字段；远程资源提取使用 `assets` 字段。
 
 结构化校验结果不包含 `screenshots` 或 `diffImage`，避免把大段 base64 注入 AI 上下文。
 
@@ -91,7 +91,7 @@ AI 客户端通常负责启动这个进程，不需要在终端长期运行。�
 
 必填：
 
-- `original_image`：原图路径。
+- `original_image`：本地或服务端可见的原图路径；远程调用也可使用 `original_image_base64`。
 - `code`：当前完整源码。
 
 可选：
@@ -114,7 +114,7 @@ OpenCode
       ▼
 公司 image2html /mcp
       ├── 用户鉴权与限流
-      ├── 有界任务队列
+      ├── 有界生成任务队列
       ├── 内网模型与 Chromium
       └── 按用户隔离的任务产物
 ```
@@ -140,11 +140,34 @@ OpenCode V2 配置：
 }
 ```
 
-远程端点只开放 `generate_component`。本机图片使用 `image_base64` 和 `image_filename` 上传；`image_path` 仅适用于服务端可见路径。`asset_mode=extract` 不受支持；独立校验、修复、结构分析和资源提取仍使用本地 MCP。个人密钥只通过环境变量提供，不要写入源码、日志或 Git。
+远程端点开放全部五个工具：
+
+- 生成、结构分析和资源提取：使用 `image_path` 或 `image_base64`。
+- 独立校验和修复：使用 `original_image` 或 `original_image_base64`，并提供 `code`。
+- 纯 Base64 输入同时提供 `image_filename`；Data URL 可以自动识别图片格式。
+- 本机文件应使用 Base64；路径参数只适用于运行当前 MCP 入口的机器可见文件系统。
+- 生成任务的 `asset_mode` 保持 `none`，需要分离图片时调用 `extract_assets`。
+
+远程 `extract_assets` 忽略 `output_dir`，返回：
+
+```json
+{
+  "success": true,
+  "assets": [
+    {
+      "name": "logo.png",
+      "mimeType": "image/png",
+      "data": "iVBORw0KGgoAAAANS..."
+    }
+  ]
+}
+```
+
+`data` 是不带 Data URL 前缀的纯 Base64，AI 客户端可解码后写入当前项目。个人密钥只通过环境变量提供，不要写入源码、日志或 Git。
 
 ## 兼容 stdio 远程适配器
 
-旧客户端仍可使用 `dist/mcp/remote-index.js`，它通过 `IMAGE2HTML_URL`、`IMAGE2HTML_API_KEY` 连接服务根地址，执行图片上传、任务轮询和源码下载。Codex 配置：
+旧客户端仍可使用 `dist/mcp/remote-index.js`，它通过 `IMAGE2HTML_URL`、`IMAGE2HTML_API_KEY` 连接服务根地址。生成工具执行图片上传、任务轮询和源码下载，其余四个工具通过 `/v1/tools/*` 调用同一套服务端实现。Codex 配置：
 
 ```toml
 [mcp_servers.design-to-code]
@@ -156,4 +179,4 @@ startup_timeout_sec = 30
 tool_timeout_sec = 600
 ```
 
-适配器同样只开放 `generate_component`，支持本机 `image_path` 或 `image_base64`。它不是原生 HTTP MCP 端点，`IMAGE2HTML_URL` 不应包含 `/mcp`。
+适配器同样开放全部五个工具，支持本机路径或 Base64 图片。它不是原生 HTTP MCP 端点，`IMAGE2HTML_URL` 不应包含 `/mcp`。
