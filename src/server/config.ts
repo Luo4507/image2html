@@ -9,6 +9,7 @@ export interface ServerConfig {
   jobConcurrency: number;
   maxQueueSize: number;
   rateLimitPerMinute: number;
+  jobRetentionHours: number;
 }
 
 export function parseApiKeys(value = ''): Map<string, string> {
@@ -32,6 +33,10 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): ServerCon
   if (apiKeys.size === 0) {
     throw new Error('API_KEYS is required, for example: API_KEYS=alice:replace-with-a-long-secret');
   }
+  const jobRetentionHours = Number(env.JOB_RETENTION_HOURS || 168);
+  if (!Number.isFinite(jobRetentionHours) || jobRetentionHours < 0) {
+    throw new Error('JOB_RETENTION_HOURS must be a non-negative number');
+  }
 
   return {
     host: env.HOST || '0.0.0.0',
@@ -42,5 +47,6 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): ServerCon
     jobConcurrency: Number(env.JOB_CONCURRENCY || 2),
     maxQueueSize: Number(env.MAX_QUEUE_SIZE || 100),
     rateLimitPerMinute: Number(env.RATE_LIMIT_PER_MINUTE || 60),
+    jobRetentionHours,
   };
 }

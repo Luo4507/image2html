@@ -18,6 +18,7 @@ describe('JobService progress events', () => {
       jobConcurrency: 1,
       maxQueueSize: 10,
       rateLimitPerMinute: 60,
+      jobRetentionHours: 168,
     };
     const service = new JobService({
       config,

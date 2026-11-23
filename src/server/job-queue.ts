@@ -75,6 +75,17 @@ export class JobQueue<TResult = unknown> {
     if (record.status === 'succeeded') this.succeeded += 1;
     if (record.status === 'failed') this.failed += 1;
   }
+
+  /** Remove a terminal job after its persisted artifacts have been deleted. */
+  remove(id: string): boolean {
+    const job = this.jobs.get(id);
+    if (!job || job.status === 'queued' || job.status === 'running') return false;
+    this.jobs.delete(id);
+    if (job.status === 'succeeded') this.succeeded = Math.max(0, this.succeeded - 1);
+    if (job.status === 'failed') this.failed = Math.max(0, this.failed - 1);
+    return true;
+  }
+
   get stats() {
     return {
       active: this.active,

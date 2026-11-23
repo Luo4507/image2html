@@ -28,6 +28,7 @@ describe('stdio remote adapter tool HTTP bridge', () => {
       jobConcurrency: 1,
       maxQueueSize: 10,
       rateLimitPerMinute: 60,
+      jobRetentionHours: 168,
     };
     const { app, service } = await createServerApp({
       config,

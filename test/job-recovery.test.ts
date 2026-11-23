@@ -21,7 +21,7 @@ function options(): CodegenOptions {
 function config(dataDir: string): JobServiceOptions['config'] {
   return {
     host: '127.0.0.1', port: 0, dataDir, apiKeys: new Map(),
-    maxUploadMb: 2, jobConcurrency: 1, maxQueueSize: 10, rateLimitPerMinute: 60,
+    maxUploadMb: 2, jobConcurrency: 1, maxQueueSize: 10, rateLimitPerMinute: 60, jobRetentionHours: 168,
   };
 }
 

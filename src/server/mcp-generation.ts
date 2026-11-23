@@ -84,26 +84,32 @@ export class JobServiceMCPClient {
 
     return this.execute(async () => {
       const imagePath = await this.storeImage(args, 'image_path', 'image_base64');
-      const codegenOptions = resolveJobOptions({
-        framework: args.framework,
-        styleFramework: args.style_framework,
-        componentLibrary: args.component_library,
-        typescript: args.typescript,
-        responsive: args.responsive,
-        accessibility: args.accessibility ?? true,
-        pipeline: args.pipeline,
-        qualityMode: args.quality_mode,
-        layoutMode: args.layout_mode,
-        assetMode: 'none',
-      });
-
       const { service, userId } = this.options;
-      const submitted = service.submit({
-        userId,
-        imagePath,
-        options: codegenOptions,
-        validate: true,
-      });
+      const submitted = await (async () => {
+        try {
+          const codegenOptions = resolveJobOptions({
+            framework: args.framework,
+            styleFramework: args.style_framework,
+            componentLibrary: args.component_library,
+            typescript: args.typescript,
+            responsive: args.responsive,
+            accessibility: args.accessibility ?? true,
+            pipeline: args.pipeline,
+            qualityMode: args.quality_mode,
+            layoutMode: args.layout_mode,
+            assetMode: 'none',
+          });
+          return service.submit({
+            userId,
+            imagePath,
+            options: codegenOptions,
+            validate: true,
+          });
+        } catch (error) {
+          await rm(imagePath, { force: true });
+          throw error;
+        }
+      })();
       let lastStatus = '';
       const deadline = Date.now() + (this.options.timeoutMs ?? 600_000);
 

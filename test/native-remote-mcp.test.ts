@@ -18,6 +18,7 @@ function config(dataDir: string): ServerConfig {
     jobConcurrency: 1,
     maxQueueSize: 10,
     rateLimitPerMinute: 60,
+    jobRetentionHours: 168,
   };
 }
 

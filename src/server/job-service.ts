@@ -1,7 +1,7 @@
-import { copyFile, mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
+import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { basename, join } from 'node:path';
+import { basename, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { DesignToCode } from '../index.js';
 import { getDefaultModelConfig, getDefaultValidationConfig } from '../config.js';
 import type {
@@ -72,6 +72,8 @@ export class JobService {
   private readonly conversionCache = new Map<string, Promise<DesignToCodeResult>>();
   private readonly converterFactory: () => Converter;
   private restorePromise?: Promise<void>;
+  private cleanupPromise?: Promise<number>;
+  private cleanupTimer?: NodeJS.Timeout;
 
   constructor(private readonly options: JobServiceOptions) {
     this.converterFactory = options.converterFactory || (() => new DesignToCode());
@@ -144,6 +146,8 @@ export class JobService {
   }
 
   async close(): Promise<void> {
+    if (this.cleanupTimer) clearInterval(this.cleanupTimer);
+    this.cleanupTimer = undefined;
     await this.waitForIdle();
     this.listeners.clear();
     this.conversionCache.clear();
@@ -151,8 +155,84 @@ export class JobService {
 
   /** Restore persisted jobs and reusable conversion results once per service. */
   async restore(): Promise<void> {
-    if (!this.restorePromise) this.restorePromise = this.performRestore();
+    if (!this.restorePromise) {
+      this.restorePromise = (async () => {
+        await this.cleanupExpiredJobs();
+        await this.performRestore();
+        if (this.options.config.jobRetentionHours > 0) {
+          this.cleanupTimer = setInterval(() => {
+            void this.cleanupExpiredJobs().catch((error) =>
+              console.error('[server] failed to clean expired jobs', error)
+            );
+          }, 3_600_000);
+          this.cleanupTimer.unref();
+        }
+      })();
+    }
     await this.restorePromise;
+  }
+
+  /** Delete terminal jobs older than the configured retention period. */
+  async cleanupExpiredJobs(now = new Date()): Promise<number> {
+    if (this.options.config.jobRetentionHours === 0) return 0;
+    if (this.cleanupPromise) return this.cleanupPromise;
+    const cleanup = this.performExpiredJobCleanup(now);
+    this.cleanupPromise = cleanup;
+    try {
+      return await cleanup;
+    } finally {
+      if (this.cleanupPromise === cleanup) this.cleanupPromise = undefined;
+    }
+  }
+
+  private async performExpiredJobCleanup(now: Date): Promise<number> {
+    const jobsRoot = join(this.options.config.dataDir, 'jobs');
+    if (!existsSync(jobsRoot)) return 0;
+    const cutoff = now.getTime() - this.options.config.jobRetentionHours * 3_600_000;
+    const entries = await readdir(jobsRoot, { withFileTypes: true });
+    let removed = 0;
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) continue;
+      const jobDir = join(jobsRoot, entry.name);
+      try {
+        const job = JSON.parse(
+          await readFile(join(jobDir, 'job.json'), 'utf8')
+        ) as JobRecord<ConversionJobResult>;
+        if (job.status !== 'succeeded' && job.status !== 'failed') continue;
+        const completedAt = Date.parse(job.completedAt || job.createdAt);
+        if (!Number.isFinite(completedAt) || completedAt >= cutoff) continue;
+
+        await rm(jobDir, { recursive: true, force: true });
+        this.queue.remove(job.id);
+        this.inputs.delete(job.id);
+        this.listeners.delete(job.id);
+        this.events.delete(job.id);
+        this.previews.delete(job.id);
+        removed += 1;
+      } catch (error) {
+        console.warn(`[server] Skipping job cleanup at ${jobDir}`, error);
+      }
+    }
+    return removed;
+  }
+
+  private async removeUploadedCopy(imagePath: string): Promise<void> {
+    const uploadsRoot = resolve(this.options.config.dataDir, 'uploads');
+    const resolvedImagePath = resolve(imagePath);
+    const relativePath = relative(uploadsRoot, resolvedImagePath);
+    if (
+      !relativePath ||
+      relativePath === '..' ||
+      relativePath.startsWith(`..${sep}`) ||
+      isAbsolute(relativePath)
+    ) return;
+
+    try {
+      await rm(resolvedImagePath, { force: true });
+    } catch (error) {
+      console.warn(`[server] Failed to remove uploaded copy ${resolvedImagePath}`, error);
+    }
   }
 
   private async performRestore(): Promise<void> {
@@ -333,7 +413,10 @@ export class JobService {
     const jobDir = join(this.options.config.dataDir, 'jobs', job.id);
     await mkdir(jobDir, { recursive: true });
     const sourcePath = join(jobDir, 'source.png');
-    await copyFile(input.imagePath, sourcePath);
+    const uploadedImagePath = input.imagePath;
+    await copyFile(uploadedImagePath, sourcePath);
+    input.imagePath = sourcePath;
+    await this.removeUploadedCopy(uploadedImagePath);
 
     try {
       const { result, cacheHit } = await this.convertWithCache(input, sourcePath);

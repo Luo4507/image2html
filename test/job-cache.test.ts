@@ -20,6 +20,7 @@ describe('JobService conversion cache', () => {
       jobConcurrency: 1,
       maxQueueSize: 10,
       rateLimitPerMinute: 60,
+      jobRetentionHours: 168,
     };
     const options: CodegenOptions = {
       framework: 'html',

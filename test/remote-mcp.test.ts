@@ -223,6 +223,7 @@ describe('remote MCP generation adapter', () => {
       jobConcurrency: 1,
       maxQueueSize: 10,
       rateLimitPerMinute: 60,
+      jobRetentionHours: 168,
     };
     const { app, service } = await createServerApp({
       config,

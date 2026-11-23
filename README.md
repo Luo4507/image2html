@@ -193,6 +193,7 @@ await converter.close();
 API_KEYS=alice:long-random-secret,bob:another-long-random-secret
 JOB_CONCURRENCY=2
 DATA_DIR=data
+JOB_RETENTION_HOURS=168
 ```
 
 启动：

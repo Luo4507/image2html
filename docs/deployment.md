@@ -38,6 +38,7 @@ LLM_MODEL=your-code-model-name
 API_KEYS=alice:long-random-secret,bob:another-long-random-secret
 JOB_CONCURRENCY=2
 DATA_DIR=data
+JOB_RETENTION_HOURS=168
 ```
 
 `API_KEYS` 使用 `用户标识:密钥`，多个用户使用英文逗号分隔。每个用户必须拥有不同的长随机密钥。不要将 `.env` 提交到 Git。
@@ -51,6 +52,7 @@ DATA_DIR=data
 | `JOB_CONCURRENCY` | `2` | 同时执行的模型/浏览器任务数 |
 | `MAX_QUEUE_SIZE` | `100` | 等待队列长度 |
 | `RATE_LIMIT_PER_MINUTE` | `60` | 单用户每分钟请求上限 |
+| `JOB_RETENTION_HOURS` | `168` | 已完成/失败任务的保留小时数，`0` 表示不自动清理 |
 
 ## 本地启动
 
@@ -197,7 +199,7 @@ pnpm verify:server
 - 在 Nginx/API 网关启用 HTTPS，并同步设置上传大小和较长请求超时。
 - 模型生成可能需要数分钟；客户端应轮询任务，而不是保持长时间同步请求。
 - 4 核 8GB 可作为小规模部署起点，先将 `JOB_CONCURRENCY` 设置为 `1` 或 `2`。
-- 定期清理 `DATA_DIR/uploads` 中的异常残留文件及过期任务。
+- 上传图片复制到任务目录后，会自动删除 `DATA_DIR/uploads` 中的原始副本。服务启动时及运行期间每小时自动清理超过 `JOB_RETENTION_HOURS` 的已完成或失败任务；排队和运行中的任务不会清理。
 - 重启前可等待活动任务完成，减少重复执行；持久化任务的恢复规则见上文。
 - 多实例、高可用和跨服务器执行需要 Redis 队列、共享存储及集中任务状态，当前版本不包含这些能力。
 
