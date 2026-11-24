@@ -120,3 +120,176 @@ opencode mcp list
 - [使用及 AI 工具接入指导](usage-and-ai-integration.md)：Codex、本地 MCP、参数说明和其他 AI 工具。
 - [部署指南](deployment.md)：Docker、公司内网部署和多人密钥管理。
 - [示例设计稿](../examples/README.md)：用于测试转换的现有图片。
+- [模型对比测试报告](../examples/compare/README.md)：qwen3.8-27b 与 qwen3.8-max 的生成效果对比。
+
+---
+
+## 8. 本地快速接入（5 步上手）
+
+适合已在本机克隆 image2html 仓库的开发者。与第 1-3 节的远程模式二选一即可。
+
+### 8.1 安装与构建
+
+```powershell
+cd F:\code\image2html
+pnpm install
+pnpm build
+```
+
+### 8.2 配置模型密钥
+
+编辑项目根目录 `.env`（不会提交到 Git）：
+
+```dotenv
+LLM_VL_BASE_URL=https://你的模型端点/compatible-mode/v1
+LLM_VL_API_KEY=你的视觉模型密钥
+LLM_VL_MODEL=qwen3.8-max
+LLM_BASE_URL=https://你的模型端点/compatible-mode/v1
+LLM_API_KEY=你的代码模型密钥
+LLM_MODEL=qwen3.8-max
+```
+
+### 8.3 在 OpenCode 中注册本地 MCP
+
+编辑 `%USERPROFILE%\.config\opencode\opencode.jsonc`，在 `mcp.servers` 中加入（旧版配置格式则直接放在 `mcp` 下）：
+
+```jsonc
+{
+  "mcp": {
+    "servers": {
+      "image2html": {
+        "type": "local",
+        "command": ["cmd", "/c", "cd /d F:\\code\\image2html && pnpm mcp"],
+        "enabled": true
+      }
+    }
+  }
+}
+```
+
+### 8.4 验证连接
+
+完全重启 OpenCode，然后执行：
+
+```powershell
+opencode mcp list
+```
+
+看到 `✓ image2html  connected` 即接入成功。如果终端找不到 `opencode`，使用桌面版自带的 `opencode-cli.exe` 完整路径。
+
+### 8.5 发一张图测试
+
+```text
+分析 F:\testdata\img2html\电鸭.png 的页面结构。
+```
+
+能返回区域划分、组件清单和设计 Token，就说明全链路可用。
+
+### 8.6 本地与远程怎么选
+
+| 维度 | 本地 stdio（本节） | 远程 HTTP（第 1-3 节） |
+| --- | --- | --- |
+| 图片传递 | 只传本地文件路径，MCP 自己读盘 | 路径或 Base64 上传均可 |
+| 部署成本 | 每条命令拉起进程，零额外服务 | 需常驻 `node dist/server/index.js` 或 Docker |
+| 适用场景 | 个人本机开发、调试源码 | 团队共用、跨机器调用、集中管理密钥 |
+| 工具参数 | `image_path` | `image_path` / `image_base64` + `image_filename` |
+
+---
+
+## 9. 项目中的提示词场景手册
+
+**通用公式**：`给图片 + 给目标（技术栈/目录/规范）+ 给验收标准（写入文件、构建通过、视觉校验）`。
+
+### 9.1 全新功能 / 页面
+
+```text
+根据 designs/admin-dashboard.png 在 admin 应用里新增一个「数据看板」页面。
+要求：
+1. 使用 image2html 生成 React + TypeScript + antd 组件，风格与现有页面一致；
+2. 按项目现有目录规范放入 src/admin/views/，并注册路由；
+3. 静态数据集中放在单独的数据文件，方便后续替换为 /api/v1 接口；
+4. 完成后运行类型检查和构建，通过后预览效果。
+```
+
+### 9.2 组件开发
+
+```text
+把 designs/login-card.png 做成一个可复用的 LoginCard 组件（React + TS）。
+要求 props 可配置标题和提交事件，样式用 Tailwind，文件放 src/components/LoginCard.tsx。
+先 analyze_structure 分析结构，再生成并写入文件，最后跑构建。
+```
+
+### 9.3 问题修改（视觉偏差修复）
+
+```text
+生成的 DianyaPage 与 F:\testdata\img2html\电鸭.png 还有差异，请对比设计稿检查导航高度、
+统计数字颜色和卡片内边距，逐项修正后重新渲染对比。
+```
+
+也可以用工具级修复：
+
+```text
+刚才生成的页面和设计稿不一致（相似度 92%，主要差异在卡片间距和标题字号）。
+请用 repair_component 针对这些 diff 区域修复，保持其他部分不变，修完重新校验到 95% 以上。
+```
+
+### 9.4 视觉校验（只评估，不改代码）
+
+```text
+用 validate_design 检查 generated/Generatedpage.html 与 designs/dashboard.png 的还原度，
+给出相似度、差异区域和修改建议，先不要改代码。
+```
+
+### 9.5 素材提取
+
+```text
+用 extract_assets 把 designs/home.png 里的 Logo、图标和封面图裁出来，
+存到 src/assets/home/，并把页面中对应位置替换为真实图片引用。
+```
+
+### 9.6 高保真优化（MCP + 裁图 + 精修）
+
+```text
+这个页面照片区域不能用 CSS 近似，要求：
+1. 先用 image2html 生成整体结构；
+2. 把轮播图、封面、头像等照片区域从原图裁切为真实素材；
+3. 替换生成代码中的渐变占位，保留原图的角标和文字；
+4. 最后对比渲染效果。
+```
+
+### 9.7 技术栈切换 / 多版本对比
+
+```text
+同一张 designs/dashboard.png，分别生成 Vue3 + Element Plus 和纯 HTML + Tailwind 两个版本，
+放到 prototypes/ 下对比，告诉我各自相似度。
+```
+
+### 9.8 批量处理
+
+```text
+把 designs/ 下所有 png 设计稿批量生成 HTML 页面，输出到 prototypes/batch/。
+每张记录相似度和耗时，失败的列出来并说明原因，最后汇总成一张表。
+```
+
+### 9.9 结构分析（不写代码）
+
+```text
+只分析 designs/complex-page.png 的页面结构：区域划分、组件清单、设计 Token（主色、字号、间距），
+不要生成代码。把结果整理成 Markdown 表格。
+```
+
+### 9.10 接入真实数据
+
+```text
+把刚生成的静态页面改为接口驱动：用 axios 请求 /api/v1/projects，替换 data 里的静态数组，
+保留加载和空状态，接口路径走 Vite proxy。
+```
+
+### 提示词通用技巧
+
+1. **给绝对路径**：图片路径写全（如 `F:\testdata\img2html\电鸭.png`），避免工具找不到文件。
+2. **指定写入位置**：明确「写入到 `src/xxx/`」，否则代码可能只出现在对话里。
+3. **要求验收**：加上「跑构建 / 类型检查 / 视觉校验」，让 OpenCode 自己闭环。
+4. **分步迭代**：先结构、再生成、后精修，比一次性要求 100% 还原更稳定。
+5. **照片型页面**：直接声明「照片区域用原图裁切，不要 CSS 近似」，可显著提高保真度。
+
