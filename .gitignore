@@ -73,6 +73,9 @@ visual_reports/
 !examples/results/**/*.png
 !examples/results/**/*.jpg
 !examples/results/**/*.jpeg
+!examples/compare/**/*.png
+!examples/compare/**/*.jpg
+!examples/compare/**/*.jpeg
 
 # Playwright
 test-results/
