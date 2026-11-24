@@ -4,6 +4,13 @@
 
 import type { ModelConfig, ModelRequestTiming } from '../types.js';
 
+/** LLM 单请求默认超时：5 分钟，可用环境变量 LLM_TIMEOUT_MS 覆盖 */
+const DEFAULT_LLM_TIMEOUT_MS = 300_000;
+/** 流式请求总超时兜底：15 分钟，可用 LLM_STREAM_TIMEOUT_MS 覆盖 */
+const DEFAULT_STREAM_TIMEOUT_MS = 900_000;
+/** 流式响应空闲超时：120 秒无新内容即中止，可用 LLM_IDLE_TIMEOUT_MS 覆盖 */
+const DEFAULT_STREAM_IDLE_MS = 120_000;
+
 export interface ChatMessage {
   role: 'system' | 'user' | 'assistant';
   content: string | Array<{ type: 'text' | 'image_url'; text?: string; image_url?: { url: string } }>;
@@ -49,6 +56,18 @@ export class InternalLLMClient {
     this.enableThinking = config.enableThinking;
   }
 
+  /** 为每次 LLM 请求创建超时控制，防止挂起后无限等待 */
+  private createRequestTimeout() {
+    const configured = Number(process.env.LLM_TIMEOUT_MS);
+    const timeoutMs = Number.isFinite(configured) && configured > 0 ? configured : DEFAULT_LLM_TIMEOUT_MS;
+    const controller = new AbortController();
+    const timer = setTimeout(() => {
+      controller.abort(new Error(`LLM 请求超时（>${timeoutMs}ms），请检查模型服务状态，或调大 LLM_TIMEOUT_MS`));
+    }, timeoutMs);
+    timer.unref();
+    return { signal: controller.signal, cancel: () => clearTimeout(timer) };
+  }
+
   /**
    * 发送聊天完成请求
    */
@@ -66,6 +85,16 @@ export class InternalLLMClient {
     messages: ChatMessage[],
     options: ChatCompletionOptions = {}
   ): Promise<ChatCompletionResponse> {
+    // 默认使用流式调用，避免长请求挂起；仅当显式 stream: false 时走非流式
+    if (options.stream !== false) {
+      const content = await this.streamCompletion(messages, options);
+      return {
+        id: '',
+        choices: [{ message: { role: 'assistant', content }, finishReason: 'stop' }],
+      };
+    }
+
+    const { signal, cancel } = this.createRequestTimeout();
     const startedAt = Date.now();
     let timeToHeadersMs: number | undefined;
     let outputChars = 0;
@@ -104,6 +133,7 @@ export class InternalLLMClient {
           Authorization: `Bearer ${this.apiKey}`,
         },
         body: JSON.stringify(payload),
+        signal,
       });
       timeToHeadersMs = Date.now() - startedAt;
 
@@ -120,6 +150,8 @@ export class InternalLLMClient {
     } catch (error) {
       report(false);
       throw error;
+    } finally {
+      cancel();
     }
   }
 
@@ -185,6 +217,27 @@ export class InternalLLMClient {
     messages: ChatMessage[],
     options: ChatCompletionOptions
   ): Promise<string> {
+    // 流式请求：总超时兜底 + 空闲超时（每收到数据重置），长生成与真挂起都能正确处理
+    const totalMs = Number(process.env.LLM_STREAM_TIMEOUT_MS) > 0
+      ? Number(process.env.LLM_STREAM_TIMEOUT_MS)
+      : DEFAULT_STREAM_TIMEOUT_MS;
+    const idleMs = Number(process.env.LLM_IDLE_TIMEOUT_MS) > 0
+      ? Number(process.env.LLM_IDLE_TIMEOUT_MS)
+      : DEFAULT_STREAM_IDLE_MS;
+    const controller = new AbortController();
+    const totalTimer = setTimeout(() => {
+      controller.abort(new Error(`LLM 流式请求总超时（>${totalMs}ms），请检查模型服务状态，或调大 LLM_STREAM_TIMEOUT_MS`));
+    }, totalMs);
+    totalTimer.unref();
+    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+    const resetIdle = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        controller.abort(new Error(`LLM 流式响应超过 ${idleMs}ms 无新内容，已中止（模型服务可能挂起或限流）`));
+      }, idleMs);
+      idleTimer.unref();
+    };
+    resetIdle();
     const startedAt = Date.now();
     let timeToHeadersMs: number | undefined;
     let timeToFirstContentMs: number | undefined;
@@ -221,6 +274,7 @@ export class InternalLLMClient {
           ...(this.enableThinking === undefined ? {} : { enable_thinking: this.enableThinking }),
           stream: true,
         }),
+        signal: controller.signal,
       });
       timeToHeadersMs = Date.now() - startedAt;
 
@@ -239,6 +293,7 @@ export class InternalLLMClient {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
+        resetIdle();
 
         buffer += decoder.decode(value, { stream: true });
         const lines = buffer.split('\n');
@@ -268,6 +323,9 @@ export class InternalLLMClient {
     } catch (error) {
       report(false);
       throw error;
+    } finally {
+      clearTimeout(totalTimer);
+      if (idleTimer) clearTimeout(idleTimer);
     }
   }
 }

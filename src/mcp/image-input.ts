@@ -1,6 +1,19 @@
-import { existsSync } from 'node:fs';
+import { existsSync, statSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import { basename, extname } from 'node:path';
+
+/** 上传图片大小硬限制：4MB（可用 IMAGE2HTML_MAX_IMAGE_MB 调整） */
+export const MAX_IMAGE_BYTES = Number(process.env.IMAGE2HTML_MAX_IMAGE_MB || 4) * 1024 * 1024;
+
+function assertImageSize(size: number, source: string): void {
+  if (size > MAX_IMAGE_BYTES) {
+    const limitMb = (MAX_IMAGE_BYTES / 1024 / 1024).toFixed(0);
+    throw new ImageInputError(
+      'IMAGE_TOO_LARGE',
+      `图片大小不能超过 ${limitMb}MB（当前 ${(size / 1024 / 1024).toFixed(2)}MB，来源：${source}）。请先压缩图片再上传`,
+    );
+  }
+}
 
 export interface ResolvedImageInput {
   data: Buffer;
@@ -48,6 +61,7 @@ function decodeBase64Image(value: string, filename: unknown): ResolvedImageInput
   if (data.length === 0) {
     throw new ImageInputError('INVALID_IMAGE_BASE64', 'image_base64 图片内容为空');
   }
+  assertImageSize(data.length, 'base64 上传');
 
   const extension = type === 'image/png' ? 'png' : type === 'image/webp' ? 'webp' : 'jpg';
   return {
@@ -73,6 +87,7 @@ export async function resolveImageInput(args: any = {}): Promise<ResolvedImageIn
   if (!imagePath || !existsSync(imagePath)) {
     throw new ImageInputError('FILE_NOT_FOUND', `文件不存在: ${String(imagePath)}`);
   }
+  assertImageSize(statSync(String(imagePath)).size, String(imagePath));
 
   const type = imageMimeType(String(imagePath));
   if (!type) {

@@ -43,7 +43,7 @@ export function getServerConfig(env: NodeJS.ProcessEnv = process.env): ServerCon
     port: Number(env.PORT || 3000),
     dataDir: resolve(env.DATA_DIR || 'data'),
     apiKeys,
-    maxUploadMb: Number(env.MAX_UPLOAD_MB || 10),
+    maxUploadMb: Number(env.MAX_UPLOAD_MB || 4),
     jobConcurrency: Number(env.JOB_CONCURRENCY || 2),
     maxQueueSize: Number(env.MAX_QUEUE_SIZE || 100),
     rateLimitPerMinute: Number(env.RATE_LIMIT_PER_MINUTE || 60),
