@@ -293,3 +293,132 @@ opencode mcp list
 4. **分步迭代**：先结构、再生成、后精修，比一次性要求 100% 还原更稳定。
 5. **照片型页面**：直接声明「照片区域用原图裁切，不要 CSS 近似」，可显著提高保真度。
 
+### 9.11 素材与样式提取及编写
+
+#### A. 素材提取（extract_assets）
+
+从设计稿中自动识别并裁切 Logo、图标、图片等可复用素材。
+
+- **本地模式**：支持 `output_dir`，裁切结果直接写盘为 PNG 文件。
+- **远程模式**：通过 `assets` 返回 `{ name, mimeType, data(base64) }` 数组，由 OpenCode 写入项目目录。
+
+提示词示例：
+
+```text
+用 extract_assets 把 designs/home.png 里的 Logo、图标和封面图裁出来，存到 src/assets/home/，
+并把页面中对应位置替换为真实图片引用。
+```
+
+#### B. 样式提取（analyze_structure → designTokens）
+
+结构分析除了区域和组件，还会输出 **Design Tokens**：
+
+| Token 类别 | 内容示例 |
+| --- | --- |
+| colors | `primary: '#f5b041'`、`textPrimary: '#262626'`、`background: '#f5f5f5'`、`border: '#d9d9d9'` |
+| typography | `h1: 24px/600`、`h2: 20px/600`、`body: 14px/400`、`caption: 12px/400` |
+| spacing | `unit: 8`，`scale: [8, 16, 24, 32, 40, 48]` |
+| borderRadius | `sm: 4px`、`md: 6-8px`、`lg: 8-12px` |
+
+提示词示例：
+
+```text
+只分析 designs/home.png 的设计 Token：主色、文字颜色、字号层级、间距体系、圆角规范，
+整理成 Markdown 表格，不要生成代码。
+```
+
+#### C. 样式编写（把 Token 落地到项目）
+
+提取的 Token 可以直接转成项目样式配置：
+
+**Tailwind（`tailwind.config.js`）**
+
+```js
+export default {
+  theme: {
+    extend: {
+      colors: {
+        primary: '#f5b041',
+        ink: '#262626',
+        sub: '#595959',
+        page: '#f5f5f5',
+      },
+      borderRadius: { sm: '4px', md: '8px', lg: '12px' },
+      spacing: { 1: '8px', 2: '16px', 3: '24px', 4: '32px' },
+    },
+  },
+}
+```
+
+**antd 主题（`ConfigProvider`）**
+
+```tsx
+import { ConfigProvider } from 'antd'
+
+<ConfigProvider
+  theme={{
+    token: {
+      colorPrimary: '#f5b041',
+      colorText: '#262626',
+      colorTextSecondary: '#595959',
+      colorBgLayout: '#f5f5f5',
+      borderRadius: 8,
+      fontSize: 14,
+    },
+  }}
+>
+  <App />
+</ConfigProvider>
+```
+
+**CSS 变量（任意框架）**
+
+```css
+:root {
+  --color-primary: #f5b041;
+  --color-text: #262626;
+  --color-bg: #f5f5f5;
+  --radius-md: 8px;
+  --space-unit: 8px;
+}
+```
+
+提示词示例：
+
+```text
+分析 designs/home.png 的设计 Token，并把它们写入项目的 tailwind.config.js 和 antd ConfigProvider，
+主色、文字色、圆角保持与设计稿一致，改完跑构建确认无报错。
+```
+
+---
+
+## 10. 框架与组件库支持情况
+
+### 10.1 支持矩阵（源码约束）
+
+| framework | 可用 component_library | 说明 |
+| --- | --- | --- |
+| `react` | `antd` / `none` | React 不支持 `element`（会报 `React supports Ant Design (antd) or none`） |
+| `vue` | `element` / `none` | Vue 不支持 `antd`（会报 `Vue supports Element Plus (element) or none`） |
+| `html` | 仅 `none` | 纯 HTML 不使用组件库，可配 Tailwind / inline 样式 |
+
+参数校验逻辑见 `src/runtime/codegen-options.ts`，传错组合会在生成前直接报错。
+
+### 10.2 React + antd 实测结果
+
+| 测试项 | 结果 |
+| --- | --- |
+| 设计稿 | `examples/login.png`（欢迎登录卡片） |
+| 参数 | `framework=react`、`component_library=antd`、`typescript=true`、`style_framework=tailwind`、`pipeline=direct`、`quality_mode=fast` |
+| 输出 | `Generatedpage.tsx`（2,156 字符），`imports: ["react", "antd"]` |
+| 视觉相似度 | **98.9%** |
+| 耗时 | ~111 秒（真实模型调用，非缓存） |
+| 结论 | ✅ **React + antd 链路完整可用**，可直接生成带 Form 校验的 TSX 组件 |
+
+### 10.3 已知注意事项
+
+1. **推荐 `pipeline=direct`**：`structured` 流程在校验运行时可能出现 `antd/dist/reset.css` 解析失败（Rollup 无法解析 antd 样式路径），遇到时改用 `direct` 即可。
+2. **复杂页面建议先 `fast` 出稿再精修**：`balanced` 模式生成长 TSX 时偶发 JSX 特殊字符未转义导致 typecheck 失败，`fast` 更稳定；需要更高相似度再用 `precision` 触发自动修复循环。
+3. **React 产物是 TSX 组件而非完整应用**：需要自行接入项目的入口、路由与样式体系（第 9 章的提示词已包含「写入项目并跑构建」的约定）。
+
+
