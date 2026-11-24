@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>网易云音乐 - 高保真版</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;}
+</style>
+</head>
+<body class="bg-[#f5f5f5] text-[#333]">
+
+<!-- 顶部导航 -->
+<header class="bg-[#242424] relative z-20">
+  <div class="max-w-[1100px] mx-auto px-4 flex items-stretch h-[86px]">
+    <a href="#" class="flex items-center gap-3 mr-6 shrink-0" aria-label="网易云音乐首页">
+      <img src="./wanyi-assets/logo.png" alt="网易云音乐" class="w-8 h-9"/>
+      <span class="text-white text-2xl font-bold tracking-widest hidden sm:block">网易云音乐</span>
+    </a>
+    <nav aria-label="主导航" class="hidden md:block">
+      <ul class="flex items-stretch h-[86px] text-sm">
+        <li class="relative">
+          <a href="#" class="h-full flex items-center px-[22px] bg-black text-white font-bold" aria-current="page">发现音乐</a>
+          <span class="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-[7px] border-x-transparent border-t-[8px] border-t-[#9e0b0f]" aria-hidden="true"></span>
+        </li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">我的音乐</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">关注</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">商城</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">音乐人</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">云推歌</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">下载客户端</a></li>
+      </ul>
+    </nav>
+    <div class="ml-auto flex items-center gap-4">
+      <form role="search" class="relative hidden sm:block">
+        <label for="search" class="sr-only">搜索</label>
+        <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#999]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="search" placeholder="音乐/视频/电台/用户" class="w-[155px] h-9 pl-9 pr-3 rounded-full bg-white text-xs text-[#666] placeholder-[#999] outline-none focus:ring-2 focus:ring-[#C20C0C]/50">
+      </form>
+      <a href="#" class="h-9 px-5 flex items-center rounded-full border border-[#8d8d8d] text-[#ccc] text-sm hover:border-white hover:text-white whitespace-nowrap">创作者中心</a>
+      <a href="#" class="text-[#999] text-sm hover:text-white">登录</a>
+    </div>
+  </div>
+</header>
+
+<!-- 红色二级导航 -->
+<nav class="bg-[#C20C0C]" aria-label="发现音乐子导航">
+  <ul class="max-w-[980px] mx-auto px-4 flex justify-center items-center h-[42px] text-sm text-white gap-2">
+    <li><a href="#" class="block px-6 py-[4px] rounded-full bg-[#9e0b0f] font-bold" aria-current="page">推荐</a></li>
+    <li><a href="#" class="block px-6 py-[4px] rounded-full hover:bg-[#9e0b0f]">排行榜</a></li>
+    <li><a href="#" class="block px-6 py-[4px] rounded-full hover:bg-[#9e0b0f]">歌单</a></li>
+    <li><a href="#" class="block px-6 py-[4px] rounded-full hover:bg-[#9e0b0f]">播客</a></li>
+    <li><a href="#" class="block px-6 py-[4px] rounded-full hover:bg-[#9e0b0f]">歌手</a></li>
+    <li><a href="#" class="block px-6 py-[4px] rounded-full hover:bg-[#9e0b0f]">新碟上架</a></li>
+  </ul>
+</nav>
+
+<!-- 轮播横幅（真实裁切图 + 模糊延展背景） -->
+<section class="relative" style="background:url('./wanyi-assets/banner-blur.png') center/cover no-repeat;" aria-label="推荐 banner">
+  <button type="button" aria-label="上一张" class="hidden lg:flex absolute left-[4%] top-1/2 -translate-y-1/2 z-10 w-10 h-16 items-center justify-center text-white/70 hover:text-white">
+    <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+  <button type="button" aria-label="下一张" class="hidden lg:flex absolute right-[4%] top-1/2 -translate-y-1/2 z-10 w-10 h-16 items-center justify-center text-white/70 hover:text-white">
+    <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+
+  <div class="max-w-[1227px] min-w-[1227px] mx-auto flex">
+    <!-- 轮播主图（文字与圆点已包含在图内） -->
+    <div class="w-[909px] shrink-0">
+      <img src="./wanyi-assets/banner.png" alt="爱笑的天使 SMILE ANGEL 二十周年合唱版" class="w-full block"/>
+    </div>
+    <!-- 下载客户端面板 -->
+    <aside class="w-[317px] shrink-0 bg-[#1c1c1c] flex flex-col">
+      <img src="./wanyi-assets/download-devices.png" alt="多终端设备" class="w-full block"/>
+      <div class="px-4 pt-3 pb-4">
+        <a href="#" class="w-full h-12 flex items-center justify-center gap-2 rounded-[4px] bg-[#3d3d3d] hover:bg-[#4a4a4a] text-white text-base">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="m8.5 12.5 3.5 3.5 3.5-3.5"/></svg>
+          下载客户端
+        </a>
+        <p class="mt-3 text-center text-[#8d8d8d] text-xs leading-5">电脑/平板/手机/电视/汽车/音箱/手表多终端</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 主体内容 -->
+<div class="max-w-[1227px] min-w-[1227px] mx-auto flex items-start gap-[38px]">
+  <!-- 主栏 -->
+  <main class="flex-1 bg-white px-6 pb-10">
+    <section aria-labelledby="hot-title">
+      <div class="pt-8 pb-3 border-b-2 border-[#C20C0C] flex items-center flex-wrap gap-y-2">
+        <span class="w-[18px] h-[18px] rounded-full bg-[#C20C0C] flex items-center justify-center mr-2" aria-hidden="true"><span class="w-[6px] h-[6px] rounded-full bg-white"></span></span>
+        <h2 id="hot-title" class="text-xl font-bold text-[#333]">热门推荐</h2>
+        <ul class="ml-4 flex items-center text-xs text-[#666]">
+          <li><a href="#" class="px-3 hover:text-[#C20C0C]">华语</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">流行</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">摇滚</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">民谣</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">电子</a></li>
+        </ul>
+        <a href="#" class="ml-auto flex items-center gap-1 text-xs text-[#666] hover:text-[#C20C0C]">更多
+          <svg class="w-4 h-4 text-[#C20C0C]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <ul class="mt-7 grid grid-cols-4 gap-x-[50px] gap-y-9">
+        <li>
+          <a href="#" class="block group">
+            <img src="./wanyi-assets/cover-1.png" alt="假如能回到过去，你想做什么" class="w-full block group-hover:opacity-90"/>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] group-hover:text-[#C20C0C]">假如能回到过去，你想做什么</p>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="block group">
+            <img src="./wanyi-assets/cover-2.png" alt="「华语」哭泣使人乞讨思念使人奔跑" class="w-full block group-hover:opacity-90"/>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] group-hover:text-[#C20C0C]">「华语」哭泣使人乞讨思念使人奔跑</p>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="block group">
+            <img src="./wanyi-assets/cover-3.png" alt="戳爷/黄老板/断眉/萌德/骚姆/比伯/烟卷" class="w-full block group-hover:opacity-90"/>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] group-hover:text-[#C20C0C]">戳爷/黄老板/断眉/萌德/骚姆/比伯/烟卷</p>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="block group">
+            <img src="./wanyi-assets/cover-4.png" alt="把伴侣当另一半还是队友" class="w-full block group-hover:opacity-90"/>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] group-hover:text-[#C20C0C]"><span class="inline-block border border-[#C20C0C] text-[#C20C0C] text-xs leading-[16px] px-[3px] mr-1">电台节目</span>把伴侣当“另一半”还是“队友”？决定了你们能走多远</p>
+          </a>
+        </li>
+        <!-- 第二行（与原稿一致，底部可见部分） -->
+        <li><img src="./wanyi-assets/cover-5.png" alt="歌单封面" class="w-full block"/></li>
+        <li><img src="./wanyi-assets/cover-6.png" alt="歌单封面" class="w-full block"/></li>
+        <li><img src="./wanyi-assets/cover-7.png" alt="歌单封面" class="w-full block"/></li>
+        <li><img src="./wanyi-assets/cover-8.png" alt="歌单封面" class="w-full block"/></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- 侧栏 -->
+  <aside class="w-[282px] shrink-0 flex flex-col gap-4" aria-label="侧边栏">
+    <!-- 黑胶VIP -->
+    <div class="rounded-lg bg-gradient-to-r from-[#383838] to-[#4a3f3a] p-4 flex items-center justify-between gap-2 mt-0">
+      <div>
+        <p class="text-white font-bold text-base">黑胶VIP</p>
+        <p class="mt-1 text-[#9d9d9d] text-xs">立享超21项专属特权</p>
+      </div>
+      <a href="#" class="shrink-0 bg-[#f6dcd2] hover:bg-[#fbe7de] text-[#5f4b43] text-xs font-bold px-4 py-2 rounded-full">优惠购买</a>
+    </div>
+
+    <!-- 登录框 -->
+    <div class="border border-[#e0e0e0] bg-gradient-to-b from-[#fbfbfb] to-[#e6e6e6] px-5 py-6 text-center">
+      <p class="text-xs text-[#666] leading-6 text-left">登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
+      <button type="button" class="mt-5 mx-auto block bg-[#C20C0C] hover:bg-[#a80b0b] text-white text-sm px-9 py-2 rounded-[4px] shadow-sm">用户登录</button>
+    </div>
+
+    <!-- 入驻歌手 -->
+    <section class="bg-[#fafafa] border border-[#e5e5e5]" aria-labelledby="artist-title">
+      <div class="flex items-center justify-between px-4 pt-4 pb-3">
+        <h3 id="artist-title" class="text-sm font-bold text-[#333]">入驻歌手</h3>
+        <a href="#" class="text-xs text-[#666] hover:text-[#C20C0C]">查看全部 &gt;</a>
+      </div>
+      <ul class="px-4 pb-4 space-y-3">
+        <li>
+          <a href="#" class="flex items-center gap-3 bg-white border border-[#e9e9e9] p-2 hover:border-[#C20C0C]/40">
+            <img src="./wanyi-assets/artist-amei.png" alt="张惠妹" class="w-[60px] h-[60px] object-cover shrink-0"/>
+            <span>
+              <span class="block text-sm font-bold text-[#333]">张惠妹aMEI</span>
+              <span class="block mt-1 text-xs text-[#666]">台湾歌手张惠妹</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center gap-3 bg-white border border-[#e9e9e9] p-2 hover:border-[#C20C0C]/40">
+            <img src="./wanyi-assets/artist-momo.png" alt="吴莫愁" class="w-[60px] h-[40px] object-cover object-top shrink-0"/>
+            <span>
+              <span class="block text-sm font-bold text-[#333]">吴莫愁Momo</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+</body>
+</html>

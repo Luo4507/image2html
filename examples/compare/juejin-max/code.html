@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>稀土掘金 - 首页</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",Helvetica,Arial,sans-serif;}
+  a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #1e80ff;outline-offset:2px;}
+</style>
+</head>
+<body class="bg-[#f4f5f5] text-[#252931]">
+
+<!-- 顶部导航 -->
+<header class="bg-white sticky top-0 z-50">
+  <div class="flex items-center gap-8 h-[60px] px-5 lg:px-10 xl:px-20">
+    <a href="#" class="flex items-center gap-2 shrink-0" aria-label="稀土掘金 首页">
+      <svg viewBox="0 0 24 24" class="w-7 h-7" fill="none" stroke="#1e80ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 5l4 4 4-4"/><path d="M5.5 10.5l6.5 6.5 6.5-6.5"/><path d="M3 15.5l9 9 9-9" transform="translate(0,-2.5)"/>
+      </svg>
+      <span class="text-xl font-bold tracking-wide">稀土掘金</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-8 text-[15px]" aria-label="主导航">
+      <a href="#" class="text-[#1e80ff] font-medium" aria-current="page">首页</a>
+      <a href="#" class="text-[#4d5156] hover:text-[#1e80ff]">沸点</a>
+      <a href="#" class="text-[#4d5156] hover:text-[#1e80ff]">课程</a>
+      <a href="#" class="text-[#4d5156] hover:text-[#1e80ff]">APP</a>
+      <a href="#" class="text-[#4d5156] hover:text-[#1e80ff]">AI用量</a>
+      <a href="#" class="text-[#4d5156] hover:text-[#1e80ff]">作品广场</a>
+      <a href="#" class="text-[#4d5156] hover:text-[#1e80ff]">专家标注</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-4">
+      <div class="hidden lg:flex items-center w-[380px] xl:w-[455px] h-[38px] border border-[#e3e5e7] rounded-[4px] overflow-hidden bg-white">
+        <label for="global-search" class="sr-only">搜索</label>
+        <input id="global-search" type="search" placeholder="探索稀土掘金" class="flex-1 h-full px-4 text-sm outline-none placeholder-[#8a919f] bg-transparent">
+        <button type="button" aria-label="搜索" class="w-[46px] h-full bg-[#f2f3f5] hover:bg-[#e3e5e7] flex items-center justify-center text-[#4d5156]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+        </button>
+      </div>
+      <button type="button" class="hidden sm:flex items-center h-[40px] rounded-[4px] bg-[#1e80ff] hover:bg-[#1171ee] text-white text-[15px] shrink-0">
+        <span class="px-4">创作者中心</span>
+        <span class="w-9 h-full flex items-center justify-center border-l border-white/40" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="currentColor" aria-hidden="true"><path d="M6 9l6 6 6-6z"/></svg>
+        </span>
+      </button>
+      <button type="button" aria-label="通知，5 条未读" class="relative p-2 text-[#4d5156] hover:text-[#1e80ff]">
+        <svg viewBox="0 0 24 24" class="w-[22px] h-[22px]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-0.5 rounded-full bg-[#e64545] text-white text-[10px] leading-4 text-center font-medium">5</span>
+      </button>
+      <button type="button" aria-label="用户中心" class="w-10 h-10 rounded-full shrink-0 bg-[radial-gradient(circle_at_35%_30%,#b58ce8_0%,#8f7ae0_35%,#5fb7d9_75%,#4ec9e8_100%)] ring-1 ring-black/5"></button>
+      <button type="button" aria-label="打开菜单" class="md:hidden p-2 text-[#4d5156]">
+        <svg viewBox="0 0 24 24" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="max-w-[1600px] mx-auto px-5 pt-9 pb-10 flex items-start gap-7">
+
+  <!-- 左侧排行榜 -->
+  <aside class="hidden lg:block w-[240px] shrink-0 bg-white rounded-[4px] pt-5 pb-6" aria-label="排行榜分类">
+    <div class="flex items-center gap-3 px-6 pb-4">
+      <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="#f9a825" aria-hidden="true"><path d="M6 3h12a1 1 0 0 1 1 1v17l-7-4.5L5 21V4a1 1 0 0 1 1-1z"/></svg>
+      <h2 class="text-[16px] font-bold">排行榜</h2>
+    </div>
+    <nav>
+      <ul class="px-3 space-y-2 text-[15px]">
+        <li><a href="#" aria-current="true" class="flex items-center gap-3 h-12 px-4 rounded-[4px] bg-[#e8f3ff] text-[#1e80ff] font-medium">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="#1e80ff"/><path d="M15.5 8.5l-2.2 5.3-5.3 2.2 2.2-5.3z" fill="#fff"/></svg>综合</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="#8a919f" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="4" y="4" width="16" height="7" rx="1.5"/><rect x="4" y="13" width="16" height="7" rx="1.5"/><line x1="7.5" y1="7.5" x2="7.51" y2="7.5"/><line x1="7.5" y1="16.5" x2="7.51" y2="16.5"/></svg>后端</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="#8a919f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="1.5"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="16" x2="12" y2="20"/><path d="M9 8l-2 2 2 2"/><path d="M15 8l2 2-2 2"/></svg>前端</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="#8a919f" aria-hidden="true"><path d="M7 8a5 5 0 0 1 10 0v9H7z"/><path d="M5 9.5a1 1 0 0 1 1 1V15a1 1 0 0 1-2 0v-4.5a1 1 0 0 1 1-1zm14 0a1 1 0 0 1 1 1V15a1 1 0 0 1-2 0v-4.5a1 1 0 0 1 1-1zM8.5 4.5l-1-1.7.9-.5 1 1.7zm7 0l1-1.7.9.5-1 1.7z"/><circle cx="10" cy="7" r=".9" fill="#fff"/><circle cx="14" cy="7" r=".9" fill="#fff"/></svg>Android</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="#8a919f" aria-hidden="true"><path d="M16.4 1.4c.1 1.2-.4 2.3-1.1 3.1-.8.9-2.1 1.5-3.2 1.4-.1-1.1.4-2.3 1.2-3.1.8-.9 2.1-1.5 3.1-1.4zM20.9 17.1c-.6 1.3-.9 1.9-1.6 3.1-1.1 1.7-2.6 3.8-4.5 3.8-1.7 0-2.1-1.1-4.4-1.1-2.3 0-2.7 1.1-4.4 1.1-1.9 0-3.3-1.9-4.4-3.6C-1.5 15.9-.8 10.6 2.2 8c1.7-1.5 3.5-1.4 5-1.4 1.5 0 2.4-1.1 4.3-1.1 1.6 0 3 .9 4.1 2-3.6 2-3 7 .9 8.6z" transform="translate(2 -1)"/></svg>iOS</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="#8a919f" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="8" width="14" height="11" rx="2"/><line x1="12" y1="8" x2="12" y2="5"/><circle cx="12" cy="4" r="1"/><line x1="9.5" y1="12.5" x2="9.51" y2="12.5"/><line x1="14.5" y1="12.5" x2="14.51" y2="12.5"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>人工智能</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="#8a919f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>开发工具</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="#8a919f" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10.5" r="1.8"/><line x1="6" y1="15.5" x2="11" y2="15.5"/><line x1="14" y1="9" x2="18" y2="9"/><line x1="14" y1="12.5" x2="18" y2="12.5"/></svg>代码人生</a></li>
+        <li><a href="#" class="flex items-center gap-3 h-12 px-4 rounded-[4px] text-[#4d5156] hover:bg-[#f2f3f5]">
+          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px]" fill="none" stroke="#8a919f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>阅读</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <!-- 中间文章流 -->
+  <section class="flex-1 min-w-0 bg-white rounded-[4px]" aria-label="文章列表">
+    <div class="flex items-center gap-10 px-6 border-b border-[#f2f3f5]" role="tablist" aria-label="内容筛选">
+      <button role="tab" aria-selected="true" class="relative pb-3 pt-5 text-[16px] font-medium text-[#252931]">推荐<span class="absolute left-1/2 -translate-x-1/2 -bottom-px w-6 h-[3px] rounded-full bg-[#1e80ff]" aria-hidden="true"></span></button>
+      <button role="tab" aria-selected="false" class="pb-3 pt-5 text-[16px] text-[#8a919f] hover:text-[#1e80ff]">最新</button>
+      <button role="tab" aria-selected="false" class="pb-3 pt-5 text-[16px] text-[#8a919f] hover:text-[#1e80ff]">关注</button>
+    </div>
+
+    <ul class="px-6">
+      <!-- 1 -->
+      <li class="py-5 border-b border-[#f2f3f5]">
+        <article class="flex gap-5">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[17px] font-semibold leading-snug truncate"><a href="#" class="hover:text-[#1e80ff]">16 个超火的 DeepSeek Harness 插件，大肥鱼已经落后 N 个版本了。。。</a></h3>
+            <p class="mt-2 text-[13px] text-[#8a919f] truncate">DeepSeek Harness 精选插件推荐合集，从图片识别、浏览器操控、多 Agent 协作到手机远...</p>
+            <div class="mt-3 flex items-center gap-3 text-[13px] text-[#8a919f]">
+              <span class="truncate">程序员鱼皮</span>
+              <span class="w-px h-3 bg-[#e3e5e7]" aria-hidden="true"></span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>14k</span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>127</span>
+              <span class="ml-auto flex items-center gap-2">
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">前端</span>
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">后端</span>
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">AI编程</span>
+              </span>
+            </div>
+          </div>
+          <div class="relative hidden sm:block w-[140px] h-[94px] rounded-[4px] shrink-0 overflow-hidden bg-[radial-gradient(circle_at_72%_28%,#ffffff_0%,#eceff7_45%,#dde2ee_100%)]" role="img" aria-label="文章配图">
+            <span class="absolute left-3 top-4 h-1 w-16 rounded bg-white/90"></span>
+            <span class="absolute left-3 top-8 h-1 w-10 rounded bg-white/70"></span>
+            <span class="absolute right-3 bottom-3 w-10 h-10 rounded-full bg-white/60"></span>
+          </div>
+        </article>
+      </li>
+      <!-- 2 -->
+      <li class="py-5 border-b border-[#f2f3f5]">
+        <article class="flex gap-5">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[17px] font-semibold leading-snug truncate"><a href="#" class="hover:text-[#1e80ff]">面试官问你：“AI 能写 80% 的代码了，公司为什么还需要你？”</a></h3>
+            <p class="mt-2 text-[13px] text-[#8a919f] truncate">先说一个事实：2026 年的技术面试，已经和两年前完全不一样了。两年前面试问的是：“手写...</p>
+            <div class="mt-3 flex items-center gap-3 text-[13px] text-[#8a919f]">
+              <span class="truncate">kyriewen</span>
+              <span class="w-px h-3 bg-[#e3e5e7]" aria-hidden="true"></span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>48k</span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>640</span>
+              <span class="ml-auto flex items-center gap-2">
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">前端</span>
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">JavaScr...</span>
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">面试</span>
+              </span>
+            </div>
+          </div>
+          <div class="relative hidden sm:block w-[140px] h-[94px] rounded-[4px] shrink-0 overflow-hidden bg-[radial-gradient(circle_at_62%_42%,#3f6df2_0%,#1b2a55_48%,#0c1428_100%)]" role="img" aria-label="文章配图">
+            <span class="absolute right-4 top-5 w-8 h-5 rounded-[2px] bg-[#5f8bff]/70"></span>
+            <span class="absolute left-5 bottom-5 w-10 h-6 rounded-[2px] bg-[#3757c9]/60"></span>
+          </div>
+        </article>
+      </li>
+      <!-- 3 -->
+      <li class="py-5 border-b border-[#f2f3f5]">
+        <article class="flex gap-5">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[17px] font-semibold leading-snug truncate"><a href="#" class="hover:text-[#1e80ff]">Agent 开发：主流 Skills 推荐</a></h3>
+            <p class="mt-2 text-[13px] text-[#8a919f] truncate">Agent 开发：主流 Skills 推荐 一、SSD 规范驱动开发 在 Claude Code 里实现规范驱动开发...</p>
+            <div class="mt-3 flex items-center gap-3 text-[13px] text-[#8a919f]">
+              <span class="truncate">为你学会写情书</span>
+              <span class="w-px h-3 bg-[#e3e5e7]" aria-hidden="true"></span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>2.4k</span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>30</span>
+              <span class="ml-auto flex items-center gap-2">
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">Agent</span>
+              </span>
+            </div>
+          </div>
+          <div class="relative hidden sm:block w-[140px] h-[94px] rounded-[4px] shrink-0 overflow-hidden bg-[linear-gradient(115deg,#f6dfe3_0%,#ecd6da_38%,#5a5a66_62%,#2b2b33_100%)]" role="img" aria-label="文章配图">
+            <span class="absolute left-4 top-4 w-9 h-9 rounded-full bg-white/90"></span>
+            <span class="absolute right-4 bottom-4 w-12 h-7 rounded-[2px] bg-[#1d1d24]/80"></span>
+          </div>
+        </article>
+      </li>
+      <!-- 4 -->
+      <li class="py-5 border-b border-[#f2f3f5]">
+        <article class="flex gap-5">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[17px] font-semibold leading-snug truncate"><a href="#" class="hover:text-[#1e80ff]">后台管理框架存活率大调查（2026版）</a></h3>
+            <p class="mt-2 text-[13px] text-[#8a919f] truncate">前言 在 AI 乱杀的当下，后台管理开源框架的斩杀线也在逐部拉高。曾经我们推荐、高star的这些开源项目，还有几...</p>
+            <div class="mt-3 flex items-center gap-3 text-[13px] text-[#8a919f]">
+              <span class="truncate">Hooray</span>
+              <span class="w-px h-3 bg-[#e3e5e7]" aria-hidden="true"></span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>4.4k</span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>63</span>
+              <span class="ml-auto flex items-center gap-2">
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">前端</span>
+              </span>
+            </div>
+          </div>
+        </article>
+      </li>
+      <!-- 5 -->
+      <li class="py-5 border-b border-[#f2f3f5]">
+        <article class="flex gap-5">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[17px] font-semibold leading-snug truncate"><a href="#" class="hover:text-[#1e80ff]">会用 AI 做图，已经不够了（分享 3 个牛逼设计 skill）</a></h3>
+            <p class="mt-2 text-[13px] text-[#8a919f] truncate">这是苍何的第 588 篇原创！ 大家好，我是苍何。 最近不少人夸我的视频号封面做的好看。 然后后台也收到了不少留...</p>
+            <div class="mt-3 flex items-center gap-3 text-[13px] text-[#8a919f]">
+              <span class="truncate">苍何</span>
+              <span class="w-px h-3 bg-[#e3e5e7]" aria-hidden="true"></span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>497</span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>6</span>
+              <span class="ml-auto flex items-center gap-2">
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">后端</span>
+              </span>
+            </div>
+          </div>
+        </article>
+      </li>
+      <!-- 6 -->
+      <li class="py-5 border-b border-[#f2f3f5]">
+        <article class="flex gap-5">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[17px] font-semibold leading-snug truncate"><a href="#" class="hover:text-[#1e80ff]">我的 AI 编程日常习惯：如何真正提升效率</a></h3>
+            <p class="mt-2 text-[13px] text-[#8a919f] truncate">很多人都问过一个问题：同样用 AI 编程，为什么有人效率翻倍，有人却越用越累？ 这个问题...</p>
+            <div class="mt-3 flex items-center gap-3 text-[13px] text-[#8a919f]">
+              <span class="truncate">全栈弄潮儿</span>
+              <span class="w-px h-3 bg-[#e3e5e7]" aria-hidden="true"></span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>566</span>
+              <span class="flex items-center gap-1.5"><svg viewBox="0 0 24 24" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>7</span>
+              <span class="ml-auto flex items-center gap-2">
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">AI编程</span>
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">AIGC</span>
+                <span class="px-2 py-1 rounded-[2px] bg-[#f2f3f5] text-[#4d5156] text-xs">OpenAI</span>
+              </span>
+            </div>
+          </div>
+          <div class="relative hidden sm:block w-[140px] h-[94px] rounded-[4px] shrink-0 overflow-hidden bg-[radial-gradient(circle_at_50%_45%,#17606b_0%,#0d3d47_55%,#082a33_100%)]" role="img" aria-label="文章配图">
+            <span class="absolute left-4 top-6 h-1 w-14 rounded bg-[#39d0a0]/70"></span>
+            <span class="absolute right-4 top-10 h-1 w-10 rounded bg-[#39d0a0]/50"></span>
+            <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded bg-[#0b333c] border border-[#2ea08a]/60"></span>
+          </div>
+        </article>
+      </li>
+      <!-- 7 -->
+      <li class="py-5">
+        <article class="flex gap-5">
+          <div class="flex-1 min-w-0">
+            <h3 class="text-[17px] font-semibold leading-snug truncate"><a href="#" class="hover:text-[#1e80ff]">做了近两年的Agent开发，其实真正要学的就是这五件事</a></h3>
+            <p class="mt-2 text-[13px] text-[#8a919f] truncate">这两年一直致力于公司的Agent开发。总结了一些思考和解决方案，今天给大家分享下，也是给自己的一个复盘。 做...</p>
+          </div>
+        </article>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 右侧栏 -->
+  <aside class="hidden xl:block w-[348px] shrink-0 space-y-8" aria-label="侧边信息">
+    <section class="bg-white rounded-[4px] p-5" aria-label="进行中的活动">
+      <div class="flex items-center gap-2">
+        <svg viewBox="0 0 24 24" class="w-[18px] h-[18px] text-[#4d5156]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg>
+        <h2 class="text-[15px] font-bold">进行中的活动</h2>
+        <div class="ml-auto flex items-center gap-2 text-[#8a919f]">
+          <button type="button" aria-label="上一个活动" class="p-1 hover:text-[#1e80ff]"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="text-xs">2 / 4</span>
+          <button type="button" aria-label="下一个活动" class="p-1 hover:text-[#1e80ff]"><svg viewBox="0 0 24 24" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg></button>
+        </div>
+      </div>
+      <a href="#" class="mt-4 flex gap-3 group">
+        <span class="w-[60px] h-[45px] rounded-[3px] shrink-0 bg-[linear-gradient(135deg,#3f8cff_0%,#155ee0_100%)] flex items-center justify-center" role="img" aria-label="活动海报">
+          <span class="text-white text-[8px] font-semibold leading-tight text-center">Coffee<br>Talk</span>
+        </span>
+        <span class="min-w-0">
+          <span class="block text-[14px] leading-snug text-[#252931] group-hover:text-[#1e80ff]">掘金 X-lab · Coffee Talk 杭州#002</span>
+          <span class="mt-2 block text-xs text-[#8a919f]">活动结束 2026/11/21 18:30</span>
+        </span>
+      </a>
+    </section>
+
+    <a href="#" class="flex items-center gap-3 rounded-[4px] p-5 bg-[linear-gradient(120deg,#f4f0fe_0%,#eef4ff_100%)] group">
+      <span class="w-12 h-12 rounded-[10px] bg-[linear-gradient(135deg,#4d80ff_0%,#7a5cff_100%)] text-white font-bold text-[16px] flex items-center justify-center shrink-0">AI</span>
+      <span class="min-w-0">
+        <span class="block text-[17px] font-bold text-[#252931] group-hover:text-[#1e80ff]">AI Coding</span>
+        <span class="mt-1 block text-xs text-[#8a919f]">让每一次编码更高效</span>
+      </span>
+      <svg viewBox="0 0 24 24" class="ml-auto w-4 h-4 text-[#3d7bff]" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="8 7 17 7 17 16"/></svg>
+    </a>
+
+    <footer class="text-xs text-[#8a919f] space-y-4 px-1">
+      <nav aria-label="页脚链接">
+        <div class="flex flex-wrap gap-x-4 gap-y-4">
+          <a href="#" class="hover:text-[#1e80ff]">用户协议</a>
+          <a href="#" class="hover:text-[#1e80ff]">营业执照</a>
+          <a href="#" class="hover:text-[#1e80ff]">隐私政策</a>
+          <a href="#" class="hover:text-[#1e80ff]">关于我们</a>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-x-4 gap-y-4">
+          <a href="#" class="hover:text-[#1e80ff]">使用指南</a>
+          <a href="#" class="hover:text-[#1e80ff]">友情链接</a>
+          <a href="#" class="hover:text-[#1e80ff]">更多文章</a>
+        </div>
+      </nav>
+      <p>举报邮箱： <a href="mailto:juejin@bytedance.com" class="hover:text-[#1e80ff]">juejin@bytedance.com</a></p>
+      <p>座机电话： 010-83434395</p>
+      <p>京ICP备18012699号-3</p>
+      <p>京ICP证：京B2-20191272</p>
+      <p class="flex items-center gap-1.5">
+        <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0" aria-hidden="true"><circle cx="12" cy="9" r="6" fill="#d8342b"/><path fill="#f7b500" d="M12 5l1.2 2.4 2.6.4-1.9 1.9.4 2.6-2.3-1.2-2.3 1.2.4-2.6-1.9-1.9 2.6-.4z"/><path fill="#d8342b" d="M8 16h8l-1.2 5H9.2z"/></svg>
+        京公网安备11010802026719号
+      </p>
+      <p>©2026 稀土掘金</p>
+    </footer>
+  </aside>
+</main>
+
+<!-- 悬浮按钮 -->
+<div class="fixed right-6 bottom-8 flex flex-col gap-4 z-40">
+  <button type="button" aria-label="意见反馈" class="w-12 h-12 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#1e80ff] hover:bg-[#f2f3f5]">
+    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="12.5" x2="13" y2="12.5"/></svg>
+  </button>
+  <button type="button" aria-label="更多操作" class="w-12 h-12 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.12)] flex items-center justify-center text-[#4d5156] hover:bg-[#f2f3f5]">
+    <svg viewBox="0 0 24 24" class="w-5 h-5" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>
+  </button>
+</div>
+
+</body>
+</html>

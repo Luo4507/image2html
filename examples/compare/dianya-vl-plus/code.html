@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>电鸭 - 找人·找机会</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#F5AF3A',
+            'primary-light': '#FFE5B4',
+            'gray-50': '#F9FAFB',
+            'gray-100': '#F3F4F6',
+            'gray-200': '#E5E7EB',
+            'gray-300': '#D1D5DB',
+            'gray-400': '#9CA3AF',
+            'gray-500': '#6B7280',
+            'gray-600': '#4B5563',
+            'gray-700': '#374151',
+            'gray-800': '#1F2937',
+            'gray-900': '#111827',
+          },
+          borderRadius: {
+            'xl': '12px',
+            '2xl': '16px',
+          },
+          boxShadow: {
+            'card': '0 4px 12px rgba(0, 0, 0, 0.05)',
+            'hover': '0 6px 16px rgba(0, 0, 0, 0.1)',
+          },
+          fontSize: {
+            'xs': '0.75rem',
+            'sm': '0.875rem',
+            'base': '1rem',
+            'lg': '1.125rem',
+            'xl': '1.25rem',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap');
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+    }
+    .icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: #F5AF3A;
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+    .support-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      color: #6B7280;
+      font-size: 0.75rem;
+    }
+    .project-card {
+      transition: all 0.3s ease;
+    }
+    .project-card:hover {
+      box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+      --tw-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+    .tag {
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .tag-primary {
+      background-color: #FFF7E6;
+      color: #F5AF3A;
+      border: 1px solid #FFE5B4;
+    }
+    .tag-green {
+      background-color: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #DCFCE7;
+    }
+    .tag-blue {
+      background-color: #EEF4FF;
+      color: #1D4ED8;
+      border: 1px solid #DBEAFE;
+    }
+    .tag-gray {
+      background-color: #F3F4F6;
+      color: #6B7280;
+      border: 1px solid #E5E7EB;
+    }
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #F3F4F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #6B7280;
+      font-size: 0.875rem;
+    }
+    .avatar-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background-color: #F5AF3A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+    }
+    .category-pill {
+      padding: 0.25rem 0.75rem;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .category-pill:hover {
+      background-color: #F3F4F6;
+    }
+    .category-pill.active {
+      background-color: #F5AF3A;
+      color: white;
+    }
+    .sort-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: #6B7280;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .sort-btn:hover {
+      color: #1F2937;
+    }
+    .arrow-up {
+      color: #10B981;
+    }
+    .arrow-down {
+      color: #EF4444;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #1F2937;
+    }
+    .section-title i {
+      color: #F5AF3A;
+    }
+    .highlight {
+      background-color: #FFF7E6;
+      padding: 0 2px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <!-- Header -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-3">
+      <div class="flex items-center justify-between">
+        <!-- Logo & Nav -->
+        <div class="flex items-center space-x-8">
+          <div class="flex items-center space-x-2">
+            <div class="avatar-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <span class="text-xl font-bold text-gray-900">电鸭</span>
+            <span class="text-gray-500 text-sm">| 找人 · 找机会</span>
+          </div>
+          
+          <nav class="hidden md:flex space-x-8">
+            <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">广场</a>
+            <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">机会</a>
+            <a href="#" class="text-gray-600 hover:text-gray-900 font-medium bg-primary text-white px-4 py-1.5 rounded-lg">项目</a>
+            <a href="#" class="text-gray-600 hover:text-gray-900 font-medium">群组</a>
+          </nav>
+        </div>
+
+        <!-- Search & Auth -->
+        <div class="flex items-center space-x-4">
+          <div class="relative hidden md:block">
+            <input 
+              type="text" 
+              placeholder="请输入关键字"
+              class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+            />
+            <i class="absolute left-3 top-2.5 text-gray-400 fas fa-search"></i>
+          </div>
+          
+          <div class="flex space-x-2">
+            <button class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+              登录
+            </button>
+            <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90 transition-colors">
+              注册
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Main Content -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Stats Banner -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 class="text-xl font-bold text-gray-900 mb-1">
+                发布你的「<span class="text-primary">项目 & 故事</span>」
+              </h2>
+              <p class="text-gray-600">会为你带来潜在的合作 / 连接 / 机会</p>
+            </div>
+            
+            <div class="flex flex-wrap gap-4 mt-4 md:mt-0">
+              <div class="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-lg">
+                <span class="font-bold text-primary">1,118</span>
+                <span class="text-gray-600">项目</span>
+              </div>
+              <div class="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-lg">
+                <span class="font-bold text-primary">968</span>
+                <span class="text-gray-600">项目故事</span>
+              </div>
+              <div class="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-lg">
+                <span class="font-bold text-primary">66.9w</span>
+                <span class="text-gray-600">曝光</span>
+              </div>
+              <div class="flex items-center space-x-2 bg-gray-50 px-4 py-2 rounded-lg">
+                <span class="font-bold text-primary">167</span>
+                <span class="text-gray-600">合作</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Featured Promotions -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="section-title">
+              <i class="fas fa-star"></i>
+              置顶推广中
+            </h3>
+            <button class="flex items-center space-x-1 text-primary text-sm font-medium border border-primary rounded-lg px-3 py-1.5 hover:bg-primary hover:text-white transition-colors">
+              <i class="fas fa-bolt"></i>
+              <span>我也要置顶推广</span>
+            </button>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Promotion 1 -->
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div class="flex items-start space-x-3">
+                <div class="avatar bg-green-600 text-white">
+                  <i class="fas fa-fish"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-gray-900">太公钓点</h4>
+                    <span class="tag tag-primary text-xs">置顶推广</span>
+                  </div>
+                  <p class="text-gray-600 text-sm mt-1 line-clamp-2">
+                    太公钓点是帮助钓鱼爱好者找到好钓点与智能出钓指南，现...
+                  </p>
+                  <div class="flex items-center space-x-4 mt-3 text-xs text-gray-500">
+                    <span class="support-count">
+                      <i class="fas fa-arrow-up text-green-500"></i> 3
+                    </span>
+                    <span>推广期 +2</span>
+                    <span>52 看过</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Promotion 2 -->
+            <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div class="flex items-start space-x-3">
+                <div class="avatar-icon">
+                  <i class="fas fa-robot"></i>
+                </div>
+                <div class="flex-1">
+                  <div class="flex items-center justify-between">
+                    <h4 class="font-bold text-gray-900">电鸭：找人找机会的自由工作社区</h4>
+                    <span class="tag tag-primary text-xs">置顶推广</span>
+                  </div>
+                  <p class="text-gray-600 text-sm mt-1 line-clamp-2">
+                    电鸭社区(eleduck.com)是国内影响力最大的自由工作社区，...
+                  </p>
+                  <div class="flex items-center space-x-4 mt-3 text-xs text-gray-500">
+                    <span class="support-count">
+                      <i class="fas fa-arrow-up text-green-500"></i> 37
+                    </span>
+                    <span>推广期 +0</span>
+                    <span>552 看过</span>
+                    <span class="tag tag-green">正在找人 →</span>
+                    <a href="#" class="text-primary hover:underline">访问项目</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project Ranking -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="section-title">
+              <i class="fas fa-trophy"></i>
+              项目排行榜
+            </h3>
+            <div class="text-sm text-gray-500">共 1,118 个项目</div>
+          </div>
+          
+          <!-- Filters -->
+          <div class="mb-6">
+            <div class="flex flex-wrap items-center gap-2 mb-4">
+              <span class="text-gray-600 text-sm">按领域</span>
+              <button class="category-pill active">全部</button>
+              <button class="category-pill">AI/人工智能</button>
+              <button class="category-pill">企业服务</button>
+              <button class="category-pill">技术/开源</button>
+              <button class="category-pill">内容/媒体</button>
+              <button class="category-pill">跨境/出海</button>
+              <button class="category-pill">区块链&Web3</button>
+              <button class="category-pill ml-auto">收起</button>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="text-gray-600 text-sm">按类型</span>
+              <button class="category-pill active">全部</button>
+              <button class="category-pill">个人项目</button>
+              <button class="category-pill">公司项目</button>
+              <button class="category-pill">开源项目</button>
+            </div>
+          </div>
+          
+          <!-- Sort Tabs -->
+          <div class="flex border-b border-gray-200 mb-4">
+            <button class="pb-3 px-4 font-medium text-primary border-b-2 border-primary">最热</button>
+            <span class="text-gray-500 text-sm pb-3 px-2">近 30 天顶得最多</span>
+            <div class="ml-auto flex items-center space-x-4">
+              <button class="sort-btn">
+                <i class="fas fa-sort-amount-down-alt"></i>
+                <span>总排行</span>
+              </button>
+              <button class="sort-btn">
+                <i class="fas fa-clock"></i>
+                <span>最新</span>
+                <span class="text-gray-500">按发布时间</span>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Projects List -->
+          <div class="space-y-4">
+            <!-- Project 1 -->
+            <div class="project-card flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50">
+              <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-red-500 rounded-full text-white font-bold text-sm">1</div>
+              <div class="flex-1">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h4 class="font-bold text-gray-900">墨斗-专注AI写小说的工具</h4>
+                    <p class="text-gray-500 text-sm mt-1">
+                      【一人公司项目】专注于AI辅助网络小说...
+                    </p>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="support-count">
+                      <i class="fas fa-arrow-up text-green-500"></i> 64
+                    </span>
+                    <span class="text-gray-500 text-sm">2,029 看过</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Project 2 -->
+            <div class="project-card flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50">
+              <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-yellow-500 rounded-full text-white font-bold text-sm">2</div>
+              <div class="flex-1">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h4 class="font-bold text-gray-900">电鸭：找人找...</h4>
+                    <div class="flex items-center space-x-2 mt-1">
+                      <span class="tag tag-primary text-xs">置顶推广</span>
+                      <span class="tag tag-green text-xs">正在找人 →</span>
+                    </div>
+                    <p class="text-gray-500 text-sm mt-1">
+                      电鸭社区(eleduck.com)是国内影响力最大的...
+                    </p>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="support-count">
+                      <i class="fas fa-arrow-up text-green-500"></i> 37
+                    </span>
+                    <span class="text-gray-500 text-sm">552 看过</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Project 3 -->
+            <div class="project-card flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50">
+              <div class="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full text-gray-700 font-bold text-sm">3</div>
+              <div class="flex-1">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h4 class="font-bold text-gray-900">外贸获客</h4>
+                    <p class="text-gray-500 text-sm mt-1">
+                      基于全球企业数据 领英数据 高管数据 脸书...
+                    </p>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="support-count">
+                      <i class="fas fa-arrow-up text-green-500"></i> 17
+                    </span>
+                    <span class="text-gray-500 text-sm">406 看过</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar -->
+      <div class="space-y-6">
+        <!-- Publish Section -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="section-title mb-4">
+            <i class="fas fa-plus-circle"></i>
+            发布你的项目
+          </h3>
+          <p class="text-gray-600 text-sm mb-4">
+            把你在做的项目放到项目广场，被顶得越多，排得越靠前；想合作的人也能顺着项目找到你。
+          </p>
+          <button class="w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-opacity-90 transition-colors">
+            登录并发布项目
+          </button>
+        </div>
+
+        <!-- Rules Section -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <h3 class="section-title mb-4">
+            <i class="fas fa-book"></i>
+            项目规则
+          </h3>
+          
+          <div class="space-y-4">
+            <div>
+              <h4 class="font-medium text-gray-900 mb-2">【发布及排序】</h4>
+              <ul class="text-gray-600 text-sm space-y-2">
+                <li>• 社区用户最多可发布 2 个(暂定)项目到项目广场</li>
+                <li>• <span class="text-green-600">↑</span> 表示支持和热度，<span class="text-green-600">↑</span> 的数量决定项目排序</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="font-medium text-gray-900 mb-2">【支持与电量】</h4>
+              <ul class="text-gray-600 text-sm space-y-2">
+                <li>• 每个用户每天可以 <span class="text-green-600">↑</span> 三个不同的项目</li>
+                <li>• <span class="text-green-600">↑</span> 只影响该项目排序，不消耗用户自身任何电量</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h4 class="font-medium text-gray-900 mb-2">【分享与置顶】</h4>
+              <ul class="text-gray-600 text-sm space-y-2">
+                <li>• 项目可以通过分享被更多人看到和支持</li>
+                <li>• 作者也可以通过「置顶推广」来增加项目曝光</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remote Jobs -->
+        <div class="bg-white rounded-xl shadow-sm p-6">
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="section-title">
+              <i class="fas fa-laptop-code"></i>
+              远程全职推荐
+            </h3>
+            <div class="flex space-x-2">
+              <button class="text-gray-500 hover:text-gray-700 text-sm">刷新</button>
+              <button class="text-gray-500 hover:text-gray-700 text-sm">查看全部</button>
+            </div>
+          </div>
+          
+          <div class="space-y-3">
+            <div class="p-3 bg-gray-50 rounded-lg">
+              <h4 class="font-medium text-gray-900">【免费推荐/全职远程】年薪¥83W-120W/高级AI 视频/短剧 Agent 编排工程师/ AI Agent平台</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-200 mt-12 py-8">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <div class="flex items-center space-x-2 mb-4">
+            <div class="avatar-icon">
+              <i class="fas fa-robot"></i>
+            </div>
+            <span class="text-xl font-bold text-gray-900">电鸭</span>
+          </div>
+          <p class="text-gray-600 text-sm">
+            找人 · 找机会 · 找项目
+          </p>
+        </div>
+        
+        <div>
+          <h4 class="font-medium text-gray-900 mb-4">产品</h4>
+          <ul class="space-y-2 text-gray-600 text-sm">
+            <li><a href="#" class="hover:text-gray-900">项目广场</a></li>
+            <li><a href="#" class="hover:text-gray-900">找人社区</a></li>
+            <li><a href="#" class="hover:text-gray-900">机会中心</a></li>
+            <li><a href="#" class="hover:text-gray-900">群组</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-medium text-gray-900 mb-4">资源</h4>
+          <ul class="space-y-2 text-gray-600 text-sm">
+            <li><a href="#" class="hover:text-gray-900">帮助中心</a></li>
+            <li><a href="#" class="hover:text-gray-900">API文档</a></li>
+            <li><a href="#" class="hover:text-gray-900">开发者</a></li>
+            <li><a href="#" class="hover:text-gray-900">博客</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="font-medium text-gray-900 mb-4">关于我们</h4>
+          <ul class="space-y-2 text-gray-600 text-sm">
+            <li><a href="#" class="hover:text-gray-900">公司介绍</a></li>
+            <li><a href="#" class="hover:text-gray-900">联系我们</a></li>
+            <li><a href="#" class="hover:text-gray-900">加入我们</a></li>
+            <li><a href="#" class="hover:text-gray-900">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="border-t border-gray-200 mt-8 pt-6 text-center text-gray-500 text-sm">
+        © 2023 电鸭社区. 保留所有权利.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

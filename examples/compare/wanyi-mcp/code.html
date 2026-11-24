@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>网易云音乐</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .font-kai{font-family:"KaiTi","STKaiti","楷体",serif;}
+  html{scrollbar-color:#b8b8b8 #f0f0f0;}
+</style>
+</head>
+<body class="bg-[#f5f5f5] text-[#333]">
+
+<!-- 顶部导航 -->
+<header class="bg-[#242424] relative z-20">
+  <div class="max-w-[1100px] mx-auto px-4 flex items-stretch h-20">
+    <a href="#" class="flex items-center gap-3 mr-6 shrink-0" aria-label="网易云音乐首页">
+      <span class="w-10 h-10 rounded-full bg-[#C20C0C] flex items-center justify-center">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      </span>
+      <span class="text-white text-2xl font-bold tracking-widest hidden sm:block">网易云音乐</span>
+    </a>
+    <nav aria-label="主导航" class="hidden md:block">
+      <ul class="flex items-stretch h-20 text-sm">
+        <li class="relative">
+          <a href="#" class="h-full flex items-center px-[22px] bg-black text-white font-bold" aria-current="page">发现音乐</a>
+          <span class="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-[7px] border-x-transparent border-t-[8px] border-t-[#9e0b0f]" aria-hidden="true"></span>
+        </li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">我的音乐</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">关注</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">商城</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">音乐人</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">云推歌</a></li>
+        <li><a href="#" class="h-full flex items-center px-[22px] text-[#ccc] hover:text-white">下载客户端</a></li>
+      </ul>
+    </nav>
+    <div class="ml-auto flex items-center gap-4">
+      <form role="search" class="relative hidden sm:block">
+        <label for="search" class="sr-only">搜索</label>
+        <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[#999]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="search" type="search" placeholder="音乐/视频/电台/用户" class="w-[150px] lg:w-[155px] h-9 pl-9 pr-3 rounded-full bg-white text-xs text-[#666] placeholder-[#999] outline-none focus:ring-2 focus:ring-[#C20C0C]/50">
+      </form>
+      <a href="#" class="h-9 px-5 flex items-center rounded-full border border-[#8d8d8d] text-[#ccc] text-sm hover:border-white hover:text-white">创作者中心</a>
+      <a href="#" class="text-[#999] text-sm hover:text-white">登录</a>
+    </div>
+  </div>
+</header>
+
+<!-- 红色二级导航 -->
+<nav class="bg-[#C20C0C]" aria-label="发现音乐子导航">
+  <ul class="max-w-[980px] mx-auto px-4 flex justify-center items-center h-[60px] text-sm text-white gap-1 sm:gap-2">
+    <li><a href="#" class="block px-6 py-[7px] rounded-full bg-[#9e0b0f] font-bold" aria-current="page">推荐</a></li>
+    <li><a href="#" class="block px-6 py-[7px] rounded-full hover:bg-[#9e0b0f]">排行榜</a></li>
+    <li><a href="#" class="block px-6 py-[7px] rounded-full hover:bg-[#9e0b0f]">歌单</a></li>
+    <li><a href="#" class="block px-6 py-[7px] rounded-full hover:bg-[#9e0b0f]">播客</a></li>
+    <li><a href="#" class="block px-6 py-[7px] rounded-full hover:bg-[#9e0b0f]">歌手</a></li>
+    <li><a href="#" class="block px-6 py-[7px] rounded-full hover:bg-[#9e0b0f]">新碟上架</a></li>
+  </ul>
+</nav>
+
+<!-- 轮播横幅 -->
+<section class="relative bg-gradient-to-r from-[#d8d3df] from-[30%] to-[#c9dfe2] to-[70%]" aria-roledescription="轮播图" aria-label="推荐 banner">
+  <button type="button" aria-label="上一张" class="hidden lg:flex absolute left-[4%] xl:left-[calc(50%-610px)] top-1/2 -translate-y-1/2 z-10 w-10 h-16 items-center justify-center text-white/70 hover:text-white">
+    <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+  <button type="button" aria-label="下一张" class="hidden lg:flex absolute right-[4%] xl:right-[calc(50%-610px)] top-1/2 -translate-y-1/2 z-10 w-10 h-16 items-center justify-center text-white/70 hover:text-white">
+    <svg class="w-9 h-9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+  </button>
+
+  <div class="max-w-[980px] mx-auto flex flex-col lg:flex-row">
+    <!-- 轮播图 -->
+    <div class="relative w-full lg:w-[730px] h-64 sm:h-[310px] overflow-hidden bg-[#c9dfe2]">
+      <!-- 封面插画（CSS 还原） -->
+      <div class="absolute inset-0" style="background:linear-gradient(180deg,#cfe3e4 0%,#c2dbdd 60%,#bcd6d9 100%);" aria-hidden="true"></div>
+      <div class="absolute right-[6%] top-0 h-full w-[46%]" aria-hidden="true">
+        <div class="absolute left-1/2 -translate-x-1/2 top-[4%] w-[70%] h-[86%] bg-white/55 rounded-t-[110px] rotate-3"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 top-[10%] w-[26%] h-[16%] bg-[#4a332b] rounded-t-full"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 top-[16%] w-[22%] h-[13%] bg-[#d9a08c] rounded-full"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 top-[34%] w-[52%] h-[52%] bg-[#ece7dd] rounded-t-[90px]"></div>
+        <div class="absolute left-[38%] top-[36%] w-[24%] h-[10%] bg-[#c0392b] rounded-full rotate-12"></div>
+        <div class="absolute left-[30%] top-[6%] w-[10%] h-[6%] bg-[#e56ba6] rounded-full"></div>
+      </div>
+      <div class="absolute left-[8%] top-[12%] text-center">
+        <p class="font-kai text-white text-5xl sm:text-6xl tracking-[0.15em] drop-shadow-sm" style="transform:rotate(-2deg);">爱笑的天使</p>
+        <p class="mt-3 text-[#e56ba6] text-2xl sm:text-3xl font-serif tracking-[0.15em]">SMILE ANGEL</p>
+        <p class="mt-4 text-white text-lg sm:text-xl tracking-[0.25em]">二十周年合唱版</p>
+        <p class="mt-1 text-[#e56ba6] text-lg sm:text-xl font-bold tracking-[0.15em]">李嫣 窦靖童 王菲</p>
+      </div>
+      <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4" role="tablist" aria-label="轮播指示器">
+        <button type="button" role="tab" aria-label="第 1 张" class="w-2 h-2 rounded-full bg-white/70 hover:bg-white"></button>
+        <button type="button" role="tab" aria-label="第 2 张" aria-current="true" class="w-2 h-2 rounded-full bg-[#C20C0C]"></button>
+        <button type="button" role="tab" aria-label="第 3 张" class="w-2 h-2 rounded-full bg-white/70 hover:bg-white"></button>
+        <button type="button" role="tab" aria-label="第 4 张" class="w-2 h-2 rounded-full bg-white/70 hover:bg-white"></button>
+        <button type="button" role="tab" aria-label="第 5 张" class="w-2 h-2 rounded-full bg-white/70 hover:bg-white"></button>
+      </div>
+    </div>
+
+    <!-- 下载客户端面板 -->
+    <aside class="w-full lg:w-[250px] h-auto lg:h-[310px] bg-[#1c1c1c] flex flex-col">
+      <div class="relative h-[190px] shrink-0 overflow-hidden" style="background:radial-gradient(circle at 50% 0%, #5a150e 0%, #3a120c 45%, #201c1a 100%);" aria-hidden="true">
+        <div class="absolute left-1/2 -translate-x-1/2 top-[18%] w-[64%] h-[52%] bg-[#8f1d12]"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 top-[10%] w-[16%] h-[16%] rounded-full bg-[#141414] border-4 border-[#0b0b0b] flex items-center justify-center">
+          <span class="w-3 h-3 rounded-full bg-[#a4241b]"></span>
+        </div>
+        <div class="absolute left-[16%] top-[52%] w-[14%] h-[30%] bg-[#7d1a10] rounded-sm"></div>
+        <div class="absolute left-[32%] top-[44%] w-[18%] h-[42%] bg-[#a4241b] rounded-sm"></div>
+        <div class="absolute left-[52%] top-[56%] w-[10%] h-[24%] bg-[#5f150c] rounded-sm"></div>
+        <div class="absolute left-[62%] top-[50%] w-[26%] h-[34%] bg-[#9c2015] rounded-sm"></div>
+        <div class="absolute left-1/2 -translate-x-1/2 bottom-[6%] w-[86%] h-[3px] bg-[#3a3a3a]"></div>
+      </div>
+      <div class="px-4 pt-3">
+        <a href="#" class="w-full h-12 flex items-center justify-center gap-2 rounded-[4px] bg-[#3d3d3d] hover:bg-[#4a4a4a] text-white text-base">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v8"/><path d="m8.5 12.5 3.5 3.5 3.5-3.5"/></svg>
+          下载客户端
+        </a>
+        <p class="mt-3 text-center text-[#8d8d8d] text-xs leading-5">电脑/平板/手机/电视/汽车/音箱/手表多终端</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 主体内容 -->
+<div class="max-w-[980px] mx-auto px-4 flex flex-col lg:flex-row items-stretch">
+  <!-- 主栏 -->
+  <main class="w-full lg:w-[730px] bg-white px-5 pb-10">
+    <section aria-labelledby="hot-title">
+      <div class="pt-8 pb-3 border-b-2 border-[#C20C0C] flex items-center flex-wrap gap-y-2">
+        <span class="w-[18px] h-[18px] rounded-full bg-[#C20C0C] flex items-center justify-center mr-2" aria-hidden="true"><span class="w-[6px] h-[6px] rounded-full bg-white"></span></span>
+        <h2 id="hot-title" class="text-xl font-bold text-[#333]">热门推荐</h2>
+        <ul class="ml-4 flex items-center text-xs text-[#666]">
+          <li><a href="#" class="px-3 hover:text-[#C20C0C]">华语</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">流行</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">摇滚</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">民谣</a></li>
+          <li class="border-l border-[#d8d8d8]"><a href="#" class="px-3 hover:text-[#C20C0C]">电子</a></li>
+        </ul>
+        <a href="#" class="ml-auto flex items-center gap-1 text-xs text-[#666] hover:text-[#C20C0C]">更多
+          <svg class="w-4 h-4 text-[#C20C0C]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15"/><path d="m13 6 6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <ul class="mt-7 grid grid-cols-2 sm:grid-cols-4 gap-x-[42px] gap-y-9">
+        <!-- 卡片 1 -->
+        <li>
+          <a href="#" class="block group">
+            <div class="relative aspect-square overflow-hidden" style="background:radial-gradient(circle at 72% 78%, rgba(255,196,110,.95) 0%, rgba(255,140,60,.4) 22%, rgba(255,140,60,0) 45%), radial-gradient(circle at 38% 38%, #e9c3ad 0 16%, rgba(0,0,0,0) 17%), linear-gradient(160deg,#4a3f3a 0%,#2b2320 60%,#1d1715 100%);">
+              <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-between px-2 text-white text-xs">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
+                  2682万
+                </span>
+                <span class="w-5 h-5 rounded-full border border-white/80 flex items-center justify-center group-hover:bg-white/20" aria-label="播放">
+                  <svg class="w-2 h-2 translate-x-[1px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg>
+                </span>
+              </div>
+            </div>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] line-clamp-2 group-hover:text-[#C20C0C]">假如能回到过去，你想做什么</p>
+          </a>
+        </li>
+        <!-- 卡片 2 -->
+        <li>
+          <a href="#" class="block group">
+            <div class="relative aspect-square overflow-hidden" style="background:radial-gradient(circle at 56% 30%, #cfcfcf 0 15%, rgba(0,0,0,0) 16%), radial-gradient(ellipse at 40% 15%, #6f6f6f 0 24%, rgba(0,0,0,0) 25%), linear-gradient(200deg,#7d7d7d 0%,#3a3a3a 55%,#1f1f1f 100%);">
+              <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-between px-2 text-white text-xs">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
+                  7757万
+                </span>
+                <span class="w-5 h-5 rounded-full border border-white/80 flex items-center justify-center group-hover:bg-white/20" aria-label="播放">
+                  <svg class="w-2 h-2 translate-x-[1px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg>
+                </span>
+              </div>
+            </div>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] line-clamp-2 group-hover:text-[#C20C0C]">「华语」哭泣使人乞讨思念使人奔跑</p>
+          </a>
+        </li>
+        <!-- 卡片 3 -->
+        <li>
+          <a href="#" class="block group">
+            <div class="relative aspect-square overflow-hidden" style="background:radial-gradient(circle at 45% 16%, #e6d05a 0 9%, rgba(0,0,0,0) 10%), radial-gradient(circle at 50% 32%, #e8c39a 0 13%, rgba(0,0,0,0) 14%), radial-gradient(ellipse at 50% 88%, #3f7d3f 0 30%, rgba(0,0,0,0) 31%), linear-gradient(#a4574a,#8f4a3e);">
+              <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-between px-2 text-white text-xs">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
+                  4636万
+                </span>
+                <span class="w-5 h-5 rounded-full border border-white/80 flex items-center justify-center group-hover:bg-white/20" aria-label="播放">
+                  <svg class="w-2 h-2 translate-x-[1px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg>
+                </span>
+              </div>
+            </div>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] line-clamp-2 group-hover:text-[#C20C0C]">戳爷/黄老板/断眉/萌德/骚姆/比伯/烟卷</p>
+          </a>
+        </li>
+        <!-- 卡片 4 -->
+        <li>
+          <a href="#" class="block group">
+            <div class="relative aspect-square overflow-hidden" style="background:linear-gradient(#efe7d8,#e2d7c3);">
+              <p class="font-kai absolute left-[8%] top-[8%] text-[#1b1b1b] text-3xl font-black tracking-widest" style="transform:rotate(-4deg);">说到这里</p>
+              <div class="absolute left-1/2 -translate-x-1/2 bottom-0 w-[46%] h-[52%]" aria-hidden="true">
+                <div class="absolute left-1/2 -translate-x-1/2 top-0 w-[52%] h-[38%] bg-[#e0b58f] rounded-full"></div>
+                <div class="absolute left-1/2 -translate-x-1/2 top-[16%] w-[60%] h-[14%] bg-[#2b2b2b] rounded-t-full"></div>
+                <div class="absolute left-0 bottom-0 w-full h-[62%] bg-[#2e2e2e] rounded-t-[40px]"></div>
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 w-[30%] h-[54%] bg-[#efefef]"></div>
+              </div>
+              <div class="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/70 to-transparent flex items-center justify-between px-2 text-white text-xs">
+                <span class="flex items-center gap-1">
+                  <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/></svg>
+                  1754万
+                </span>
+                <span class="w-5 h-5 rounded-full border border-white/80 flex items-center justify-center group-hover:bg-white/20" aria-label="播放">
+                  <svg class="w-2 h-2 translate-x-[1px]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6 4l14 8-14 8z"/></svg>
+                </span>
+              </div>
+            </div>
+            <p class="mt-3 text-sm text-[#333] leading-[1.6] line-clamp-3 group-hover:text-[#C20C0C]"><span class="inline-block border border-[#C20C0C] text-[#C20C0C] text-xs leading-[16px] px-[3px] mr-1 align-[2px]">电台节目</span>把伴侣当“另一半”还是“队友”？决定了你们能走多远</p>
+          </a>
+        </li>
+        <!-- 第二行封面 -->
+        <li><div class="aspect-square" style="background:radial-gradient(ellipse at 35% 50%, #f8dce8 0 16%, #e06aa8 17% 25%, rgba(0,0,0,0) 26%), radial-gradient(ellipse at 65% 50%, #f8dce8 0 16%, #e06aa8 17% 25%, rgba(0,0,0,0) 26%), #141418;" role="img" aria-label="歌单封面"></div></li>
+        <li><div class="aspect-square" style="background:linear-gradient(45deg, rgba(0,0,0,0) 42%, rgba(190,30,20,.75) 43% 55%, rgba(0,0,0,0) 56%), radial-gradient(circle at 52% 38%, rgba(200,30,20,.9) 0 26%, rgba(0,0,0,0) 27%), #201c1a;" role="img" aria-label="歌单封面"></div></li>
+        <li><div class="aspect-square" style="background:radial-gradient(circle at 62% 42%, #6b4a1f 0 7%, #e8b83a 8% 20%, rgba(0,0,0,0) 21%), radial-gradient(circle at 30% 76%, #6b4a1f 0 5%, #e8b83a 6% 15%, rgba(0,0,0,0) 16%), linear-gradient(160deg,#7fb6a4,#5d9c8b);" role="img" aria-label="歌单封面"></div></li>
+        <li><div class="aspect-square" style="background:radial-gradient(circle at 28% 34%, #cfcfcf 0 9%, rgba(0,0,0,0) 10%), radial-gradient(circle at 54% 28%, #bdbdbd 0 9%, rgba(0,0,0,0) 10%), radial-gradient(circle at 78% 32%, #c6c6c6 0 9%, rgba(0,0,0,0) 10%), linear-gradient(#5a5a5a,#2e2e2e);" role="img" aria-label="歌单封面"></div></li>
+      </ul>
+    </section>
+  </main>
+
+  <!-- 侧栏 -->
+  <aside class="w-full lg:w-[250px] lg:pl-0 py-6 lg:py-0 flex flex-col gap-4" aria-label="侧边栏">
+    <!-- 黑胶VIP -->
+    <div class="rounded-lg bg-gradient-to-r from-[#383838] to-[#4a3f3a] p-4 flex items-center justify-between gap-2">
+      <div>
+        <p class="text-white font-bold text-base">黑胶VIP</p>
+        <p class="mt-1 text-[#9d9d9d] text-xs">立享超21项专属特权</p>
+      </div>
+      <a href="#" class="shrink-0 bg-[#f6dcd2] hover:bg-[#fbe7de] text-[#5f4b43] text-xs font-bold px-4 py-2 rounded-full">优惠购买</a>
+    </div>
+
+    <!-- 登录框 -->
+    <div class="border border-[#e0e0e0] bg-gradient-to-b from-[#fbfbfb] to-[#e6e6e6] px-5 py-6 text-center">
+      <p class="text-xs text-[#666] leading-6 text-left">登录网易云音乐，可以享受无限收藏的乐趣，并且无限同步到手机</p>
+      <button type="button" class="mt-5 mx-auto block bg-[#C20C0C] hover:bg-[#a80b0b] text-white text-sm px-9 py-2 rounded-[4px] shadow-sm">用户登录</button>
+    </div>
+
+    <!-- 入驻歌手 -->
+    <section class="bg-[#fafafa] border border-[#e5e5e5]" aria-labelledby="artist-title">
+      <div class="flex items-center justify-between px-4 pt-4 pb-3">
+        <h3 id="artist-title" class="text-sm font-bold text-[#333]">入驻歌手</h3>
+        <a href="#" class="text-xs text-[#666] hover:text-[#C20C0C]">查看全部 &gt;</a>
+      </div>
+      <ul class="px-4 pb-4 space-y-3">
+        <li>
+          <a href="#" class="flex items-center gap-3 bg-white border border-[#e9e9e9] p-2 hover:border-[#C20C0C]/40">
+            <span class="w-[50px] h-[50px] shrink-0" style="background:radial-gradient(circle at 50% 38%, #d8b49a 0 20%, rgba(0,0,0,0) 21%), linear-gradient(200deg,#2e4f4a,#16302c);" role="img" aria-label="张惠妹头像"></span>
+            <span>
+              <span class="block text-sm font-bold text-[#333]">张惠妹aMEI</span>
+              <span class="block mt-1 text-xs text-[#666]">台湾歌手张惠妹</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center gap-3 bg-white border border-[#e9e9e9] p-2 hover:border-[#C20C0C]/40">
+            <span class="w-[50px] h-[50px] shrink-0" style="background:radial-gradient(circle at 50% 35%, #e8c3b0 0 24%, rgba(0,0,0,0) 25%), linear-gradient(#d8a8a0,#b07878);" role="img" aria-label="吴莫愁头像"></span>
+            <span>
+              <span class="block text-sm font-bold text-[#333]">吴莫愁Momo</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </section>
+  </aside>
+</div>
+
+</body>
+</html>
