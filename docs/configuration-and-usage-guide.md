@@ -421,4 +421,54 @@ import { ConfigProvider } from 'antd'
 2. **复杂页面建议先 `fast` 出稿再精修**：`balanced` 模式生成长 TSX 时偶发 JSX 特殊字符未转义导致 typecheck 失败，`fast` 更稳定；需要更高相似度再用 `precision` 触发自动修复循环。
 3. **React 产物是 TSX 组件而非完整应用**：需要自行接入项目的入口、路由与样式体系（第 9 章的提示词已包含「写入项目并跑构建」的约定）。
 
+---
+
+## 11. 让新会话自动识别并使用 MCP 工具
+
+在新 OpenCode 会话里，即使 MCP 已连接，模型第一次遇到「图转网页」时也可能自己手写 HTML 而不调用工具。这是**工具发现（tool discovery）**问题，从三个层面解决：
+
+### 11.1 提示词强调（临时但立竿见影）
+
+❌ 弱提示（模型可能自己写代码）：
+
+```text
+把这张图生成网页
+```
+
+✅ 强提示（明确指定工具）：
+
+```text
+使用 image2html 的 generate_component 工具，把这张图生成网页并写入项目
+```
+
+### 11.2 项目级 AGENTS.md（一次配置，永久生效）
+
+在业务项目根目录创建 `AGENTS.md`，新会话启动时自动加载：
+
+```markdown
+## 设计稿转代码规则
+
+当用户要求将设计稿、截图、UI 图片转换为网页、页面、组件或前端代码时，
+**必须优先使用 image2html MCP 工具**（generate_component / analyze_structure / extract_assets），
+不要直接手写 HTML/CSS 代替。
+
+- 结构分析用 analyze_structure，素材裁切用 extract_assets
+- 视觉修复用 repair_component，效果校验用 validate_design
+- 图片超过 4MB 时先压缩再调用
+```
+
+### 11.3 工具描述自带触发条件（服务端，所有用户受益）
+
+`src/mcp/tool-schemas.ts` 中每个工具的 description 都已加上【场景标签 + 触发条件】，例如：
+
+- `generate_component`：**【图转网页/设计稿转代码首选工具】**当用户要求把设计稿、截图、UI 图片转换成网页、页面或前端组件代码时，必须优先调用本工具，不要直接手写 HTML/CSS 替代。
+- `analyze_structure`：**【设计稿结构分析】**区域划分、组件清单、设计 Token。
+- `extract_assets`：**【图片素材裁切】**照片型页面高保真还原的必备步骤。
+- `repair_component`：**【视觉偏差修复】**按原图修复视觉差异。
+- `validate_design`：**【视觉还原度校验】**渲染比对、相似度与修改建议。
+
+模型读到「图转网页」类需求时，会自然匹配到对应工具，无需用户额外提醒。
+
+**推荐组合**：服务端工具描述（11.3）+ 项目 AGENTS.md（11.2），日常使用只需说「把这张图生成网页」即可。
+
 

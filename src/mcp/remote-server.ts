@@ -45,7 +45,7 @@ function remoteInput(tool: Tool, properties: Record<string, unknown>, required: 
 
 const remoteGenerateTool = {
   ...localTools.generate_component,
-  description: '通过集中服务生成组件，支持服务端图片路径或调用方上传 Base64 图片。',
+  description: '【图转网页/设计稿转代码首选工具】当用户要求把设计稿、截图、UI 图片转换成网页、页面或前端组件代码时，必须优先调用本工具，不要直接手写 HTML/CSS 替代。通过集中服务生成组件，支持服务端图片路径或调用方上传 Base64 图片。',
   inputSchema: remoteInput(localTools.generate_component, {
     image_path: imagePath,
     image_base64: imageBase64,

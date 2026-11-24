@@ -61,7 +61,7 @@ const frameworkProperties = {
 
 export const generateComponentTool: Tool = {
   name: 'generate_component',
-  description: '根据设计稿截图生成前端组件代码，支持视觉校验、自动修复和结构化结果。',
+  description: '【图转网页/设计稿转代码首选工具】当用户要求把设计稿、截图、UI 图片转换成网页、页面或前端组件代码时，必须优先调用本工具，不要直接手写 HTML/CSS 替代。输入设计稿图片，输出 React/Vue/HTML 组件代码，支持视觉校验、自动修复和结构化结果。',
   inputSchema: {
     type: 'object',
     properties: {
@@ -98,7 +98,7 @@ export const toolDefinitions: Tool[] = [
   generateComponentTool,
   {
     name: 'validate_design',
-    description: '使用 Playwright 渲染代码并与原图比较。视觉未通过是正常校验结果，不是工具协议错误。',
+    description: '【视觉还原度校验】当需要检查生成代码与设计稿的还原程度时使用（例如生成后自检、用户要求对比原图）。使用 Playwright 渲染代码并与原图比较，返回相似度、差异区域与修改建议。视觉未通过是正常校验结果，不是工具协议错误。',
     inputSchema: {
       type: 'object',
       properties: {
@@ -121,7 +121,7 @@ export const toolDefinitions: Tool[] = [
   },
   {
     name: 'repair_component',
-    description: '先校验当前代码，再执行视觉修复、候选重新校验和质量择优；不会写回业务文件。',
+    description: '【视觉偏差修复】当生成的网页/组件与设计稿存在视觉差异、需要按原图修复时使用。先校验当前代码，再执行视觉修复、候选重新校验和质量择优；不会写回业务文件。',
     inputSchema: {
       type: 'object',
       properties: {
@@ -168,7 +168,7 @@ export const toolDefinitions: Tool[] = [
   },
   {
     name: 'analyze_structure',
-    description: '仅分析设计稿结构，在 structure 字段返回页面对象，不生成代码。',
+    description: '【设计稿结构分析】当需要了解设计稿的区域划分、组件清单、设计 Token（主色、字号、间距、圆角）时使用。仅分析设计稿结构，在 structure 字段返回页面对象，不生成代码。适合生成前的布局理解或纯结构报告。',
     inputSchema: {
       type: 'object',
       properties: { image_path: { type: 'string' } },
@@ -186,7 +186,7 @@ export const toolDefinitions: Tool[] = [
   },
   {
     name: 'extract_assets',
-    description: '识别 Logo、图标和图片并裁剪为 PNG；仅本地 MCP 可用，会真实写入文件。',
+    description: '【图片素材裁切】当需要从设计稿中提取 Logo、图标、照片等图片素材时使用，识别并裁剪为 PNG；仅本地 MCP 可用，会真实写入文件。照片型页面高保真还原的必备步骤。',
     inputSchema: {
       type: 'object',
       properties: {
